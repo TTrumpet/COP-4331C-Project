@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'neon-rave-font';
+    src: url('./assets/fonts/neon-rave-font/NeonRave-z82z4.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* default font type and color */
+* {
+    font-family: 'KoHo';
+    color: white;
+}
