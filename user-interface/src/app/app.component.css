@@ -1,0 +1,125 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+main {
+    width: 100vw;
+    height: 100vh;
+    vertical-align: center;
+    display: inline;
+}
+
+.row {
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.column {
+    padding-left: 100px;
+    padding-right: 100px;
+    display: table-cell;
+    flex: 50%
+}
+
+@keyframes car-translation {
+    from {transform: translate(-50px) scaleX(-1);}
+    to {transform: translate(50px) scaleX(-1);;}
+}
+
+img {
+    width: 100%;
+    height: 100%;
+    animation: 4s infinite alternate car-translation;
+}
+
+@keyframes glow {
+    from {text-shadow: 0 0 20px #0fa;}
+    to {text-shadow: 0 0 40px #0fa;}
+}
+
+h1 {
+    color: #55eb53;
+    font-size: 70px;
+    font-family: 'neon-rave-font';
+    font-weight: 400;
+    letter-spacing: 8px;
+    word-wrap: break-word;
+    text-align: left;
+    animation: glow 1s infinite alternate;
+}
+
+p {
+    font-size: 25px;
+    font-weight: 400;
+    letter-spacing: 2.5px;
+    word-wrap: break-word;
+    text-align: justify
+}
+
+nav {
+    width: 100%;
+    height: 100px;
+    gap: 25rem;
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+button {
+    padding: 15px 75px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    font-size: 45px;
+    font-weight: 400;
+    text-align: center
+}
+
+#login {
+    background: #55eb53;
+    color: black
+}
+
+#leaderboard {
+    background: #1C1C1C;
+    color: white
+}
+
+footer {
+    position: fixed;
+    padding: 10px 10px 0px 10px;
+    bottom: 0;
+    width: 100%;
+    height: 72px;
+    font-weight: 400;
+    word-wrap: break-word;
+    text-align: center
+}
+
+a {
+    color: #25DF16
+}
+
+@media only screen and (max-width: 1100px) {
+    .row {
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+    nav {
+        gap: 5rem;
+    }
+    button {
+        font-size: 20px;
+        padding: 10px 30px;
+    }
+  }
