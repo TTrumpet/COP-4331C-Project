@@ -26,14 +26,14 @@ We will handle version and change control by utilizing Git/GitHub.
 We will create unit testing instances for each activity. The responsibility falls onto the team member delegated for the activity to QA the material. The results will be reported using GitHub and Angular Documentation if necessary.
 ## Risk Management
 1. Data Security Risk
-    a. Risk Type - Project Specific.
-    b. Risk Description - database leak impacting user privacy
-    c. Mitigation effort - Implement security measures.
-    d. Risk impact - Low. User privacy will not be heavily impacted.
+    - Risk Type - Project Specific.
+    - Risk Description - database leak impacting user privacy
+    - Mitigation effort - Implement security measures.
+    - Risk impact - Low. User privacy will not be heavily impacted.
 2. Team Member Attrition Risk.
-    a. Risk Type - Generic Risk.
-    b. Risk Description - Potential loss of a team member.
-    c. Mitigation - An excess of slack time and clear communication. If unavoidable a revaluation of Time Estimates and Work packages.
+    - Risk Type - Generic Risk.
+    - Risk Description - Potential loss of a team member.
+    - Mitigation - An excess of slack time and clear communication. If unavoidable a revaluation of Time Estimates and Work packages.
 ## Table of Work Packages, Time Estimates, and Assignments
 1. Landing Page UI - Victoria | 2 days
 2. Leaderboard - Gavin | 1 week
