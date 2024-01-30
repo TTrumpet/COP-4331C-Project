@@ -5,17 +5,39 @@
     font-style: normal;
 }
 
+.row {
+    width: 100%;
+    position: absolute;
+    top: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.column {
+    padding-left: 100px;
+    padding-right: 100px;
+    display: table-cell;
+    flex: 50%
+}
+
+@keyframes car-translation {
+    from {transform: translate(-50px) scaleX(-1);}
+    to {transform: translate(50px) scaleX(-1);;}
+}
+
+img {
+    width: 100%;
+    height: 100%;
+    animation: 4s infinite alternate car-translation;
+}
+
 body {
-    background-color: black;
+    background-color: black
 }
 
 h1 {
-    width: 800px;
-    height: 98px;
-    left: 200px;
-    top: 235px;
-    position: absolute;
-    color: #2BFF19;
+    color: #55eb53;
     font-size: 100px;
     font-family: 'neon-rave-font';
     font-weight: 400;
@@ -25,11 +47,6 @@ h1 {
 }
 
 p {
-    width: 627px;
-    height: 141px;
-    left: 200px;
-    top: 443px;
-    position: absolute;
     color: white;
     font-size: 35px;
     font-family: 'KoHo';
@@ -45,12 +62,13 @@ nav {
     top: 900px;
     position: absolute;
     display: flex;
+    gap: 25rem;
     align-items: center;
-    justify-content: center;
+    justify-content: center
 }
 
 button {
-    padding: 10px;
+    padding: 15px 75px;
     margin-bottom: 10px;
     border-radius: 10px;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
@@ -61,8 +79,7 @@ button {
 }
 
 #login {
-    margin-left: 500px;
-    background: #7EFFAA;
+    background: #55eb53;
     color: black
 }
 
