@@ -1,0 +1,89 @@
+@font-face {
+    font-family: 'neon-rave-font';
+    src: url('../assets/fonts/neon-rave-font/NeonRave-z82z4.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    background-color: black;
+}
+
+h1 {
+    width: 800px;
+    height: 98px;
+    left: 200px;
+    top: 235px;
+    position: absolute;
+    color: #2BFF19;
+    font-size: 100px;
+    font-family: 'neon-rave-font';
+    font-weight: 400;
+    letter-spacing: 8px;
+    word-wrap: break-word;
+    text-align: left
+}
+
+p {
+    width: 627px;
+    height: 141px;
+    left: 200px;
+    top: 443px;
+    position: absolute;
+    color: white;
+    font-size: 35px;
+    font-family: 'KoHo';
+    font-weight: 400;
+    letter-spacing: 2.5px;
+    word-wrap: break-word;
+    text-align: justify
+}
+
+nav {
+    width: 100%;
+    height: 100px;
+    top: 900px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    font-family: 'KoHo';
+    font-size: 45px;
+    font-weight: 400;
+    text-align: center
+}
+
+#login {
+    margin-left: 500px;
+    background: #7EFFAA;
+    color: black
+}
+
+#leaderboard {
+    background: #1C1C1C;
+    color: white
+}
+
+footer {
+    position: fixed;
+    padding: 10px 10px 0px 10px;
+    bottom: 0;
+    width: 100%;
+    height: 72px;
+    color: white;
+    font-family: 'KoHo';
+    font-weight: 400;
+    word-wrap: break-word;
+    text-align: center
+}
+
+a {
+    color: #25DF16
+}
