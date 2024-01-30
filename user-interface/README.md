@@ -1,4 +1,4 @@
-# user-interface
+# Code Cruiser - User Interface
 UI for Code Cruiser game.
 
 # Guide
@@ -36,3 +36,5 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 # Interface Requirements
 
 # Revision History
+- (1/30) Created and pushed landing page user interface. -Victoria
+- (1/30) Created and pushed new README contents. -Victoria
