@@ -76,6 +76,13 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 | No: IR04 |
 | -------- |
+| Statement: Game UI will show an area for the Code Generation to print on the screen and map the synchronous translation of a car moving with the speed of the user’s typing. |
+| Source: Database |
+| Dependency: Code Generation |
+| Conflicts: None |
+| Supporting Materials: N/A |
+| Evaluation Method: The car should increase speed when typing speed increases. The area where the code generation is printed should be seen and generate more text as the user continues to type the correct characters. |
+| Revision History: Victoria |
 
 # Revision History
 - (1/30) Created and pushed landing page user interface. -Victoria
