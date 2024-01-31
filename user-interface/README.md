@@ -38,3 +38,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 # Revision History
 - (1/30) Created and pushed landing page user interface. -Victoria
 - (1/30) Created and pushed new README contents. -Victoria
+- (1/30) Created leaderboard and profile components. -Victoria
+- (1/31) Created login component. -Victoria
+- (1/31) Revised app routes. -Victoria
