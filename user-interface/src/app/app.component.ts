@@ -2,6 +2,7 @@ import { ApplicationModule, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
+import { LoginComponent } from './login/login.component';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +19,15 @@ export class AppComponent{
   
  }
 
-  openDialog(){
+  openLeaderboard(){
     this.dialog.open(LeaderboardComponent, {
+      width: '1000px',
+      height: '1080px'
+    });
+  }
+
+  openLogin(){
+    this.dialog.open(LoginComponent, {
       width: '1000px',
       height: '1080px'
     });

@@ -90,3 +90,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - (1/30) Created leaderboard and profile components. -Victoria
 - (1/31) Created login component. -Victoria
 - (1/31) Revised app routes. -Victoria
+- (2/1) Worked on popups and leaderboard popup. -Gavin
+- (2/2) Skipped hydration. -Victoria
+- (2/3) Linked button presses to popup components. -Victoria
