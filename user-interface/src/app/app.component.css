@@ -80,6 +80,7 @@ nav {
 }
 
 button {
+    z-index: 2;
     padding: 15px 75px;
     margin-bottom: 10px;
     border-radius: 10px;

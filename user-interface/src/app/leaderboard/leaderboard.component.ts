@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-leaderboard',
@@ -8,6 +10,10 @@ import { Component } from '@angular/core';
   templateUrl: './leaderboard.component.html',
   styleUrl: './leaderboard.component.css'
 })
-export class LeaderboardComponent {
+export class LeaderboardComponent{
 
+  constructor(public dialogRef: MatDialogRef<LeaderboardComponent>) {
+    
+  }
+ 
 }
