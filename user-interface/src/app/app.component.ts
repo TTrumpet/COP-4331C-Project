@@ -1,19 +1,23 @@
-import { Component } from '@angular/core';
+import { ApplicationModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
-import { Router } from '@angular/router';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog'
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, RouterModule],
+  imports: [CommonModule,MatDialogModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   title = 'Code Cruiser';
 
-  constructor(private router: Router) {
+ constructor(private dialog : MatDialog){
+  }
 
+  openDialog(){
+    console.log("whaaa");
+    this.dialog.open(LeaderboardComponent);
   }
 }
