@@ -1,18 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
+import { Component} from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-leaderboard',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, RouterModule],
+  imports: [CommonModule],
   templateUrl: './leaderboard.component.html',
   styleUrl: './leaderboard.component.css'
 })
-export class LeaderboardComponent {
+export class LeaderboardComponent{
 
-  constructor(private router: Router) {
-
+  constructor(public dialogRef: MatDialogRef<LeaderboardComponent>) {
+    
   }
-
+ 
 }

@@ -1,6 +1,6 @@
 <!-- landing page ui -->
 <html>
-  <body>
+<body>
     <main>
       <div class="row">
         <div class="column">
@@ -14,8 +14,8 @@
         </div>
       </div>
       <nav>
-        <button id="leaderboard" type="button"><a routerLinkActive="active" routerLink="leaderboard-popup">Leaderboard</a></button>
-        <button id="login" type="button"><a routerLinkActive="active" routerLink="login-popup">LOGIN</a></button>
+        <button mat-button id="leaderboard" (click)="openDialog()">Leaderboard</button>
+        <button mat-button id="login">LOGIN</button>
       </nav>
     </main>
     <footer>Built by Project Group 6 for COP4331. The source code is available on <a href="https://github.com/TTrumpet/COP-4331C-Project">Github</a></footer>
@@ -131,6 +131,4 @@
   <div class="letter l75 t900 big d5"><div></div></div>
   <div class="letter l85 t200 big d5"><div></div></div>
   <div class="letter l95 t180 big d5"><div></div></div>
-</html>
-
-<router-outlet></router-outlet>
+</html>  
