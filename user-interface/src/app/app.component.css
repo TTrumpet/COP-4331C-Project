@@ -3,17 +3,17 @@ body {
     width: 100vw;
     height: 100vh;
     margin: 0;
+    position: relative;
     display: flex;
-    align-items: center;
-    justify-content: center;
     overflow: hidden;
 }
 
 main {
-    width: 100vw;
-    height: 100vh;
+    position: absolute;
     vertical-align: center;
-    display: inline;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .row {
@@ -101,15 +101,12 @@ button {
 }
 
 footer {
-    display: flex;
-    padding: 10px 10px 0px 10px;
+    position: absolute;
     bottom: 0;
-    width: 100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     height: 72px;
     font-weight: 400;
-    word-wrap: break-word;
-    justify-content: center;
-    text-align: center
 }
 
 a {
