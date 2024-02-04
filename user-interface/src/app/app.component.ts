@@ -21,14 +21,14 @@ export class AppComponent{
 
   openLeaderboard(){
     this.dialog.open(LeaderboardComponent, {
-      width: '1000px',
-      height: '1080px'
+      width: '1010px',
+      height: '1080px',
     });
   }
 
   openLogin(){
     this.dialog.open(LoginComponent, {
-      width: '1000px',
+      width: '1010px',
       height: '1080px'
     });
   }

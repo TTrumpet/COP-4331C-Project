@@ -1,7 +1,104 @@
 body {
+    border-color: #55eb53;
+    border-style:outset;
     background-color: black;
 }
 
-h2 {
-    color: white;
+
+
+#header-container{
+    display: flex;
+    align-items: center;
+}
+#leaderboard-title {
+    font-size: 80px;
+    font-family: 'neon-rave-font';
+    letter-spacing: 5px;
+    color: #55eb53;
+    font-weight: bold;
+    margin-top: auto;
+    margin-left: 50px;
+}
+
+#dropdown-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 17px;
+}
+#dropdown1{
+    background-color: #000; 
+    border: 2px solid #55eb53; 
+    border-radius: 5px; 
+    padding: 15px;
+    margin-left: 27px;
+}
+#dropdown2{
+    background-color: #000; 
+    border: 2px solid #55eb53; 
+    border-radius: 5px; 
+    padding: 15px;
+    margin-left: 27px; 
+}
+
+
+#list-container {
+    display: flex;
+    border-style: inset;
+    border: 2px solid  #55eb53;
+    border-radius: 7px;
+    width: 900px;
+    height: 700px;
+    margin-left: 50px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    flex-direction: column; 
+}
+  
+.player-box {
+    flex: 1; 
+    border-style: inset;
+    border: 2px solid #55eb53;
+    
+    padding: 10px;
+    position: relative;
+  }
+  
+  /* Add vertical lines between player boxes */
+.player-box:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-color: #b1eb53;
+}
+@media only screen and (max-width: 1190px) {
+    #leaderboard-title {
+      font-size: 35px; 
+      margin-left: 0px;
+    }
+    #header-container {
+        flex-direction: column;
+    }
+    #dropdown-container {
+        align-items: center;
+    }
+    #dropdown1{
+        margin-left: 0px;
+    }
+    #list-container{
+        width: 300px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+@media only screen and (max-height : 825px) {
+    #list-container{
+        height: 550px;
+    }
+}
+@media only screen and (max-height : 700px) {
+    #list-container{
+        height: 450px;
+    }
 }

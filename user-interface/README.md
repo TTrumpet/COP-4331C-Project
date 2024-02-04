@@ -93,3 +93,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - (2/1) Worked on popups and leaderboard popup. -Gavin
 - (2/2) Skipped hydration. -Victoria
 - (2/3) Linked button presses to popup components. -Victoria
+- (2/3) Worked on Leaderboard UI -Gavin

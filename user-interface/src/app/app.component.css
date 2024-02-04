@@ -7,7 +7,9 @@ body {
     display: flex;
     overflow: hidden;
 }
-
+::ng-deep .mat-dialog-container {
+    background-color: black;
+  }
 main {
     position: absolute;
     vertical-align: center;
