@@ -1,53 +1,62 @@
 {
-  "hash": "d7f1d398",
-  "browserHash": "268c8835",
+  "hash": "e73b31f6",
+  "browserHash": "6552921e",
   "optimized": {
     "@angular/common": {
       "src": "../../../../../node_modules/@angular/common/fesm2022/common.mjs",
       "file": "@angular_common.js",
-      "fileHash": "bd35270b",
+      "fileHash": "f54bc8f4",
       "needsInterop": false
     },
     "@angular/core": {
       "src": "../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "96a82c27",
+      "fileHash": "1c769196",
       "needsInterop": false
     },
     "@angular/forms": {
       "src": "../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
       "file": "@angular_forms.js",
-      "fileHash": "b39a99c1",
+      "fileHash": "5274e08d",
       "needsInterop": false
     },
     "@angular/material/dialog": {
       "src": "../../../../../node_modules/@angular/material/fesm2022/dialog.mjs",
       "file": "@angular_material_dialog.js",
-      "fileHash": "a7dacc23",
+      "fileHash": "de79129a",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "8eabd8dd",
+      "fileHash": "574a79bc",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "9046b239",
+      "fileHash": "e60cf783",
+      "needsInterop": false
+    },
+    "rxjs": {
+      "src": "../../../../../node_modules/rxjs/dist/esm5/index.js",
+      "file": "rxjs.js",
+      "fileHash": "696b2fa1",
       "needsInterop": false
     }
   },
   "chunks": {
-    "chunk-KZEBOTIW": {
-      "file": "chunk-KZEBOTIW.js"
+    "chunk-YI6LNLNJ": {
+      "file": "chunk-YI6LNLNJ.js"
     },
-    "chunk-GXHVZJPO": {
-      "file": "chunk-GXHVZJPO.js"
+    "chunk-NTIYRWWP": {
+      "file": "chunk-NTIYRWWP.js"
     },
-    "chunk-CYPQJHT5": {
-      "file": "chunk-CYPQJHT5.js"
+    "chunk-2X74UAWC": {
+      "file": "chunk-2X74UAWC.js"
+    },
+    "chunk-Z7TUEFY2": {
+      "file": "chunk-Z7TUEFY2.js"
     }
   }
 }

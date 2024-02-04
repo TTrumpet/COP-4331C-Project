@@ -19,15 +19,11 @@
         </div>
     </div>
     <div id="list-container">
-        <div class="player-box" id="p1">Player 1</div>
-        <div class="player-box" id="p2">Player 2</div>
-        <div class="player-box" id="p3">Player 3</div>
-        <div class="player-box" id="p4">Player 4</div>
-        <div class="player-box" id="p5">Player 5</div>
-        <div class="player-box" id="p6">Player 6</div>
-        <div class="player-box" id="p7">Player 7</div>
-        <div class="player-box" id="p8">Player 8</div>
-        <div class="player-box" id="p9">Player 9</div>
-        <div class="player-box" id="p10">Player 10</div>
+        <div id="top-ten">
+            <div *ngFor="let player of topPlayers" class="player-box">
+              <div class="player-name">{{ player.name }}</div>
+              <div class="player-score">{{ player.score }}</div>
+            </div>
+        </div>
     </div>
 </body>

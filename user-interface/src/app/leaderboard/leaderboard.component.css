@@ -4,8 +4,6 @@ body {
     background-color: black;
 }
 
-
-
 #header-container{
     display: flex;
     align-items: center;
@@ -31,6 +29,7 @@ body {
     border-radius: 5px; 
     padding: 15px;
     margin-left: 27px;
+    outline: none;
 }
 #dropdown2{
     background-color: #000; 
@@ -38,14 +37,14 @@ body {
     border-radius: 5px; 
     padding: 15px;
     margin-left: 27px; 
+    outline: none;
 }
-
 
 #list-container {
     display: flex;
     border-style: inset;
     border: 2px solid  #55eb53;
-    border-radius: 7px;
+    border-radius: 6px;
     width: 900px;
     height: 700px;
     margin-left: 50px;
@@ -57,13 +56,12 @@ body {
 .player-box {
     flex: 1; 
     border-style: inset;
-    border: 2px solid #55eb53;
+    border: 0.25px solid #55eb53;
     
     padding: 10px;
     position: relative;
   }
   
-  /* Add vertical lines between player boxes */
 .player-box:not(:last-child)::after {
     content: '';
     position: absolute;
@@ -71,6 +69,17 @@ body {
     bottom: 0;
     right: 0;
     background-color: #b1eb53;
+}
+.player-name{
+    font-size: large;
+    margin-left: 15px;
+}
+.player-score{
+    font-size: large;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 15px;
 }
 @media only screen and (max-width: 1190px) {
     #leaderboard-title {
@@ -99,6 +108,6 @@ body {
 }
 @media only screen and (max-height : 700px) {
     #list-container{
-        height: 450px;
+        height: 454px;
     }
 }
