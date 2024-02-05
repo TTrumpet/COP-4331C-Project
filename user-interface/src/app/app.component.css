@@ -107,8 +107,8 @@ footer {
     bottom: 0;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 72px;
-    font-weight: 400;
+    height: 40px;
+    width: 50%
 }
 
 a {
@@ -128,7 +128,11 @@ a {
         font-size: 20px;
         padding: 10px 30px;
     }
+    footer {
+        font-size: 12px;
+    }
   }
+  /* add screen max-height -> when less than 795 footer goes in buttons */
 
 /* 
     matrix letter animation 
