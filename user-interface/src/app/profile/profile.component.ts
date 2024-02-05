@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -10,5 +10,9 @@ import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule } from '@angul
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
+
+  constructor(private route: ActivatedRoute) {
+    
+  }
 
 }

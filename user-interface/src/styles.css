@@ -1,6 +1,6 @@
 /* 
     ------------------------
-    Landing Page UI Elements
+    UI Elements
     ------------------------
     title and login button green color : #55eb53
     glowing title color : #0fa
@@ -9,7 +9,7 @@
 
     h1 font size -> 70px
     button font size -> 45px - 20px (smaller screen size)
-    p font size -> 25px
+    p font size -> 25px - 12px (smaller screen size for the footer on landing page)
 
 */
 

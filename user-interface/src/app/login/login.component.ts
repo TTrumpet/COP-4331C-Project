@@ -14,5 +14,4 @@ export class LoginComponent {
   constructor(public dialogRef: MatDialogRef<LoginComponent>) {
     
   }
-
 }
