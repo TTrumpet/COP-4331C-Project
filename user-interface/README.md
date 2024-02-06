@@ -7,7 +7,7 @@ UI for Code Cruiser game.
 
 # CLI Documentation
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.10.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.10 and using Node v.20.
 @angular/materials must be downloaded. Run `ng add @angular/material` to download.
 
 ## Development server
