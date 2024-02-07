@@ -95,3 +95,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - (2/3) Linked button presses to popup components. -Victoria
 - (2/3) Worked on Leaderboard UI -Gavin
 - (2/4) Wrote service for populating Leaderboard -Gavin
+- (2/7) Fixed leaderboard compatibility issues -Gavin
