@@ -8,8 +8,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 export const routes: Routes = [
 
-    {path: "", component: AppComponent, pathMatch: 'full'}, // landing page
-    {path: 'profile-page', component: ProfileComponent}
+    //{path: "", component: AppComponent, pathMatch: 'full'}, // landing page
+    {path: 'profile', component: ProfileComponent}
+    // make loading page / overlay
     // add path to 404 page (page not found)
 ];
 

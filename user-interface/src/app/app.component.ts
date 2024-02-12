@@ -11,12 +11,12 @@ import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/route
   imports: [CommonModule, MatDialogModule, RouterOutlet, RouterLink],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  host: {ngSkipHydration: 'true'}
+  //host: {ngSkipHydration: 'true'}
 })
 export class AppComponent{
   title = 'Code Cruiser';
 
- constructor(public dialog : MatDialog, private router : Router){
+ constructor(public dialog : MatDialog, private route : ActivatedRoute, private router : Router){
   
  }
 
@@ -27,6 +27,7 @@ export class AppComponent{
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+      this.router.navigate(['.'], { relativeTo: this.route });
     })
   }
 
@@ -37,6 +38,7 @@ export class AppComponent{
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+      this.router.navigate(['.'], { relativeTo: this.route });
     });
   }
 }
