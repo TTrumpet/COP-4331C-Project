@@ -1,6 +1,6 @@
 import { ApplicationModule, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { LoginComponent } from './login/login.component';
 

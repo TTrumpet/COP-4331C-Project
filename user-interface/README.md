@@ -97,3 +97,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - (2/4) Wrote service for populating Leaderboard -Gavin
 - (2/7) Fixed leaderboard compatibility issues -Gavin
 - (2/8) Finished UI for login -Gavin
+
+
+-(2/12) Added create User -Gavin and Axel
