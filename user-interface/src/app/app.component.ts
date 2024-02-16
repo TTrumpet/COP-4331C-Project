@@ -1,6 +1,6 @@
 import { ApplicationModule, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { LoginComponent } from './login/login.component';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
@@ -11,7 +11,7 @@ import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/route
   imports: [CommonModule, MatDialogModule, RouterOutlet, RouterLink],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  //host: {ngSkipHydration: 'true'}
+  host: {ngSkipHydration: 'true'}
 })
 export class AppComponent{
   title = 'Code Cruiser';
@@ -33,8 +33,8 @@ export class AppComponent{
 
   openLogin(){
     const dialogRef = this.dialog.open(LoginComponent, {
-      width: '1010px',
-      height: '1080px'
+      width: '310px',
+      height: '350px'
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');

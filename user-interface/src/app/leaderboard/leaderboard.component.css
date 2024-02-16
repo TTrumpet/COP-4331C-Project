@@ -1,6 +1,6 @@
-body {
+body{
     border-color: #55eb53;
-    border-style:outset;
+    border-style:solid;
     background-color: black;
 }
 
@@ -42,11 +42,8 @@ body {
 
 #list-container {
     display: flex;
-    border-style: inset;
-    border: 2px solid  #55eb53;
-    border-radius: 6px;
     width: 900px;
-    height: 700px;
+    height: 550px;
     margin-left: 50px;
     margin-bottom: 20px;
     margin-top: 20px;
@@ -54,33 +51,30 @@ body {
 }
   
 .player-box {
-    flex: 1; 
+    display: flex;
+    height: calc((229%) / 10);
     border-style: inset;
     border: 0.25px solid #55eb53;
-    
-    padding: 10px;
-    position: relative;
-  }
-  
-.player-box:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    background-color: #b1eb53;
 }
-.player-name{
+
+.player-name,
+.player-score {
+    margin-top: auto;
+    margin-bottom: auto;
     font-size: large;
     margin-left: 15px;
 }
-.player-score{
-    font-size: large;
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin-right: 15px;
+
+.player-name {
+    flex-grow: 1; /* Allow player name to take up remaining space */
 }
+
+.player-score {
+    margin-right: 15px;
+    white-space: nowrap; /* Prevent the score from wrapping */
+}
+
+
 @media only screen and (max-width: 1190px) {
     #leaderboard-title {
       font-size: 35px; 
@@ -101,13 +95,20 @@ body {
         margin-right: auto;
     }
 }
-@media only screen and (max-height : 825px) {
+
+@media only screen and (max-height : 724px) {
     #list-container{
-        height: 550px;
+        height: 350px;
+    }
+    .player-box {
+        height: calc((170%) / 10);
     }
 }
-@media only screen and (max-height : 700px) {
+@media only screen and (max-height : 580px) {
     #list-container{
-        height: 454px;
+        height: 325px;
+    }
+    .player-box {
+        height: calc((125%) / 10);
     }
 }

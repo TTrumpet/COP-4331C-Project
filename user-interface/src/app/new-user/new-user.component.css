@@ -33,9 +33,7 @@ body{
     border: 1.25px solid #ccc;
     border-color: #55eb53;
 }
-#remeber-me{
-    body: flex;
-}
+
 #login-button{
     border-color: #56e953;
     border-radius: 7%;

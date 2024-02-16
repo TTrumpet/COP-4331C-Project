@@ -8,7 +8,7 @@ import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule, ActivatedRout
   imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, RouterModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
-  //host: {ngSkipHydration: 'true'}
+  host: {ngSkipHydration: 'true'}
 })
 export class ProfileComponent {
 
