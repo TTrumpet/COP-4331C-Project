@@ -1,17 +1,26 @@
 <!-- create new profile ui -->
 <body>
     <main>
+        <h1>Home</h1>
         <div class="row">
-            <h1>Home</h1>
-            <li><a href="">Profile</a></li>
-            <li><a href="">Settings</a></li>
-            <li><a href="">Leaderboard</a></li>
-            <li><a href="">About</a></li>
-            <li><a href="">Start</a></li>
-            <div class="text">
+            <div class="column" id="left">
+                <ul>
+                    <li><a href="">Profile</a></li>
+                    <li><a href="">Language</a></li>
+                    <li><a href="">Timer</a></li>
+                    <li><a href="">Text / Type</a></li>
+                    <li><a href="">Sound</a></li>
+                    <li><a href="">About</a></li>
+                    <li><a href="">Leaderboard</a></li>
+                </ul>
+            </div>
+            <div class="column" id="middle">
                 <p>Profile Text...</p>
             </div>
-            <img src="../../assets/images/SimpleGreenCarTopView.svg" alt="green car top view" width="1832.4" height="590.65">
-    </div>
+            <div class="column" id="right">
+                <img src="../../assets/images/SimpleGreenCarTopView.svg" alt="green car top view" width="1832.4" height="590.65">
+                <a class="start" href="">Start</a>
+            </div>
+        </div>
     </main>
 </body>

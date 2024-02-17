@@ -8,28 +8,47 @@ body {
 
 main {
     position: absolute;
-    vertical-align: center;
-    top: 50%;
+    /*width: 50%;
+    height: 50%;*/
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
+    box-sizing: border-box;
 }
 
 .row {
-    border: 4px solid green;
-    text-align: center;
+    /*border: 4px solid green;*/
     background-color: #7474741e;
     border-radius: 10px;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
-    padding-left: 100px;
-    padding-right: 100px;
-    display: table-cell;
+    display: flex;
 }
 
 .column {
-    padding-left: 100px;
-    padding-right: 100px;
-    display: table-cell;
-    flex: 50%
+    /*border: 4px solid purple;*/
+    flex: 1;
+    float: left;
+    padding: 100px;
+    margin: 20px;
+}
+
+#left {
+    width: 25%;
+    padding-right: 20px;
+    padding-left: 10px;
+    border-right: 2px solid white;
+}
+
+#right {
+    width: 25%;
+    text-align: center;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+#middle {
+    width: 50%;
+    text-align: center;
 }
 
 @keyframes glow {
@@ -38,7 +57,7 @@ main {
 }
 
 h1 {
-    border: 4px solid yellow;
+    /*border: 4px solid yellow;*/
     font-size: 80px;
     font-family: 'neon-rave-font';
     letter-spacing: 5px;
@@ -47,23 +66,30 @@ h1 {
     font-weight: 400;
     letter-spacing: 8px;
     word-wrap: break-word;
+    text-align: center;
     animation: glow 1s infinite alternate;
 }
 
 li {
-    display: inline;
-    float: center;
+    float: left;
+    clear: left;
     list-style-type: none;
     padding: 8px;
-    border: 4px solid orange;
+    font-size: 30px;
+    /*border: 4px solid orange;*/
 }
-
-.text {
-    padding: 50px 0px;
-}
-
 img {
     width: 100%;
     height: 100%;
     padding: 20px 0px;
+}
+
+.start {
+    font-size: 25px;
+}
+
+@media screen and (max-width: 600px) {
+    .column {
+        width: 100%;
+    }
 }
