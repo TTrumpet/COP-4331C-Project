@@ -10,23 +10,23 @@ import { LoginComponent } from './login/login.component';
   imports: [CommonModule, MatDialogModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  host: {ngSkipHydration: 'true'}
+  host: { ngSkipHydration: 'true' }
 })
-export class AppComponent{
+export class AppComponent {
   title = 'Code Cruiser';
 
- constructor(public dialog : MatDialog){
-  
- }
+  constructor(public dialog: MatDialog) {
 
-  openLeaderboard(){
+  }
+
+  openLeaderboard() {
     this.dialog.open(LeaderboardComponent, {
       width: '1010px',
       height: '1080px',
     });
   }
 
-  openLogin(){
+  openLogin() {
     this.dialog.open(LoginComponent, {
       width: '1010px',
       height: '1080px'
