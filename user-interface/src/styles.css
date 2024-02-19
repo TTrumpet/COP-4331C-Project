@@ -1,3 +1,18 @@
+/* 
+    ------------------------
+    Landing Page UI Elements
+    ------------------------
+    title and login button green color : #55eb53
+    glowing title color : #0fa
+    leaderboard button grey color : #1C1C1C
+    hyperlink color : #25DF16
+
+    h1 font size -> 70px
+    button font size -> 45px - 20px (smaller screen size)
+    p font size -> 25px
+
+*/
+
 @font-face {
     font-family: 'neon-rave-font';
     src: url('./assets/fonts/neon-rave-font/NeonRave-z82z4.ttf') format('truetype');
@@ -10,3 +25,8 @@
     font-family: 'KoHo';
     color: white;
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
