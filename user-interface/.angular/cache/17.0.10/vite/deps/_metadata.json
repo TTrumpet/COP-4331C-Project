@@ -1,51 +1,63 @@
 {
-  "hash": "e73b31f6",
-  "browserHash": "6552921e",
+  "hash": "9c0caecf",
+  "browserHash": "0750a6c8",
   "optimized": {
     "@angular/common": {
       "src": "../../../../../node_modules/@angular/common/fesm2022/common.mjs",
       "file": "@angular_common.js",
-      "fileHash": "f54bc8f4",
+      "fileHash": "3fe0b8a1",
       "needsInterop": false
     },
     "@angular/core": {
       "src": "../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "1c769196",
+      "fileHash": "92554dca",
       "needsInterop": false
     },
     "@angular/forms": {
       "src": "../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
       "file": "@angular_forms.js",
-      "fileHash": "5274e08d",
+      "fileHash": "84acfaea",
       "needsInterop": false
     },
     "@angular/material/dialog": {
       "src": "../../../../../node_modules/@angular/material/fesm2022/dialog.mjs",
       "file": "@angular_material_dialog.js",
-      "fileHash": "de79129a",
+      "fileHash": "b3e6aaa1",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "574a79bc",
+      "fileHash": "2f47fda4",
+      "needsInterop": false
+    },
+    "@angular/platform-browser/animations/async": {
+      "src": "../../../../../node_modules/@angular/platform-browser/fesm2022/animations/async.mjs",
+      "file": "@angular_platform-browser_animations_async.js",
+      "fileHash": "933883ca",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "e60cf783",
+      "fileHash": "7e6d0d50",
       "needsInterop": false
     },
     "rxjs": {
       "src": "../../../../../node_modules/rxjs/dist/esm5/index.js",
       "file": "rxjs.js",
-      "fileHash": "696b2fa1",
+      "fileHash": "009ffaf8",
       "needsInterop": false
     }
   },
   "chunks": {
+    "browser-PRBIYS47": {
+      "file": "browser-PRBIYS47.js"
+    },
+    "chunk-YKBAYTZU": {
+      "file": "chunk-YKBAYTZU.js"
+    },
     "chunk-YI6LNLNJ": {
       "file": "chunk-YI6LNLNJ.js"
     },
