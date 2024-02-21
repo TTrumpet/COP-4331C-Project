@@ -4,14 +4,15 @@
         <h1>Home</h1>
         <div class="row">
             <div class="column" id="left">
+                <!-- is there a way to reuse this instead of copy/paste? 2/21 -->
                 <ul>
-                    <li><a href="">Profile</a></li>
-                    <li><a href="">Language</a></li>
-                    <li><a href="">Timer</a></li>
-                    <li><a href="">Text / Type</a></li>
-                    <li><a href="">Sound</a></li>
-                    <li><a href="">About</a></li>
-                    <li><a href="">Leaderboard</a></li>
+                    <li><button mat-button>Profile</button></li>
+                    <li><button mat-button>Language</button></li>
+                    <li><button mat-button>Timer</button></li>
+                    <li><button mat-button>Text / Type</button></li>
+                    <li><button mat-button>Sound</button></li>
+                    <li><button mat-button>About</button></li>
+                    <li><button mat-button>Leaderboard</button></li>
                 </ul>
             </div>
             <div class="column" id="middle">
@@ -19,7 +20,10 @@
             </div>
             <div class="column" id="right">
                 <img src="../../assets/images/SimpleGreenCarTopView.svg" alt="green car top view" width="1832.4" height="590.65">
-                <a class="start" href="">Start</a>
+                <button mat-button class="start">START</button>
+
+                <!-- make it so that the system detects when you edit the default settings 2/21 -->
+                <p class="disclaimer">If settings aren't customized, default settings will be used</p>
             </div>
         </div>
     </main>
