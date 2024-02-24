@@ -6,6 +6,10 @@ body {
     background-color: black;
 }
 
+::ng-deep .mat-dialog-container {
+    background-color: black;
+  }
+
 main {
     height: 75vh;
     width: 75vw;
@@ -72,6 +76,19 @@ button {
     text-align: center;
     background: #1C1C1C;
     color: white
+}
+
+.disabled {
+    color: gray;
+    pointer-events: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+#leaderboard {
+    background: #1C1C1C;
+    color: white;
+    margin-top: 50px;
 }
 
 img {

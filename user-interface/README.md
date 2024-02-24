@@ -100,4 +100,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - (2/8) Finished UI for login -Gavin
 - (2/12) Worked on Profile and Settings UI -Victoria
 - (2/12) Added create User -Gavin and Axel
-
+- (2/22) Finished UI for profile -Victoria

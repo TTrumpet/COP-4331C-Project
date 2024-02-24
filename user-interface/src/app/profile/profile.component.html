@@ -6,18 +6,29 @@
             <div class="column" id="left">
                 <!-- is there a way to reuse this instead of copy/paste? 2/21 -->
                 <ul>
-                    <li><button mat-button>Profile</button></li>
-                    <li><button mat-button>Language</button></li>
-                    <li><button mat-button>Timer</button></li>
-                    <li><button mat-button>Text / Type</button></li>
-                    <li><button mat-button>Sound</button></li>
-                    <li><button mat-button>About</button></li>
-                    <li><button mat-button>Leaderboard</button></li>
+                    <li><button class="disabled" mat-button id="profile">Profile</button></li>
+                    <li><button class="clickable" mat-button id="language">Language</button></li>
+                    <li><button class="clickable" mat-button id="timer">Timer</button></li>
+                    <li><button class="clickable" mat-button id="text">Text / Type</button></li>
+                    <li><button class="clickable "mat-button id="sound">Sound</button></li>
+                    <li><button class="clickable" mat-button id="about">About</button></li>
+                    <li><button class="clickable" mat-button id="leaderboard" (click)="openLeaderboard()">Leaderboard</button></li>
                 </ul>
             </div>
+
+            <!-- make this change when button clicked -->
             <div class="column" id="middle">
-                <p>Profile Text...</p>
+                <div class="text">
+                    <h2>Hello Player Name!</h2>
+                    <p>Change Profile Picture</p>
+                    <p>Change Name</p>
+                    <h3>Change Car Settings:</h3>
+                    <p>Color: current color</p>
+                    <p>Type: current type</p>
+                    <p>Trail: current trail</p>
+                </div>
             </div>
+
             <div class="column" id="right">
                 <img src="../../assets/images/SimpleGreenCarTopView.svg" alt="green car top view" width="1832.4" height="590.65">
                 <button mat-button class="start">START</button>
