@@ -1,0 +1,7 @@
+datasets
+flask
+flask_cors
+flask_restful
+flask_jsonpify
+flask_sqlalchemy
+

@@ -37,6 +37,14 @@ yarn-error.log
 testem.log
 /typings
 
+#python virtual env
+/code_generation/Include
+/code_generation/Lib
+/code_generation/Scripts
+/code_generation/venv
+/code_generation/pyvenv.cfg
+
+
 # System files
 .DS_Store
 Thumbs.db

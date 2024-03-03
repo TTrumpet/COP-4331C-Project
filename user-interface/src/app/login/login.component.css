@@ -4,6 +4,13 @@ body{
     background-color: black;
 }
 
+.message-success {
+    color: green;
+}
+  
+.message-error {
+    color: red;
+}
 .login-container {
     margin-top: 8%;
     text-align: center;

@@ -33,7 +33,13 @@ body{
     border: 1.25px solid #ccc;
     border-color: #55eb53;
 }
-
+.message-success {
+    color: green;
+}
+  
+.message-error {
+    color: red;
+}
 #login-button{
     border-color: #56e953;
     border-radius: 7%;
