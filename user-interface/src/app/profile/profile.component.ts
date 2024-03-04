@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { LanguageComponent } from '../language/language.component';
 
 @Component({
   selector: 'app-profile',
@@ -18,6 +19,153 @@ export class ProfileComponent {
     
   }
 
+  
+  openProfile() {
+    let profile = document.getElementById("profile");
+    let language = document.getElementById("language");
+    let timer = document.getElementById('timer');
+    let text = document.getElementById('text');
+    let sound = document.getElementById('sound');
+    let about = document.getElementById('about');
+    let profiletext = document.getElementById("profiletext");
+
+    profile?.classList.remove("clickable");
+    profile?.classList.add("disabled");
+    language?.classList.remove("disabled");
+    language?.classList.add("clickable");
+    timer?.classList.remove("disabled");
+    timer?.classList.add("clickable");
+    text?.classList.remove("disabled");
+    text?.classList.add("clickable");
+    sound?.classList.remove("disabled");
+    sound?.classList.add("clickable");
+    about?.classList.remove("disabled");
+    about?.classList.add("clickable");
+    profiletext?.classList.remove("hidden");
+
+    this.router.navigate(['.'], { relativeTo: this.route });
+  }
+
+  openLanguage() {
+    let profile = document.getElementById("profile");
+    let language = document.getElementById("language");
+    let timer = document.getElementById('timer');
+    let text = document.getElementById('text');
+    let sound = document.getElementById('sound');
+    let about = document.getElementById('about');
+    let profiletext = document.getElementById("profiletext");
+    
+    profile?.classList.remove("disabled");
+    profile?.classList.add("clickable");
+    language?.classList.remove("clickable");
+    language?.classList.add("disabled");
+    timer?.classList.remove("disabled");
+    timer?.classList.add("clickable");
+    text?.classList.remove("disabled");
+    text?.classList.add("clickable");
+    sound?.classList.remove("disabled");
+    sound?.classList.add("clickable");
+    about?.classList.remove("disabled");
+    about?.classList.add("clickable");
+    profiletext?.classList.add("hidden");
+  }
+
+  openTimer() {
+    let profile = document.getElementById("profile");
+    let language = document.getElementById("language");
+    let timer = document.getElementById('timer');
+    let text = document.getElementById('text');
+    let sound = document.getElementById('sound');
+    let about = document.getElementById('about');
+    let profiletext = document.getElementById("profiletext");
+
+    profile?.classList.remove("disabled");
+    profile?.classList.add("clickable");
+    language?.classList.remove("disabled");
+    language?.classList.add("clickable");
+    timer?.classList.remove("clickable");
+    timer?.classList.add("disabled");
+    text?.classList.remove("disabled");
+    text?.classList.add("clickable");
+    sound?.classList.remove("disabled");
+    sound?.classList.add("clickable");
+    about?.classList.remove("disabled");
+    about?.classList.add("clickable");
+    profiletext?.classList.add("hidden");
+  }
+
+  openText() {
+    let profile = document.getElementById("profile");
+    let language = document.getElementById("language");
+    let timer = document.getElementById('timer');
+    let text = document.getElementById('text');
+    let sound = document.getElementById('sound');
+    let about = document.getElementById('about');
+    let profiletext = document.getElementById("profiletext");
+
+    profile?.classList.remove("disabled");
+    profile?.classList.add("clickable");
+    language?.classList.remove("disabled");
+    language?.classList.add("clickable");
+    timer?.classList.remove("disabled");
+    timer?.classList.add("clickable");
+    text?.classList.remove("clickable");
+    text?.classList.add("disabled");
+    sound?.classList.remove("disabled");
+    sound?.classList.add("clickable");
+    about?.classList.remove("disabled");
+    about?.classList.add("clickable");
+    profiletext?.classList.add("hidden");
+  }
+
+  openSound() {
+    let profile = document.getElementById("profile");
+    let language = document.getElementById("language");
+    let timer = document.getElementById('timer');
+    let text = document.getElementById('text');
+    let sound = document.getElementById('sound');
+    let about = document.getElementById('about');
+    let profiletext = document.getElementById("profiletext");
+
+    profile?.classList.remove("disabled");
+    profile?.classList.add("clickable");
+    language?.classList.remove("disabled");
+    language?.classList.add("clickable");
+    timer?.classList.remove("disabled");
+    timer?.classList.add("clickable");
+    text?.classList.remove("disabled");
+    text?.classList.add("clickable");
+    sound?.classList.remove("clickable");
+    sound?.classList.add("disabled");
+    about?.classList.remove("disabled");
+    about?.classList.add("clickable");
+    profiletext?.classList.add("hidden");
+  }
+
+  openAbout() {
+    let profile = document.getElementById("profile");
+    let language = document.getElementById("language");
+    let timer = document.getElementById('timer');
+    let text = document.getElementById('text');
+    let sound = document.getElementById('sound');
+    let about = document.getElementById('about');
+    let profiletext = document.getElementById("profiletext");
+
+    profile?.classList.remove("disabled");
+    profile?.classList.add("clickable");
+    language?.classList.remove("disabled");
+    language?.classList.add("clickable");
+    timer?.classList.remove("disabled");
+    timer?.classList.add("clickable");
+    text?.classList.remove("disabled");
+    text?.classList.add("clickable");
+    sound?.classList.remove("disabled");
+    sound?.classList.add("clickable");
+    about?.classList.remove("clickable");
+    about?.classList.add("disabled");
+    profiletext?.classList.add("hidden");
+  }
+
   openLeaderboard(){
     const dialogRef = this.dialog.open(LeaderboardComponent, {
       width: '1010px',
@@ -25,7 +173,6 @@ export class ProfileComponent {
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.router.navigate(['.'], { relativeTo: this.route });
     })
   }
 }

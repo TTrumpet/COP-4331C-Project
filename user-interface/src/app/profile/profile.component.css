@@ -114,6 +114,10 @@ a {
     text-decoration: none;
 }
 
+.hidden {
+    font-size: 0px;
+}
+
 @media screen and (max-width: 1000px) {
     main {
         display: block;
@@ -132,6 +136,7 @@ a {
     }
     
     .column {
+        padding: 10px;
         height: 15%;
         width: 80%;
     }
@@ -142,7 +147,21 @@ a {
     }
 
     #middle {
-        height: 30%;
+        height: 40%;
+    }
+    
+    #profiletext {
+        display: block;
+    }
+
+    .line {
+        display: inline-block;
+        font-size: 12px;
+        padding: 2px;
+    }
+
+    #settings, #welcome {
+        display: block;
     }
 
     li {
@@ -153,8 +172,8 @@ a {
 
     button {
         font-size: 12px;
-        padding: 2px 10px;
-        margin-bottom: 5px;
+        padding: 2px 5px;
+        margin-bottom: 2px;
     }
 
     img {
@@ -164,6 +183,7 @@ a {
     }
 
     #right {
+        padding: 30px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -172,5 +192,9 @@ a {
     .start {
         font-size: 20px;
         padding: 0px 20px;
+    }
+
+    #leaderboard {
+        margin-top: 0px;
     }
 }

@@ -4,28 +4,41 @@
         <h1>Home</h1>
         <div class="row">
             <div class="column" id="left">
-                <!-- is there a way to reuse this instead of copy/paste? 2/21 -->
                 <ul>
-                    <li><button class="disabled" mat-button id="profile">Profile</button></li>
-                    <li><button class="clickable" mat-button id="language">Language</button></li>
-                    <li><button class="clickable" mat-button id="timer">Timer</button></li>
-                    <li><button class="clickable" mat-button id="text">Text / Type</button></li>
-                    <li><button class="clickable "mat-button id="sound">Sound</button></li>
-                    <li><button class="clickable" mat-button id="about">About</button></li>
+                    <li><button class="disabled" mat-button id="profile" (click)="openProfile()">Profile</button></li>
+                    <li><button class="clickable" mat-button id="language" [routerLink]="['language']" (click)="openLanguage()">Language</button></li>
+                    <li><button class="clickable" mat-button id="timer" [routerLink]="['timer']" (click)="openTimer()">Timer</button></li>
+                    <li><button class="clickable" mat-button id="text" [routerLink]="['text']" (click)="openText()">Text / Type</button></li>
+                    <li><button class="clickable "mat-button id="sound" [routerLink]="['sound']" (click)="openSound()">Sound</button></li>
+                    <li><button class="clickable" mat-button id="about" [routerLink]="['about']" (click)="openAbout()">About</button></li>
                     <li><button class="clickable" mat-button id="leaderboard" (click)="openLeaderboard()">Leaderboard</button></li>
                 </ul>
             </div>
 
-            <!-- make this change when button clicked -->
             <div class="column" id="middle">
-                <div class="text">
-                    <h2>Hello Player Name!</h2>
-                    <p>Change Profile Picture</p>
-                    <p>Change Name</p>
-                    <h3>Change Car Settings:</h3>
-                    <p>Color: current color</p>
-                    <p>Type: current type</p>
-                    <p>Trail: current trail</p>
+                <router-outlet></router-outlet>
+                <div id="profiletext">
+                    <div class="line" id="welcome">
+                        <h2>Hello Player Name!</h2>
+                    </div>
+                    <div class="line">
+                        <p>Change Profile Picture</p>
+                    </div>
+                    <div class="line">
+                        <p>Change Name</p>
+                    </div>
+                    <div class="line" id="settings">
+                        <h3>Change Car Settings:</h3>
+                    </div>
+                    <div class="line">
+                        <p>Color: current color</p>
+                    </div>
+                    <div class="line">
+                        <p>Type: current type</p>
+                    </div>
+                    <div class="line">
+                        <p>Trail: current trail</p>
+                    </div>
                 </div>
             </div>
 
