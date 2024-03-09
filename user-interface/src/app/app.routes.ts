@@ -5,22 +5,25 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ProfileComponent } from './profile/profile.component';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
+import { CustomizationComponent } from './customization/customization.component';
 import { LanguageComponent } from './language/language.component';
 import { TimerComponent } from './timer/timer.component';
 import { TextComponent } from './text/text.component';
 import { SoundComponent } from './sound/sound.component';
 import { AboutComponent } from './about/about.component';
-
+import { GameComponent } from './game/game.component';
 export const routes: Routes = [
 
     {path: 'landing', component: AppComponent},
     {path: 'profile', component: ProfileComponent, children: [
       {path: 'language', component: LanguageComponent},
+      {path: 'customization', component: CustomizationComponent},
       {path: 'timer', component: TimerComponent},
       {path: 'text', component: TextComponent},
       {path: 'sound', component: SoundComponent},
       {path: 'about', component: AboutComponent},
     ]},
+    {path: 'game', component: GameComponent},
     {path: '**', redirectTo:"", pathMatch: "full"}
     // add path to 404 page (page not found)
     // make loading page / overlay
