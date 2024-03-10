@@ -116,7 +116,9 @@ a {
     color: #25DF16
 }
 
-/* changing to one column view */
+/* changing to one column view, 
+still needs to edit, add screen max-height -> when less than 795 footer goes in buttons 2/21 */
+
 @media only screen and (max-width: 1100px) {
     .row {
         flex-direction: column;
@@ -133,7 +135,6 @@ a {
         font-size: 12px;
     }
   }
-  /* add screen max-height -> when less than 795 footer goes in buttons */
 
 /* 
     matrix letter animation 
