@@ -10,7 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 
 from flask_jsonpify import jsonify
-import jwt
+#import jwt
 import datetime 
 
 # Requirements for functionality 
@@ -98,10 +98,10 @@ def login():
     
     if user and password:
         #session token stuff. To be implemented
-        token = jwt.encode({
-            'user_id': user.id,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
-        }, SECRET_KEY)
+        # token = jwt.encode({
+        #     'user_id': user.id,
+        #     'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
+        # }, SECRET_KEY)
 
         #will display on frontend
         return jsonify({"message": "Login successful"}), 200
