@@ -18,7 +18,6 @@
 
             <!-- fix that when you reload the page it still shows this text underneath the component text 3/9 -->
             <div class="column" id="middle">
-                <router-outlet></router-outlet>
                 <div id="profiletext">
                     <div class="line" id="welcome">
                         <h2>Hello Player Name!</h2>
@@ -27,8 +26,10 @@
                         <p><br></p> <!--random line break-->
                         <h3>Newsletter Information:</h3>
                         <p>Welcome to Code Cruiser!</p>
+                        <p><br></p>
                     </div>
                 </div>
+                <router-outlet></router-outlet>
             </div>
 
             <div class="column" id="right">
