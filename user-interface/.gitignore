@@ -30,6 +30,7 @@ yarn-error.log
 
 # Miscellaneous
 /.angular/cache
+/.angular/cache/17.0.10/code-racer/.tsbuildinfo
 .sass-cache/
 /connect.lock
 /coverage

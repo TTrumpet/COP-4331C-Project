@@ -30,12 +30,21 @@ yarn-error.log
 
 # Miscellaneous
 /user-interface/.angular/cache
+/user-interface/.angular/cache/17.0.10/code-racer/.tsbuildinfo
 .sass-cache/
 /connect.lock
 /coverage
 /libpeerconnection.log
 testem.log
 /typings
+
+#python virtual env
+/code_generation/Include
+/code_generation/Lib
+/code_generation/Scripts
+/code_generation/venv
+/code_generation/pyvenv.cfg
+
 
 # System files
 .DS_Store

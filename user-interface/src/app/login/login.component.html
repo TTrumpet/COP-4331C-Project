@@ -4,18 +4,21 @@
         <div id="login-title">Login</div>
         <div class = "text">Username</div>
         <div class = "input-container">
-            <input text = "text" placeholder="Enter Username" class = "input-field">
+            <input type="text" placeholder="Enter Username" class="input-field" [(ngModel)]="username">
         </div>
         <div class = "text">Password</div>
         <div class = "input-container">
-            <input type="password" placeholder="Enter Password" class="input-field" id="password-input">
+            <input type="password" placeholder="Enter Password" class="input-field" [(ngModel)]="password">
+        </div>
+        <div *ngIf="message" [class]="isSuccessMessage ? 'message-success' : 'message-error'">
+            {{ message }}
         </div>
         <label class="remember-me">Remember me
             <input type="checkbox" checked="checked">
             <span class="checkmark"></span>
         </label>
         <div>
-            <button id = "login-button">Sign in</button>
+            <button id="login-button" (click)="login()">Sign in</button>
         </div>
         <div class="actions">
             <button mat-button id="create-button" (click)="openNewUser()">Create an Account</button>
