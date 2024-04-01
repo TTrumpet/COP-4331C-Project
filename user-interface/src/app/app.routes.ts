@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ProfileComponent } from './profile/profile.component';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
+import { StatsComponent } from './stats/stats.component';
 import { CustomizationComponent } from './customization/customization.component';
 import { LanguageComponent } from './language/language.component';
 import { TimerComponent } from './timer/timer.component';
@@ -12,10 +13,16 @@ import { TextComponent } from './text/text.component';
 import { SoundComponent } from './sound/sound.component';
 import { AboutComponent } from './about/about.component';
 import { GameComponent } from './game/game.component';
+import { AdvertisementComponent } from './advertisement/advertisement.component';
+import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
+
 export const routes: Routes = [
 
+    {path: '', component: AppComponent},
+    {path: 'ad', component: AdvertisementComponent},
     {path: 'landing', component: AppComponent},
     {path: 'profile', component: ProfileComponent, children: [
+      {path: 'stats', component: StatsComponent},
       {path: 'language', component: LanguageComponent},
       {path: 'customization', component: CustomizationComponent},
       {path: 'timer', component: TimerComponent},
@@ -24,9 +31,9 @@ export const routes: Routes = [
       {path: 'about', component: AboutComponent},
     ]},
     {path: 'game', component: GameComponent},
-    {path: '**', redirectTo:"", pathMatch: "full"}
-    // add path to 404 page (page not found)
-    // make loading page / overlay
+
+    // Wild Card Route for 404 request
+    {path: '**', pathMatch: "full", component: PagenotfoundComponent},
 ];
 
 @NgModule({
