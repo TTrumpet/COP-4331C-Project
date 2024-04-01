@@ -23,7 +23,7 @@ class CodeGeneration(Resource):
         #self.data = self.data.shuffle()
         for index, sample in enumerate(self.data):
             if not random.randint(0, index):
-                return sample['original_string']
+                return sample['code'].split('\n')
 
 #@app.route('/code_gen', methods=['GET'])
 
