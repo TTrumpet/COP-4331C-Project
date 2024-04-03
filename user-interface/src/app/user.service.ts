@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 
 export class UserService {
   private baseUrl = 'http://localhost:5000'; //Flask backend URL. Change for hosting
-
+  
   //setup HTTP endpoints
   constructor(private http: HttpClient) { }
   

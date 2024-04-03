@@ -13,13 +13,12 @@ import { TextComponent } from './text/text.component';
 import { SoundComponent } from './sound/sound.component';
 import { AboutComponent } from './about/about.component';
 import { GameComponent } from './game/game.component';
-import { AdvertisementComponent } from './advertisement/advertisement.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
+import { LoadingComponent } from './loading/loading.component';
 
 export const routes: Routes = [
 
     {path: '', component: AppComponent},
-    {path: 'ad', component: AdvertisementComponent},
     {path: 'landing', component: AppComponent},
     {path: 'profile', component: ProfileComponent, children: [
       {path: 'stats', component: StatsComponent},
@@ -30,6 +29,7 @@ export const routes: Routes = [
       {path: 'sound', component: SoundComponent},
       {path: 'about', component: AboutComponent},
     ]},
+    {path: 'loading', component: LoadingComponent},
     {path: 'game', component: GameComponent},
 
     // Wild Card Route for 404 request

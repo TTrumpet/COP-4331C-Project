@@ -20,10 +20,6 @@ export class AppComponent {
   
  }
 
-  openAd() {
-    console.log('advertisement clicked');
-  }
-
   openLeaderboard(){
     const dialogRef = this.dialog.open(LeaderboardComponent, {
       width: '1010px',
