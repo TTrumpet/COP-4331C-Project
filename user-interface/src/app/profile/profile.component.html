@@ -21,7 +21,7 @@
                 <router-outlet></router-outlet>
                 <div id="profiletext">
                     <div class="line" id="welcome">
-                        <h2>Hello Player Name!</h2>
+                        <h2>Hello {{username}}!</h2>
                     </div>
                     <div class="line">
                         <p><br></p> <!--random line break-->
@@ -32,11 +32,8 @@
             </div>
 
             <div class="column" id="right">
-                <img src="../../assets/images/SimpleGreenCarTopView.svg" alt="green car top view" width="1832.4" height="590.65">
+                <img [src]="link" alt="green car top view" width="1832.4" height="590.65">
                 <button mat-button class="start" (click)="openGame()">START</button>
-
-                <!-- make it so that the system detects when you edit the default settings 2/21 -->
-                <p class="disclaimer">If settings aren't customized, default settings will be used</p>
             </div>
         </div>
     </main>

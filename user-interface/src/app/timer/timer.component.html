@@ -1,9 +1,9 @@
 <h2>Timer Settings</h2>
 <p>Change Time:</p>
 <div id="dropdown-container">
-    <select class="custom-dropdown">
-        <option value="option1">15 Seconds</option>
-        <option value="option2">30 Seconds</option>
-        <option value="option3">60 Seconds</option>
+    <select [(ngModel)]="time" (ngModelChange)="onTimeChange($event)" class = "custom-dropdown">
+        <option value="15">15 Seconds</option>
+        <option value="30">30 Seconds</option>
+        <option value="60">60 Seconds</option>
     </select>
 </div>
