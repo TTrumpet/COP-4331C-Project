@@ -1,0 +1,19 @@
+<body>
+    <div class="login-container">
+        <div id="login-title">Create Account</div>
+        <div class = "text">Username</div>
+        <div class = "input-container">
+            <input type="text" placeholder="Enter Username" class="input-field" [(ngModel)]="username">
+        </div>
+        <div class = "text">Password</div>
+        <div class = "input-container">
+            <input type="password" placeholder="Enter Password" class="input-field" [(ngModel)]="password">
+        </div>
+        <div *ngIf="message" [class]="isSuccessMessage ? 'message-success' : 'message-error'">
+            {{ message }}
+        </div>
+        <div>
+            <button mat-button id="login-button" (click)="createUser()">Done</button>
+        </div>
+    </div>
+</body>

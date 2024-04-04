@@ -1,4 +1,43 @@
 <!-- create new profile ui -->
-<p>profile works!</p>
+<body>
+    <main>
+        <h1>Home</h1>
+        <div class="row">
+            <div class="column" id="left">
+                <ul>
+                    <li><button class="disabled" mat-button id="profile" (click)="openProfile()">Profile</button></li>
+                    <li><button class="clickable" mat-button id="customization" [routerLink]="['customization']" (click)="openCustomization()">Customization</button></li>
+                    <li><button class="clickable" mat-button id="language" [routerLink]="['language']" (click)="openLanguage()">Language</button></li>
+                    <li><button class="clickable" mat-button id="timer" [routerLink]="['timer']" (click)="openTimer()">Timer</button></li>
+                    <li><button class="clickable" mat-button id="text" [routerLink]="['text']" (click)="openText()">Text / Type</button></li>
+                    <li><button class="clickable "mat-button id="sound" [routerLink]="['sound']" (click)="openSound()">Sound</button></li>
+                    <li><button class="clickable" mat-button id="about" [routerLink]="['about']" (click)="openAbout()">About</button></li>
+                    <li><button class="clickable" mat-button id="leaderboard" (click)="openLeaderboard()">Leaderboard</button></li>
+                </ul>
+            </div>
 
-<router-outlet></router-outlet>
+            <!-- fix that when you reload the page it still shows this text underneath the component text 3/9 -->
+            <div class="column" id="middle">
+                <router-outlet></router-outlet>
+                <div id="profiletext">
+                    <div class="line" id="welcome">
+                        <h2>Hello Player Name!</h2>
+                    </div>
+                    <div class="line">
+                        <p><br></p> <!--random line break-->
+                        <h3>Newsletter Information:</h3>
+                        <p>Welcome to Code Cruiser!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column" id="right">
+                <img src="../../assets/images/SimpleGreenCarTopView.svg" alt="green car top view" width="1832.4" height="590.65">
+                <button mat-button class="start" (click)="openGame()">START</button>
+
+                <!-- make it so that the system detects when you edit the default settings 2/21 -->
+                <p class="disclaimer">If settings aren't customized, default settings will be used</p>
+            </div>
+        </div>
+    </main>
+</body>

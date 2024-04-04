@@ -1,0 +1,200 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background-color: black;
+}
+
+::ng-deep .mat-dialog-container {
+    background-color: black;
+  }
+
+main {
+    height: 75vh;
+    width: 75vw;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 0.7fr 2.3fr 1fr;
+}
+
+.column {
+    padding: 40px;
+    float: left;
+}
+
+#right {
+    text-align: center;
+}
+
+#middle {
+    background-color: #7474741e;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+@keyframes glow {
+    from {text-shadow: 0 0 20px #0fa;}
+    to {text-shadow: 0 0 40px #0fa;}
+}
+
+h1 {
+    font-size: 60px;
+    font-family: 'neon-rave-font';
+    letter-spacing: 5px;
+    color: #55eb53;
+    font-weight: bold;
+    font-weight: 400;
+    letter-spacing: 8px;
+    word-wrap: break-word;
+    text-align: left;
+    margin-left: 80px;
+    animation: glow 1s infinite alternate;
+}
+
+li {
+    float: left;
+    clear: left;
+    list-style-type: none;
+    padding: 4px;
+    font-size: 20px;
+}
+
+button {
+    padding: 5px 20px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    font-size: 20px;
+    text-align: center;
+    background: #1C1C1C;
+    color: white
+}
+
+.disabled {
+    color: gray;
+    pointer-events: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+#leaderboard {
+    background: #1C1C1C;
+    color: white;
+    margin-top: 50px;
+}
+
+img {
+    width: 100%;
+    height: 75%;
+}
+
+.start {
+    background: #55eb53;
+    color: black;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 25px;
+}
+
+.disclaimer {
+    font-size: 9px;
+    padding: 10px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.hidden {
+    font-size: 0px;
+}
+
+@media screen and (max-width: 1000px) {
+    main {
+        display: block;
+    }
+
+    h1 {
+        font-size: 45px;
+        margin-left: 0px;
+        text-align: center;
+    }
+    
+    .row {
+        display: inline;
+        vertical-align: center;
+        justify-content: center;
+    }
+    
+    .column {
+        padding: 10px;
+        height: 15%;
+        width: 80%;
+    }
+
+    #left {
+        display: flex;
+        text-align: center;
+    }
+
+    #middle {
+        height: 40%;
+    }
+    
+    #profiletext {
+        display: block;
+    }
+
+    .line {
+        display: inline-block;
+        font-size: 12px;
+        padding: 2px;
+    }
+
+    #settings, #welcome {
+        display: block;
+    }
+
+    li {
+        display: inline;
+        float: center;
+        clear: none;
+    }
+
+    button {
+        font-size: 12px;
+        padding: 2px 5px;
+        margin-bottom: 2px;
+    }
+
+    img {
+        padding: 20px;
+        width: 20%;
+        height: 20%;
+    }
+
+    #right {
+        padding: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .start {
+        font-size: 20px;
+        padding: 0px 20px;
+    }
+
+    #leaderboard {
+        margin-top: 0px;
+    }
+}

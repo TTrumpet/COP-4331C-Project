@@ -1,0 +1,60 @@
+body{
+    border-color: #55eb53;
+    border-style:solid;
+    background-color: black;
+}
+
+.login-container {
+    margin-top: 8%;
+    text-align: center;
+}
+#login-title{
+    font-size: 40px;
+    font-family: 'neon-rave-font';
+    color: #55eb53;
+    margin-top: auto;
+}
+.input-container {
+    margin-bottom: 10px;
+}
+.text{
+    font-size: smaller;
+    margin-right: 159px;
+}
+.input-field {
+    padding: 10px;
+    color: black;
+    width: 200px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.input-field:focus {
+    outline: none;
+    border: 1.25px solid #ccc;
+    border-color: #55eb53;
+}
+.message-success {
+    color: green;
+}
+  
+.message-error {
+    color: red;
+}
+#login-button{
+    border-color: #56e953;
+    border-radius: 7%;
+    color:white;
+    width: 150px;
+    height: 50px;
+    margin-top: 3%;
+    background-color: black;
+    border-style:solid;
+    cursor: pointer;
+}
+#create-button{
+    background-color: black;
+    color: #56e953;
+    border-style: none;
+    cursor: pointer;
+    text-decoration: underline;
+}
