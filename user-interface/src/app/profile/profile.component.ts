@@ -68,6 +68,7 @@ export class ProfileComponent {
   openProfile(){
     let profile = document.getElementById("profile");
     let custom = document.getElementById("customization");
+    let stats = document.getElementById("stats");
     let language = document.getElementById("language");
     let timer = document.getElementById('timer');
     let text = document.getElementById('text');
@@ -79,6 +80,8 @@ export class ProfileComponent {
     profile?.classList.add("disabled");
     custom?.classList.remove("disabled");
     custom?.classList.add("clickable");
+    stats?.classList.remove("disabled");
+    stats?.classList.add("clickable");
     language?.classList.remove("disabled");
     language?.classList.add("clickable");
     timer?.classList.remove("disabled");
@@ -97,6 +100,7 @@ export class ProfileComponent {
   openCustomization() {
     let profile = document.getElementById("profile");
     let custom = document.getElementById("customization");
+    let stats = document.getElementById("stats");
     let language = document.getElementById("language");
     let timer = document.getElementById('timer');
     let text = document.getElementById('text');
@@ -108,6 +112,38 @@ export class ProfileComponent {
     profile?.classList.add("clickable");
     custom?.classList.remove("clickable");
     custom?.classList.add("disabled");
+    stats?.classList.remove("disabled");
+    stats?.classList.add("clickable");
+    language?.classList.remove("disabled");
+    language?.classList.add("clickable");
+    timer?.classList.remove("disabled");
+    timer?.classList.add("clickable");
+    text?.classList.remove("disabled");
+    text?.classList.add("clickable");
+    sound?.classList.remove("disabled");
+    sound?.classList.add("clickable");
+    about?.classList.remove("disabled");
+    about?.classList.add("clickable");
+    profiletext?.classList.add("hidden");
+  }
+  
+  openStats() {
+    let profile = document.getElementById("profile");
+    let custom = document.getElementById("customization");
+    let stats = document.getElementById("stats");
+    let language = document.getElementById("language");
+    let timer = document.getElementById('timer');
+    let text = document.getElementById('text');
+    let sound = document.getElementById('sound');
+    let about = document.getElementById('about');
+    let profiletext = document.getElementById("profiletext");
+
+    profile?.classList.remove("disabled");
+    profile?.classList.add("clickable");
+    custom?.classList.remove("disabled");
+    custom?.classList.add("clickable");
+    stats?.classList.remove("clickable");
+    stats?.classList.add("disabled");
     language?.classList.remove("disabled");
     language?.classList.add("clickable");
     timer?.classList.remove("disabled");
@@ -124,6 +160,7 @@ export class ProfileComponent {
   openLanguage() {
     let profile = document.getElementById("profile");
     let custom = document.getElementById("customization");
+    let stats = document.getElementById("stats");
     let language = document.getElementById("language");
     let timer = document.getElementById('timer');
     let text = document.getElementById('text');
@@ -135,6 +172,8 @@ export class ProfileComponent {
     profile?.classList.add("clickable");
     custom?.classList.remove("disabled");
     custom?.classList.add("clickable");
+    stats?.classList.remove("disabled");
+    stats?.classList.add("clickable");
     language?.classList.remove("clickable");
     language?.classList.add("disabled");
     timer?.classList.remove("disabled");
@@ -151,6 +190,7 @@ export class ProfileComponent {
   openTimer() {
     let profile = document.getElementById("profile");
     let custom = document.getElementById("customization");
+    let stats = document.getElementById("stats");
     let language = document.getElementById("language");
     let timer = document.getElementById('timer');
     let text = document.getElementById('text');
@@ -162,6 +202,8 @@ export class ProfileComponent {
     profile?.classList.add("clickable");
     custom?.classList.remove("disabled");
     custom?.classList.add("clickable");
+    stats?.classList.remove("disabled");
+    stats?.classList.add("clickable");
     language?.classList.remove("disabled");
     language?.classList.add("clickable");
     timer?.classList.remove("clickable");
@@ -178,6 +220,7 @@ export class ProfileComponent {
   openText() {
     let profile = document.getElementById("profile");
     let custom = document.getElementById("customization");
+    let stats = document.getElementById("stats");
     let language = document.getElementById("language");
     let timer = document.getElementById('timer');
     let text = document.getElementById('text');
@@ -189,6 +232,8 @@ export class ProfileComponent {
     profile?.classList.add("clickable");
     custom?.classList.remove("disabled");
     custom?.classList.add("clickable");
+    stats?.classList.remove("disabled");
+    stats?.classList.add("clickable");
     language?.classList.remove("disabled");
     language?.classList.add("clickable");
     timer?.classList.remove("disabled");
@@ -205,6 +250,7 @@ export class ProfileComponent {
   openSound() {
     let profile = document.getElementById("profile");
     let custom = document.getElementById("customization");
+    let stats = document.getElementById("stats");
     let language = document.getElementById("language");
     let timer = document.getElementById('timer');
     let text = document.getElementById('text');
@@ -216,6 +262,8 @@ export class ProfileComponent {
     profile?.classList.add("clickable");
     custom?.classList.remove("disabled");
     custom?.classList.add("clickable");
+    stats?.classList.remove("disabled");
+    stats?.classList.add("clickable");
     language?.classList.remove("disabled");
     language?.classList.add("clickable");
     timer?.classList.remove("disabled");
@@ -232,6 +280,7 @@ export class ProfileComponent {
   openAbout() {
     let profile = document.getElementById("profile");
     let custom = document.getElementById("customization");
+    let stats = document.getElementById("stats");
     let language = document.getElementById("language");
     let timer = document.getElementById('timer');
     let text = document.getElementById('text');
@@ -243,6 +292,8 @@ export class ProfileComponent {
     profile?.classList.add("clickable");
     custom?.classList.remove("disabled");
     custom?.classList.add("clickable");
+    stats?.classList.remove("disabled");
+    stats?.classList.add("clickable");
     language?.classList.remove("disabled");
     language?.classList.add("clickable");
     timer?.classList.remove("disabled");
@@ -269,6 +320,7 @@ export class ProfileComponent {
   openGame() {
     console.log("updating!"); 
     this.profileService.updateProfile().subscribe({});
+    this.router.navigate(['/game']);
     this.router.navigate(['/game']);
   }
 }
