@@ -46,7 +46,7 @@ main {
 }
 
 h1 {
-    font-size: 60px;
+    font-size: 40px;
     font-family: 'neon-rave-font';
     letter-spacing: 5px;
     color: #55eb53;
@@ -88,7 +88,6 @@ button {
 #leaderboard {
     background: #1C1C1C;
     color: white;
-    margin-top: 50px;
 }
 
 img {

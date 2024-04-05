@@ -12,31 +12,30 @@
                     <li><button class="clickable" mat-button id="text" [routerLink]="['text']" (click)="openText()">Text / Type</button></li>
                     <li><button class="clickable "mat-button id="sound" [routerLink]="['sound']" (click)="openSound()">Sound</button></li>
                     <li><button class="clickable" mat-button id="about" [routerLink]="['about']" (click)="openAbout()">About</button></li>
+                    <li><button class="clickable" mat-button id="stats" [routerLink]="['stats']" (click)="openStats()">Statistics</button></li>
                     <li><button class="clickable" mat-button id="leaderboard" (click)="openLeaderboard()">Leaderboard</button></li>
                 </ul>
             </div>
 
             <!-- fix that when you reload the page it still shows this text underneath the component text 3/9 -->
             <div class="column" id="middle">
-                <router-outlet></router-outlet>
                 <div id="profiletext">
                     <div class="line" id="welcome">
-                        <h2>Hello Player Name!</h2>
+                        <h2>Hello {{username}}!</h2>
                     </div>
                     <div class="line">
                         <p><br></p> <!--random line break-->
                         <h3>Newsletter Information:</h3>
                         <p>Welcome to Code Cruiser!</p>
+                        <p><br></p>
                     </div>
                 </div>
+                <router-outlet></router-outlet>
             </div>
 
             <div class="column" id="right">
-                <img src="../../assets/images/SimpleGreenCarTopView.svg" alt="green car top view" width="1832.4" height="590.65">
+                <img [src]="link" alt="green car top view" width="1832.4" height="590.65">
                 <button mat-button class="start" (click)="openGame()">START</button>
-
-                <!-- make it so that the system detects when you edit the default settings 2/21 -->
-                <p class="disclaimer">If settings aren't customized, default settings will be used</p>
             </div>
         </div>
     </main>
