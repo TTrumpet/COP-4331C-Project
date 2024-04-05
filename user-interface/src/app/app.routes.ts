@@ -29,8 +29,9 @@ export const routes: Routes = [
       {path: 'sound', component: SoundComponent},
       {path: 'about', component: AboutComponent},
     ]},
-    {path: 'loading', component: LoadingComponent},
-    {path: 'game', component: GameComponent},
+    {path: 'loading', component: LoadingComponent, children: [
+      {path: 'game', component: GameComponent}
+    ]},
 
     // Wild Card Route for 404 request
     {path: '**', pathMatch: "full", component: PagenotfoundComponent},

@@ -20,6 +20,9 @@ body {
     left: 60px; 
     top: 4px; 
     position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
 }
 

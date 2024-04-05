@@ -16,7 +16,9 @@ import { HostListener } from '@angular/core';
 export class GameComponent {
   display: any;
 
-  codeText: string[]= ["can you type this sentence", "this is a sentence", "more sentence", "yay", "hi"] ; // list
+  // change into code snippets
+  codeText: string[]= ["can you type this sentence", "this is a sentence", "more sentence", "yay", "hi"] ;
+
   num = 0; // index of code text
   previousLine = ""; // previous line
   currentLine = this.codeText[this.num]; // what is being edited in the background
@@ -31,8 +33,6 @@ export class GameComponent {
   spacecount = 1;
 
   constructor(public dialog : MatDialog, private route : ActivatedRoute, private router : Router, private userService : UserService) {
-    // loading screen to prep for play game
-    // 3, 2, 1 before it starts
     this.playGame();
   }
 
@@ -73,6 +73,8 @@ export class GameComponent {
 
   // check if key pressed is equal to the current line's char at index 0
 checkKeypress() {
+  // add check to see if codeText is empty and if so, change it so that it gets the newly generated code text
+  // don't forget to reset everything back to zero (num)
   if (this.currentLine.length == 0) {
     this.previousLine = this.codeText[this.num];
     this.num = this.num + 1;
@@ -102,6 +104,8 @@ checkKeypress() {
 
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event:KeyboardEvent) {
+    if(this.isGameOver)
+      return;
     this.key = event.key;
     console.log(this.key);
     this.checkKeypress();
