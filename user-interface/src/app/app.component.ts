@@ -34,11 +34,12 @@ export class AppComponent {
   openLogin() {
     const dialogRef = this.dialog.open(LoginComponent, {
       width: '310px',
-      height: '350px'
+      height: '350px',
+      //closeOnNavigation : true
     });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.router.navigate(['.'], { relativeTo: this.route });
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log('The dialog was closed');
+    //   //this.router.navigate(['.'], { relativeTo: this.route });
+    // });
   }
 }

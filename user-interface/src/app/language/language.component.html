@@ -1,0 +1,11 @@
+<h2>Language Settings</h2>
+<p>Change Language:</p>
+
+<div id="dropdown-container">
+    <select [(ngModel)]="language" (ngModelChange)="onLangChange($event)" class="custom-dropdown" id="dropdown1">
+        <option value="option1">Language 1</option>
+        <option value="Python">Python</option>
+        <option value="option3">Language 3</option>
+        <option value="option4">Language 4</option>
+    </select>
+</div>

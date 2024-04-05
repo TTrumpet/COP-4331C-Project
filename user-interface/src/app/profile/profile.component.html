@@ -5,21 +5,37 @@
         <div class="row">
             <div class="column" id="left">
                 <ul>
-                    <li><a href="">Profile</a></li>
-                    <li><a href="">Language</a></li>
-                    <li><a href="">Timer</a></li>
-                    <li><a href="">Text / Type</a></li>
-                    <li><a href="">Sound</a></li>
-                    <li><a href="">About</a></li>
-                    <li><a href="">Leaderboard</a></li>
+                    <li><button class="disabled" mat-button id="profile" (click)="openProfile()">Profile</button></li>
+                    <li><button class="clickable" mat-button id="customization" [routerLink]="['customization']" (click)="openCustomization()">Customization</button></li>
+                    <li><button class="clickable" mat-button id="language" [routerLink]="['language']" (click)="openLanguage()">Language</button></li>
+                    <li><button class="clickable" mat-button id="timer" [routerLink]="['timer']" (click)="openTimer()">Timer</button></li>
+                    <li><button class="clickable" mat-button id="text" [routerLink]="['text']" (click)="openText()">Text / Type</button></li>
+                    <li><button class="clickable "mat-button id="sound" [routerLink]="['sound']" (click)="openSound()">Sound</button></li>
+                    <li><button class="clickable" mat-button id="about" [routerLink]="['about']" (click)="openAbout()">About</button></li>
+                    <li><button class="clickable" mat-button id="stats" [routerLink]="['stats']" (click)="openStats()">Statistics</button></li>
+                    <li><button class="clickable" mat-button id="leaderboard" (click)="openLeaderboard()">Leaderboard</button></li>
                 </ul>
             </div>
+
+            <!-- fix that when you reload the page it still shows this text underneath the component text 3/9 -->
             <div class="column" id="middle">
-                <p>Profile Text...</p>
+                <div id="profiletext">
+                    <div class="line" id="welcome">
+                        <h2>Hello {{username}}!</h2>
+                    </div>
+                    <div class="line">
+                        <p><br></p> <!--random line break-->
+                        <h3>Newsletter Information:</h3>
+                        <p>Welcome to Code Cruiser!</p>
+                        <p><br></p>
+                    </div>
+                </div>
+                <router-outlet></router-outlet>
             </div>
+
             <div class="column" id="right">
-                <img src="../../assets/images/SimpleGreenCarTopView.svg" alt="green car top view" width="1832.4" height="590.65">
-                <a class="start" href="">Start</a>
+                <img [src]="link" alt="green car top view" width="1832.4" height="590.65">
+                <button mat-button class="start" (click)="openGame()">START</button>
             </div>
         </div>
     </main>

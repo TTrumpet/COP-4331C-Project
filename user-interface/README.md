@@ -86,13 +86,13 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 | Revision History: Victoria |
 
 # Revision History
-- (1/30) Created and pushed landing page user interface. -Victoria
-- (1/30) Created and pushed new README contents. -Victoria
-- (1/30) Created leaderboard and profile components. -Victoria
-- (1/31) Created login component. -Victoria
-- (1/31) Revised app routes. -Victoria
+- (1/30) Created and pushed landing page user interface -Victoria
+- (1/30) Created and pushed new README contents -Victoria
+- (1/30) Created leaderboard and profile components -Victoria
+- (1/31) Created login component -Victoria
+- (1/31) Revised app routes -Victoria
 - (2/1) Worked on popups and leaderboard popup. -Gavin
-- (2/2) Skipped hydration. -Victoria
+- (2/2) Skipped hydration -Victoria
 - (2/3) Linked button presses to popup components. -Victoria
 - (2/3) Worked on Leaderboard UI -Gavin
 - (2/4) Wrote service for populating Leaderboard -Gavin
@@ -100,4 +100,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - (2/8) Finished UI for login -Gavin
 - (2/12) Worked on Profile and Settings UI -Victoria
 - (2/12) Added create User -Gavin and Axel
-
+- (2/22) Finished UI for profile -Victoria
+- (3/4) Added settings UI components -Victoria
+- (3/9) Added drop down menus in settings UI - Victoria

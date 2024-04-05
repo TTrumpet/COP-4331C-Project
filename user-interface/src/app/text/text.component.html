@@ -1,0 +1,23 @@
+<h2>Text Settings</h2>
+<p>Text Size:</p>
+<div id="dropdown-container">
+    <select class="custom-dropdown">
+        <!-- Change to a slider and maybe a text example to show how big it will be? 3/9 -->
+        <option value="option1">Default</option>
+    </select>
+</div>
+
+<p><br></p>
+<p>Text Color:</p>
+<div id="dropdown-container">
+    <select [(ngModel)]="textColor" (ngModelChange) = "onTextChange($event)" class ="custom-dropdown">
+        <option value="FFFFFF">White</option>
+        <option value="FF0000">Red</option>
+        <option value="FFA500">Orange</option>
+        <option value="FFFF00">Yellow</option>
+        <option value="00FF00">Green</option>
+        <option value="0000FF">Blue</option>
+        <option value="800080">Purple</option>
+        <option value="FFC0CB">Pink</option>
+    </select>
+</div>
