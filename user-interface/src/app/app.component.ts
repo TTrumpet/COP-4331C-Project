@@ -16,11 +16,11 @@ import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/route
 export class AppComponent {
   title = 'Code Cruiser';
 
- constructor(public dialog : MatDialog, private route : ActivatedRoute, private router : Router){
-  
- }
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, private router: Router) {
 
-  openLeaderboard(){
+  }
+
+  openLeaderboard() {
     const dialogRef = this.dialog.open(LeaderboardComponent, {
       width: '1010px',
       height: '1080px',
@@ -31,14 +31,15 @@ export class AppComponent {
     })
   }
 
-  openLogin(){
+  openLogin() {
     const dialogRef = this.dialog.open(LoginComponent, {
       width: '310px',
-      height: '350px'
+      height: '350px',
+      //closeOnNavigation : true
     });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.router.navigate(['.'], { relativeTo: this.route });
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log('The dialog was closed');
+    //   //this.router.navigate(['.'], { relativeTo: this.route });
+    // });
   }
 }

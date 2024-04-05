@@ -10,15 +10,14 @@
 <p><br></p>
 <p>Text Color:</p>
 <div id="dropdown-container">
-    <select class="custom-dropdown">
-        <option value="option1">White</option>
-        <option value="option2">Red</option>
-        <option value="option3">Orange</option>
-        <option value="option4">Yellow</option>
-        <option value="option5">Green</option>
-        <option value="option6">Blue</option>
-        <option value="option7">Purple</option>
-        <option value="option8">Pink</option>
-        <option value="option9">Custom</option>
+    <select [(ngModel)]="textColor" (ngModelChange) = "onTextChange($event)" class ="custom-dropdown">
+        <option value="FFFFFF">White</option>
+        <option value="FF0000">Red</option>
+        <option value="FFA500">Orange</option>
+        <option value="FFFF00">Yellow</option>
+        <option value="00FF00">Green</option>
+        <option value="0000FF">Blue</option>
+        <option value="800080">Purple</option>
+        <option value="FFC0CB">Pink</option>
     </select>
 </div>
