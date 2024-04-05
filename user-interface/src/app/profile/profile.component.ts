@@ -35,7 +35,7 @@ export class ProfileComponent {
     this.username = this.profileService.username;
     setTimeout(() => {
       this.setLink();
-    },300);
+    },500);
     this.subscription.add(
       this.profileService.colorWatch$.subscribe((value) => {
         this.setLink();

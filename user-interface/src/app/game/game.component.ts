@@ -17,6 +17,8 @@ export class GameComponent {
   display: any;
 
   constructor(public dialog : MatDialog, private route : ActivatedRoute, private router : Router, private userService : UserService) {
+    if(this.userService.getLog() == false)
+      this.router.navigate([''], {});
     this.playGame();
 
     // change the time to what the player selects
