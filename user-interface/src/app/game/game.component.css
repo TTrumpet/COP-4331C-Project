@@ -37,8 +37,34 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
-.code-text {
+p {
+    width: 520px;
+    height: 174px;
     text-align: left;
+    text-align: left;
+    color: grey;
+    white-space: pre;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#next-line {
+    color: white;
+}
+
+#current-line-white {
+    white-space: pre;
+    width: 520px;
+    height: 140px;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Courier New', Courier, monospace;
 }

@@ -102,4 +102,9 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - (2/12) Added create User -Gavin and Axel
 - (2/22) Finished UI for profile -Victoria
 - (3/4) Added settings UI components -Victoria
-- (3/9) Added drop down menus in settings UI - Victoria
+- (3/9) Added drop down menus in settings UI -Victoria
+- (3/22) Created and edited game UI -Victoria
+- (4/1) Created statistics screen and button on profile page. Decided to change to popup instead of page -Victoria
+- (4/1) Created advertisement footer -Victoria
+- (4/4) Created loading screen and timer function for play game -Victoria
+- (4/5) Created keypress and code snippet display functions. Edited loading page UI -Victoria

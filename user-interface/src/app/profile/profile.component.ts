@@ -272,7 +272,7 @@ export class ProfileComponent {
     })
   }
 
-  openGame() {
-    this.router.navigate(['/game']);
+  openLoading() {
+    this.router.navigate(['/loading']);
   }
 }

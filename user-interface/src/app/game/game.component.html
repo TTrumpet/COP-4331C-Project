@@ -9,9 +9,13 @@
 
         <div class="centered">
             <div class="code-box">
-                <!--insert coding snippets to this element-->
-                <p class="code-text">code</p>
+                <p id="previous-line">{{ previousLine }}</p>
+                <p id="current-line">{{ displayGreyLine }}</p>
+                <p id="next-line">{{ nextLine }}</p>
             </div>
+            
+            <div id="current-line-white">{{ displayWhiteLine }}</div>
+            
             <div class="track">
                 <img src="../../assets/images/track.svg" alt="track" width="1300" height="745">
             </div>
