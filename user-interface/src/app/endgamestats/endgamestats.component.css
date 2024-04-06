@@ -6,7 +6,7 @@ body {
     align-items: center; /* Center content vertically */
 }
 
-#statistics-title {
+#game-results {
     font-size: 40px;
     font-family: 'neon-rave-font', sans-serif;
     letter-spacing: 5px;

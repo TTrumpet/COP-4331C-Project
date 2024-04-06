@@ -9,16 +9,16 @@ body {
 .timer {
     position: absolute;
     left: 7px;
-    top: 10px;
+    top: 7px;
 }
 
 .time-box {
     border-radius: 10px;
     border: 3px white solid;
     width: 150px; 
-    height: 55px; 
+    height: 25px; 
     left: 60px; 
-    top: 4px; 
+    top: 15px; 
     position: absolute;
     display: flex;
     justify-content: center;
@@ -57,7 +57,7 @@ p {
 }
 
 #next-line {
-    color: white;
+    color: #55eb53;
 }
 
 #current-line-white {

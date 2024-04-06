@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { UserService } from '../user.service';
-import { HostListener } from '@angular/core';
+import { ProfileService } from '../profile.service'import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-game',
@@ -32,13 +32,16 @@ export class GameComponent {
   finalcount = 0; // use to record count after game is completed (since hostlistener cannot be disabled)
   spacecount = 1;
 
-  constructor(public dialog : MatDialog, private route : ActivatedRoute, private router : Router, private userService : UserService) {
+  constructor(public dialog : MatDialog, private route : ActivatedRoute, private router : Router, private userService : UserService, private profileServices : ProfileService) {
+    if(this.userService.getLog() == false)
+      this.router.navigate([''], {});
     this.playGame();
   }
 
   playGame() {
     // change the time to what the player selects
     this.timer(1);
+  }
 
     // add calls to get more code text
   }
@@ -46,9 +49,7 @@ export class GameComponent {
   timer(minute: number) {
     let seconds: number = minute * 60;
     let textSec: any = '0';
-    let statSec: number = 60;
-
-    const prefix = minute < 10 ? '0' : '';
+    let statSec: number = seconds;
 
     const timer = setInterval(() => {
       seconds--;
@@ -59,7 +60,7 @@ export class GameComponent {
         textSec = '0' + statSec;
       } else textSec = statSec;
 
-      this.display = `${prefix}${Math.floor(seconds / 60)}:${textSec}`;
+      this.display = `${textSec} Seconds`;
 
       if (seconds == 0) {
         console.log('finished');

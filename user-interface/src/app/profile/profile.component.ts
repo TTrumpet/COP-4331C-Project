@@ -318,6 +318,11 @@ export class ProfileComponent {
   }
 
   openLoading() {
-    this.router.navigate(['/loading']);
+    console.log("updating!"); 
+    this.profileService.updateProfile().subscribe({});
+    this.router.navigate(['/profile']);
+    setTimeout(() => {
+      this.router.navigate(['/loading']); // Timer to wait for closeAll before routing to profile
+    }, 100);
   }
 }

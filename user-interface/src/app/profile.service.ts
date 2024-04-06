@@ -17,6 +17,10 @@ export class ProfileService {
   textcolor: string = '';
   textsize = 0;
   username :string = '';
+  chartyped = 0;
+  totaltime = 0;
+  charsincorrect = 0;
+  totalscore = 0;
 
   private colorWatch = new BehaviorSubject<any>(this.carcolor);
   colorWatch$ = this.colorWatch.asObservable();
@@ -40,6 +44,10 @@ export class ProfileService {
         this.time = response.time;
         this.textcolor = response.textcolor;
         this.textsize = response.textsize;
+        this.chartyped = response.chartyped;
+        this.totaltime = response.totaltime;
+        this.charsincorrect = response.charsincorrect;
+        this.totalscore = response.totalscore;
       }
     }) 
   }
@@ -53,6 +61,10 @@ export class ProfileService {
       cartrail :this.cartrail,
       carcolor: this.carcolor,
       time: this.time,
-      textcolor: this.textcolor});
+      textcolor: this.textcolor,
+      chartyped: this.chartyped,
+      totaltime: this.totaltime,
+      charsincorrect: this.charsincorrect,
+      totalscore: this.totalscore});
   }
 }
