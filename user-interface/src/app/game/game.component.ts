@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Output } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { UserService } from '../user.service';
-import { ProfileService } from '../profile.service'import { HostListener } from '@angular/core';
+import { HostListener } from '@angular/core';
+import { LoadingComponent } from '../loading/loading.component';
 
 @Component({
   selector: 'app-game',
@@ -17,7 +17,7 @@ export class GameComponent {
   display: any;
 
   // change into code snippets
-  codeText: string[]= ["can you type this sentence", "this is a sentence", "more sentence", "yay", "hi"] ;
+  codeText: string[] = this._parent.codeText;;
 
   num = 0; // index of code text
   previousLine = ""; // previous line
@@ -28,22 +28,59 @@ export class GameComponent {
 
   key = ''; // char from KeyboardEvent
   count = 0;  // count of correct amount of characters
-  isGameOver = false; // so more code snippets are not generated
   finalcount = 0; // use to record count after game is completed (since hostlistener cannot be disabled)
   spacecount = 1;
+  isGameStart = false;
 
-  constructor(public dialog : MatDialog, private route : ActivatedRoute, private router : Router, private userService : UserService, private profileServices : ProfileService) {
-    if(this.userService.getLog() == false)
-      this.router.navigate([''], {});
-    this.playGame();
+  // car variables
+  numChars = this.currentLine.length; // for seeing how fast the car moves
+
+  constructor(private _parent: LoadingComponent, public dialog : MatDialog, private route : ActivatedRoute, private router : Router) {
+    
+  }
+
+  /*ngOnInit() {
+    if (this.userService.getLog() == false)
+      this.router.navigate([''], {}); 
+  }*/
+
+  ngAfterContentInit() {
+    this.placeCar();
+    setTimeout( () => {
+      this._parent.text = "3";
+      console.log("3");
+    }, 3000)
+    setTimeout( () => {
+      this._parent.text = "2";
+      console.log("2");
+    }, 6000)
+    setTimeout( () => {
+      this._parent.text = "1";
+      console.log("1");
+    }, 9000)
+    setTimeout( () => {
+      this._parent.text = "START!";
+      console.log("START!");
+    }, 12000)
+    setTimeout( () => {
+      this._parent.text = "";
+    }, 15000)
+    setTimeout( () => {
+      this.playGame();
+      this.isGameStart = true;
+    }, 15000)
+  }
+
+  // put the car on the track
+  placeCar() {
+
   }
 
   playGame() {
     // change the time to what the player selects
-    this.timer(1);
-  }
+    this.timer(0.5);
 
-    // add calls to get more code text
+    // add generating new code snippets after some time
   }
 
   timer(minute: number) {
@@ -63,53 +100,56 @@ export class GameComponent {
       this.display = `${textSec} Seconds`;
 
       if (seconds == 0) {
-        console.log('finished');
-        this.isGameOver = true;
+        this._parent.text = "FINISH!"
         this.finalcount = this.count;
         console.log(this.finalcount);
-        clearInterval(timer);
+        this._parent.finalCount = this.finalcount;
+        console.log(this._parent.finalCount);
+        setTimeout( () => {
+          clearInterval(timer);
+          this._parent.text = "loading...";
+          this.router.navigate(['/loading']);
+          this._parent.gameOver();
+        }, 3000)
       }
     }, 1000);
   }
 
-  // check if key pressed is equal to the current line's char at index 0
-checkKeypress() {
-  // add check to see if codeText is empty and if so, change it so that it gets the newly generated code text
-  // don't forget to reset everything back to zero (num)
-  if (this.currentLine.length == 0) {
-    this.previousLine = this.codeText[this.num];
-    this.num = this.num + 1;
-    this.currentLine = this.codeText[this.num];
-    this.displayGreyLine = this.currentLine;
-    this.displayWhiteLine = this.currentLine;
-    this.nextLine = this.codeText[this.num + 1];
-    this.spacecount = 1;
-  }
-  if (this.key == this.currentLine.charAt(0)) {
-    console.log("correct!");
-    this.currentLine = this.currentLine.substring(1);
-
-    // adding leading spaces
-    this.displayWhiteLine = "";
-    for (let i = 0; i < this.spacecount; i++) {
-      this.displayWhiteLine += " ";
+    // check if key pressed is equal to the current line's char at index 0
+    // put moving the car inside this function?
+  checkKeypress() {
+    if (this.currentLine.length == 0) {
+      this.previousLine = this.codeText[this.num];
+      this.num = this.num + 1;
+      this.currentLine = this.codeText[this.num];
+      this.displayGreyLine = this.currentLine;
+      this.displayWhiteLine = this.currentLine;
+      this.nextLine = this.codeText[this.num + 1];
+      this.spacecount = 1;
     }
-    // adding the substring
-    this.displayWhiteLine += this.currentLine;
-    console.log(this.displayWhiteLine);
+    if (this.key == this.currentLine.charAt(0)) {
+      this.currentLine = this.currentLine.substring(1);
 
-    this.spacecount = this.spacecount + 1;
-    this.count++;
+      // adding leading spaces
+      this.displayWhiteLine = "";
+      for (let i = 0; i < this.spacecount; i++) {
+        this.displayWhiteLine += " ";
+      }
+      // adding the substring
+      this.displayWhiteLine += this.currentLine;
+
+      this.spacecount = this.spacecount + 1;
+      this.count++;
+    }
   }
-}
 
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event:KeyboardEvent) {
-    if(this.isGameOver)
-      return;
-    this.key = event.key;
-    console.log(this.key);
-    this.checkKeypress();
+    if (this.isGameStart) {
+      this.key = event.key;
+      this.checkKeypress();
+    }
   }
+
 }
 

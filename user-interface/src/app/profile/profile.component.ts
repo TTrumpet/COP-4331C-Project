@@ -22,12 +22,13 @@ export class ProfileComponent {
   //color:string = '';
   link:string = '../../assets/images/SimpleGreenCarTopView.svg';
 
-  private subscription: Subscription = new Subscription();
+  //private subscription: Subscription = new Subscription();
   constructor(public dialog : MatDialog, private route : ActivatedRoute, private router : Router, private userService : UserService, private profileService : ProfileService) {
   
   }
   
 
+  /*
   ngOnInit(){
     if(this.userService.getLog() == false)
       this.router.navigate([''], {});
@@ -45,6 +46,7 @@ export class ProfileComponent {
   ngOnDestroy(){
     this.subscription.unsubscribe();
   }
+  */
 
 
   setLink(){
@@ -317,9 +319,9 @@ export class ProfileComponent {
     })
   }
 
-  openLoading() {
+  openGame() {
     console.log("updating!"); 
-    this.profileService.updateProfile().subscribe({});
+    //this.profileService.updateProfile().subscribe({});
     this.router.navigate(['/profile']);
     setTimeout(() => {
       this.router.navigate(['/loading']); // Timer to wait for closeAll before routing to profile
