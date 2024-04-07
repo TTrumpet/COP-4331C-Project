@@ -189,7 +189,9 @@ def get_code():
     print("in code gen")
     data = request.get_json()
     language = data.get('language')
-    data = load_dataset("Fsoft-AIC/the-vault-function", split_set=["train"], languages=[language], streaming=True, trust_remote_code=True)
+    data = load_dataset("Fsoft-AIC/the-vault-function", split_set=["test"], languages=[language], streaming=True, trust_remote_code=True)
+    data = data['test']
+    data = data.shuffle(buffer_size=100)
     print("data loaded")
     f = open('../user-interface/src/assets/codesnippets.txt', 'w')
     for i in range(5):

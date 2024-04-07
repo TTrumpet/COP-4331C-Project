@@ -81,18 +81,9 @@ body {
     font-family: 'Courier New', Courier, monospace;
 }
 
-/*@keyframes initial-car-onto-track {
-
-}*/
-
-@keyframes initial-car-start-translation {
-    from {transform: translate(0px) scaleX(-1);;}
-    to {transform: translate(25vw) scaleX(-1);;}
-}
-
-@keyframes car-back-and-forth {
-    from {transform: translate(-50px) scaleX(-1);}
-    to {transform: translate(50px) scaleX(-1);}
+@keyframes initial-car-onto-track {
+    from {transform: translate(0px) scaleX(-1);}
+    to {transform: translate(600px) scaleX(-1);}
 }
 
 .car {
@@ -102,12 +93,12 @@ body {
 }
 
 #car1 {
-    border: 4px solid pink;
     width: 25vw;
     height: 15vh;
     position: absolute;
     top: 80%;
-    left: 10%;
+    left: -50%;
     transform: scaleX(-1);
     z-index: 100;
+    animation: 2s 1s forwards initial-car-onto-track;
 }

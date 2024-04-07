@@ -29,8 +29,10 @@ export class GameComponent {
   nextLine = this.codeText[this.num + 1]; // next line
 
   key = ''; // char from KeyboardEvent
-  count = 0;  // count of correct amount of characters
-  finalcount = 0; // use to record count after game is completed (since hostlistener cannot be disabled)
+  countCorrect = 0;  // count of correct amount of characters
+  finalcountCorrect = 0; // use to record count after game is completed (since hostlistener cannot be disabled)
+  countWrong = 0;
+  finalcountWrong = 0;
   newLines = ""; // for wrapped strings
   spacecount = 1; // display spaces
   isGameStart = false;
@@ -40,36 +42,40 @@ export class GameComponent {
     
   }
 
-  ngOnInit() {
-    if (this.userService.getLog() == false)
-      this.router.navigate([''], {}); 
-  }
+  // ngOnInit() {
+  //   if (this.userService.getLog() == false)
+  //     this.router.navigate([''], {}); 
+  // }
 
   ngAfterContentInit() {
-    // have car moving onto the track
-    setTimeout( () => {
-      this._parent.text = "3";
-      console.log("3");
-    }, 1000)
-    setTimeout( () => {
-      this._parent.text = "2";
-      console.log("2");
-    }, 2000)
-    setTimeout( () => {
-      this._parent.text = "1";
-      console.log("1");
-    }, 3000)
-    setTimeout( () => {
-      this._parent.text = "START!";
-      console.log("START!");
-    }, 4000)
-    setTimeout( () => {
-      this._parent.text = "";
-    }, 5000)
-    setTimeout( () => {
-      this.playGame();
-      this.isGameStart = true;
-    }, 5000)
+    if (this.userService.getLog() == false)
+      this.router.navigate([''], {}); 
+    else {
+      // have car moving onto the track
+      setTimeout( () => {
+        this._parent.text = "3";
+        console.log("3");
+      }, 1000)
+      setTimeout( () => {
+        this._parent.text = "2";
+        console.log("2");
+      }, 2000)
+      setTimeout( () => {
+        this._parent.text = "1";
+        console.log("1");
+      }, 3000)
+      setTimeout( () => {
+        this._parent.text = "START!";
+        console.log("START!");
+      }, 4000)
+      setTimeout( () => {
+        this._parent.text = "";
+      }, 5000)
+      setTimeout( () => {
+        this.playGame();
+        this.isGameStart = true;
+      }, 5000)
+    }
   }
 
   playGame() {
@@ -99,9 +105,11 @@ export class GameComponent {
         // also include car speeding off and slowing down dotted line -> transition to loading screen
         this._parent.text = "FINISH!"
         this.isGameEnd = true;
-        this.finalcount = this.count;
-        this._parent.finalCount = this.finalcount;
-        console.log(this._parent.finalCount);
+        this.finalcountCorrect = this.countCorrect;
+        this.finalcountWrong = this.countWrong;
+        this._parent.finalCountCorrect = this.finalcountCorrect;
+        this._parent.finalCountWrong = this.finalcountWrong;
+        console.log(this._parent.finalCountCorrect);
         setTimeout( () => {
           clearInterval(timer);
           this._parent.text = "loading...";
@@ -144,7 +152,10 @@ export class GameComponent {
       this.displayWhiteLine += this.currentLine;
     
       this.spacecount = this.spacecount + 1;
-      this.count++;
+      this.countCorrect++;
+    }
+    else {
+      this.countWrong++;
     }
   }
 

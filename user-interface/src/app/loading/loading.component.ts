@@ -19,7 +19,8 @@ export class LoadingComponent {
   language: string = "";
   username: string = "";
 
-  finalCount = 0;
+  finalCountCorrect = 0;
+  finalCountWrong = 0;
   codeString: string = "";
   codeText: string[] = []; 
 
@@ -57,8 +58,9 @@ export class LoadingComponent {
 
   gameOver() {
     // if the game is over, wait till the game is saved into database and show stats
-      console.log("back in loading!")
-      console.log(this.finalCount);
+      console.log("back in loading!");
+      console.log(this.finalCountCorrect);
+      console.log(this.finalCountWrong);
   }
 }
 
