@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { UserService } from '../user.service';
-
+import { ProfileService } from '../profile.service'
 
 @Component({
   selector: 'app-game',
@@ -16,25 +16,22 @@ import { UserService } from '../user.service';
 export class GameComponent {
   display: any;
 
-  constructor(public dialog : MatDialog, private route : ActivatedRoute, private router : Router, private userService : UserService) {
+  constructor(public dialog : MatDialog, private route : ActivatedRoute, private router : Router, private userService : UserService, private profileServices : ProfileService) {
     if(this.userService.getLog() == false)
       this.router.navigate([''], {});
     this.playGame();
 
     // change the time to what the player selects
-    this.timer(1);
+    this.timer(this.profileServices.time);
   }
 
   playGame() {
   }
 
-  timer(minute: number) {
+  timer(seconds: number) {
     // let minute = 1
-    let seconds: number = minute * 60;
     let textSec: any = '0';
-    let statSec: number = 60;
-
-    const prefix = minute < 10 ? '0' : '';
+    let statSec: number = seconds;
 
     const timer = setInterval(() => {
       seconds--;
@@ -45,7 +42,7 @@ export class GameComponent {
         textSec = '0' + statSec;
       } else textSec = statSec;
 
-      this.display = `${prefix}${Math.floor(seconds / 60)}:${textSec}`;
+      this.display = `${textSec} Seconds`;
 
       if (seconds == 0) {
         console.log('finished');

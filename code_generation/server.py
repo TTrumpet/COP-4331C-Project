@@ -60,6 +60,10 @@ class UserSettings(db.Model): #changes to db are manditory for this to work
     time = db.Column(db.Integer, default=15)
     textcolor = db.Column(db.String(9), nullable=False, default='FFFFFF')
     textsize = db.Column(db.Integer, default=25)
+    chartyped = db.Column(db.Integer, default=0)
+    totaltime = db.Column(db.Integer, default=0)
+    charsincorrect = db.Column(db.Integer, default=0)
+    totalscore = db.Column(db.Integer, default=0)
 
     #returns a string representation of object
     def __repr__(self):
@@ -138,7 +142,11 @@ def populate_profile():
             "language": user.language,
             "time": user.time,
             "textcolor": user.textcolor,
-            "textsize": user.textsize
+            "textsize": user.textsize,
+            "chartyped" : user.chartyped,
+            "totaltime" : user.totaltime,
+            "charsincorrect" : user.charsincorrect,
+            "totalscore" : user.totalscore
         }
         return jsonify(response_data), 200
     else:
@@ -163,6 +171,10 @@ def update_profile():
     user.textcolor = data.get('textcolor', user.textcolor)
     user.time = data.get('time', user.time)
     user.textsize = data.get('textsize', user.textsize)
+    user.chartyped = data.get('chartyped', user.chartyped)
+    user.totaltime = data.get('totaltime', user.totaltime)
+    user.charsincorrect = data.get('charsincorrect', user.charsincorrect)
+    user.totalscore = data.get('totalscore', user.totalscore)
 
     try:
         db.session.commit()

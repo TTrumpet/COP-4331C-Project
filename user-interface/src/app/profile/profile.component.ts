@@ -320,7 +320,9 @@ export class ProfileComponent {
   openGame() {
     console.log("updating!"); 
     this.profileService.updateProfile().subscribe({});
-    this.router.navigate(['/game']);
-    this.router.navigate(['/game']);
+    this.router.navigate(['/profile']);
+    setTimeout(() => {
+      this.router.navigate(['/game']); // Timer to wait for closeAll before routing to profile
+    }, 100);
   }
 }
