@@ -1,0 +1,176 @@
+TEST_F(MemoryHeapTest, ReturnOffsetWhenAllocated) {
+  const size_t size1 = 2049;
+  const size_t size2 = 2045;
+  auto ptr1 = memory_.allocate(size1);
+  ASSERT_EQ(ptr1, 1);
+  auto ptr2 = memory_.allocate(size2);
+  ASSERT_EQ(ptr2, size1 + ptr1);
+}
+IntervalImpl::IntervalImpl(std::weak_ptr<uml::Element > par_owner)
+:IntervalImpl()
+{
+	m_owner = par_owner;
+}
+void CalHelixFinderAlg::findWorstResidHitInFitPhiZ (CalHelixFinderData& Helix,
+						      PhiZFitInfo_t&      PhiZInfo,
+						      HitInfo_t&          WorstFaceHit,
+						      float&             Resid){
+    PanelZ_t*      panelz(0);
+    FaceZ_t*       facez(0);
+    float         z, phi, weight(PhiZInfo.weight), xdphi, dphi, err;
+    for (int f=PhiZInfo.seedIndex.face; f<StrawId::_ntotalfaces; ++f){
+      facez     = &Helix._oTracker[f];
+      z         = Helix._zFace[f];
+      int            firstPanel(0);
+      if (f == PhiZInfo.seedIndex.face) firstPanel = PhiZInfo.seedIndex.panel;
+      for (int p=firstPanel; p<FaceZ_t::kNPanels; ++p){
+	panelz = &facez->panelZs[p];
+	int       nhits  = panelz->nChHits();
+	int       seedPanelIndex(0);
+	if (nhits == 0)                                         continue;
+	if ( (f      == PhiZInfo.seedIndex.face )  && 
+	     (p      == PhiZInfo.seedIndex.panel)  && 
+	     (PhiZInfo.seedIndex.panelHitIndex >=0) ) seedPanelIndex = PhiZInfo.seedIndex.panelHitIndex - panelz->idChBegin;  
+	for (int i=seedPanelIndex; i<nhits; ++i){
+	  int             index = panelz->idChBegin + i;
+	  mu2e::ComboHit* hit   = &Helix._chHitsToProcess[index];
+	  if (Helix._hitsUsed[index] != 1)            continue; 
+	  phi      = z*Helix._szphi.dfdz() + Helix._szphi.phi0();
+	  dphi     = fabs(hit->_hphi - phi);
+	  err      = _sigmaPhi;
+	  if (PhiZInfo.useInteligentWeight == 1){
+	    weight = hit->_zphiWeight;
+	    err    = 1./sqrt(weight);
+	  }
+	  xdphi = dphi/err;
+	  if ( xdphi > Resid) {
+	    WorstFaceHit.face          = f;
+	    WorstFaceHit.panel         = p;
+	    WorstFaceHit.panelHitIndex = index;
+	    Resid                = xdphi;
+	  }
+	}
+      }
+    }
+  }
+GeneralizationSetImpl::GeneralizationSetImpl(std::weak_ptr<uml::Package > par_owningPackage)
+:GeneralizationSetImpl()
+{
+	m_owningPackage = par_owningPackage;
+	m_namespace = par_owningPackage;
+}
+TEST_F(BufferTests, BufferSystem_CreateDuplicatedNamedBufferEnableUniqueName_Fail)
+    {
+        using namespace AZ;
+        ExpectedBuffer bufferInfo = CreateValidBuffer();
+        RPI::CommonBufferDescriptor desc;
+        desc.m_poolType = RPI::CommonBufferPoolType::ReadOnly;
+        desc.m_bufferName = "Buffer1";
+        desc.m_byteCount = bufferInfo.m_bufferDescriptor.m_byteCount;
+        desc.m_isUniqueName = true;
+        Data::Instance<RPI::Buffer> bufferInst = RPI::BufferSystemInterface::Get()->CreateBufferFromCommonPool(desc);
+        EXPECT_NE(bufferInst.get(), nullptr);
+        AZ_TEST_START_ASSERTTEST;
+        Data::Instance<RPI::Buffer> bufferInst2 = RPI::BufferSystemInterface::Get()->CreateBufferFromCommonPool(desc);
+        AZ_TEST_STOP_ASSERTTEST(1);
+        EXPECT_EQ(bufferInst2.get(), nullptr);
+    }
+ir::PTXS32 executive::CooperativeThreadArray::getRegAsS32(int threadID, 
+	ir::PTXOperand::RegisterType reg) {
+	ir::PTXS32 r = *( (ir::PTXS32*)(
+		&functionCallStack.registerFilePointer(threadID)[reg]));
+	#if REPORT_NTH_THREAD_ONLY == 1
+	if (threadID == NTH_THREAD) {
+		reportE(REPORT_REGISTER_READS, "   thread " << threadID 
+			<< " reg " << reg << " <= " << r);
+	}
+	#else
+	reportE(REPORT_REGISTER_READS, "   thread " << threadID 
+		<< " reg " << reg << " <= " << r);
+	#endif
+	return r;
+}
+void MLUGeneratorImpl::delay_init_state_once() {
+  if (is_floating_device) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    std::call_once(init_state_flag, [&] {
+      size_t state_size = 0;
+      TORCH_CNNL_CHECK(cnnlRandGetMTGP32StateSize(nullptr, &state_size));
+      auto options = at::TensorOptions().device(device_).dtype(at::kByte);
+      state_ = at::empty(state_size, options);
+    });
+  }
+}
+void executive::NVIDIAExecutableKernel::setKernelShape(int x, int y, int z) {
+	CUresult result = cuda::CudaDriver::cuFuncSetBlockShape(cuFunction, x, y, z);
+	if (result != CUDA_SUCCESS) {
+		report("failed to set kernel shape with result " << result);
+		throw hydrazine::Exception("NVIDIAExecutableKernel::setKernelShape() failed");
+	}
+}
+void rpcCall::DaemonReply(QNetworkReply *src){
+         QString strReply = (QString)src->readAll();
+         QJsonDocument jsonResponse = QJsonDocument::fromJson(strReply.toUtf8());
+         QJsonObject jsonArr = jsonResponse.object();
+    int rpcid = 0;
+    string sRpcID = "";
+    QJsonValue val = jsonArr.value(QString("id"));
+    rpcid = (int)(val.toDouble());
+    if(src->error() == QNetworkReply::NoError) { 
+             if(rpcid != 0){
+                 qDebug() << jsonArr << endl;  
+                 emit parseAndWrite(&jsonArr);
+            }
+         }else{
+             if(rpcid != 0){
+                 qDebug() << jsonArr << endl;  
+                emit parseError(&jsonArr);
+             }
+         }
+    src->deleteLater();
+}
+void Compiler::TrimSpirvDebugInfo(
+    const BinaryData* pSpvBin,   
+    uint32_t          bufferSize,    
+    void*             pTrimSpvBin)     
+{
+    LLPC_ASSERT(bufferSize > sizeof(SpirvHeader));
+    const uint32_t* pCode = reinterpret_cast<const uint32_t*>(pSpvBin->pCode);
+    const uint32_t* pEnd = pCode + pSpvBin->codeSize / sizeof(uint32_t);
+    const uint32_t* pCodePos = pCode + sizeof(SpirvHeader) / sizeof(uint32_t);
+    uint32_t* pTrimEnd = reinterpret_cast<uint32_t*>(VoidPtrInc(pTrimSpvBin, bufferSize));
+    LLPC_UNUSED(pTrimEnd);
+    uint32_t* pTrimCodePos = reinterpret_cast<uint32_t*>(VoidPtrInc(pTrimSpvBin, sizeof(SpirvHeader)));
+    memcpy(pTrimSpvBin, pCode, sizeof(SpirvHeader));
+    while (pCodePos < pEnd)
+    {
+        uint32_t opCode = (pCodePos[0] & OpCodeMask);
+        uint32_t wordCount = (pCodePos[0] >> WordCountShift);
+        switch (opCode)
+        {
+        case spv::OpString:
+        case spv::OpSource:
+        case spv::OpSourceContinued:
+        case spv::OpSourceExtension:
+        case spv::OpName:
+        case spv::OpMemberName:
+        case spv::OpLine:
+        case spv::OpNop:
+        case spv::OpNoLine:
+        case spv::OpModuleProcessed:
+            {
+                break;
+            }
+        default:
+            {
+                LLPC_ASSERT(pCodePos + wordCount <= pEnd);
+                LLPC_ASSERT(pTrimCodePos + wordCount <= pTrimEnd);
+                memcpy(pTrimCodePos, pCodePos, wordCount * sizeof(uint32_t));
+                pTrimCodePos += wordCount;
+                break;
+            }
+        }
+        pCodePos += wordCount;
+    }
+    LLPC_ASSERT(pTrimCodePos == pTrimEnd);
+}

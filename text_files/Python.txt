@@ -1,0 +1,229 @@
+def generate_template_content(cls, fblock_type=None):
+        return {
+            "shop_item": [],
+            "submit_type": "update_alert",
+            "js_after_func_dict": {},
+            "js_after_func_name": "empty_func",             
+            "header_script": "",            
+            "before_function": [],          
+        }
+def item(self):  
+        return self[0]
+def create_new_primary(self):
+        self._get_controller().create_new_primary()
+        self.write_config()
+def update_key(self, key, field, old_text, text):
+        for term in set(explode(old_text)):
+            sm = self._get_matches(key.kind(), field, term, key)
+            if key in sm.matches:
+                sm.matches.remove(key)
+        if text is not None:
+            self.add_key(key, field, text)
+def _import_config(handle, file_name, file_location="ucscentral",
+                   file_dir=None, merge=True, protocol=None,
+                   hostname="localhost",
+                   username=None, password="", timeout=120):
+    from ..mometa.top.TopSystem import TopSystem
+    from ..mometa.mgmt.MgmtDataImporter import MgmtDataImporter, \
+        MgmtDataImporterConsts
+    if not file_name:
+        raise UcscValidationException("Missing file_name argument")
+    if file_location != "ucscentral":
+        if not file_dir:
+            raise UcscValidationException("Missing file_dir argument")
+    if (not file_name.endswith('.tgz')):
+        raise UcscValidationException("file_name must be .tgz format")
+    top_system = TopSystem()
+    if file_location == "remote":
+        file_path = os.path.join(file_dir, file_name)
+        _validate_remote_host_args(protocol, hostname, username, password)
+        mgmt_importer = MgmtDataImporter(
+            parent_mo_or_dn=top_system,
+            hostname=hostname,
+            remote_file=file_path,
+            proto=protocol,
+            user=username,
+            pwd=password,
+            admin_state=MgmtDataImporterConsts.ADMIN_STATE_ENABLED)
+    elif file_location == "local":
+        file_path = os.path.join(file_dir, file_name)
+        if not os.path.exists(file_path):
+            raise UcscOperationError("Import config",
+                                     "Backup File '%s' not found" %
+                                     file_path)
+        mgmt_importer = MgmtDataImporter(
+            parent_mo_or_dn=top_system,
+            hostname="localhost",
+            remote_file='/' + file_name,
+            proto=MgmtDataImporterConsts.PROTO_HTTP,
+            admin_state=MgmtDataImporterConsts.ADMIN_STATE_ENABLED)
+    elif file_location == "ucscentral":
+        if not _is_backup_file_on_server(handle, "ucs-central", file_name):
+            raise UcscOperationError("Import config",
+                                     "Backup File '%s' not found "
+                                     "on UcsCentral" % file_name)
+        mgmt_importer = MgmtDataImporter(
+            parent_mo_or_dn=top_system,
+            hostname="localhost",
+            remote_file='/ucs-central/cfg-backups/' + file_name,
+            proto=MgmtDataImporterConsts.PROTO_TFTP,
+            admin_state=MgmtDataImporterConsts.ADMIN_STATE_ENABLED)
+    else:
+        raise UcscOperationError(
+                "Import config",
+                "Invalid file_location argument."
+                "It must be either ucscentral,local or remote")
+    if merge:
+        mgmt_importer.action = MgmtDataImporterConsts.ACTION_MERGE
+    else:
+        mgmt_importer.action = MgmtDataImporterConsts.ACTION_REPLACE
+    if file_location == "local":
+        try:
+            log.debug("Start uploading config")
+            uri_suffix = "operations/file-%s/importconfig.txt?Cookie=%s" % (
+                         file_name, handle.cookie)
+            handle.file_upload(url_suffix=uri_suffix,
+                               file_dir=file_dir,
+                               file_name=file_name)
+        except Exception as err:
+            UcscWarning(str(err))
+            raise UcscOperationError("Upload config", "upload failed")
+    handle.add_mo(mgmt_importer, modify_present=True)
+    handle.commit()
+    duration = timeout
+    poll_interval = 2
+    log.debug("Importing UcsCentral config")
+    while True:
+        mgmt_importer = handle.query_dn(dn=mgmt_importer.dn)
+        admin_state = mgmt_importer.admin_state
+        if admin_state == MgmtDataImporterConsts.ADMIN_STATE_DISABLED:
+            break
+        time.sleep(min(duration, poll_interval))
+        duration = max(0, (duration - poll_interval))
+        if duration == 0:
+            raise UcscOperationError(
+                  "Import config", "operation timed out")
+    if mgmt_importer.over_all_status != \
+            MgmtDataImporterConsts.OVER_ALL_STATUS_ALL_SUCCESS:
+            raise UcscOperationError(
+                  "Import config",
+                  ("operational status %s " % mgmt_importer.over_all_status))
+    log.debug("Import config to UcsCentral was successfull")
+    return mgmt_importer
+def update_user(self, uid, display_name=None, email=None, phone_number=None,
+                    photo_url=None, password=None, disabled=None, email_verified=None,
+                    valid_since=None, custom_claims=None):
+        payload = {
+            'localId': _auth_utils.validate_uid(uid, required=True),
+            'email': _auth_utils.validate_email(email),
+            'password': _auth_utils.validate_password(password),
+            'validSince': _auth_utils.validate_timestamp(valid_since, 'valid_since'),
+            'emailVerified': bool(email_verified) if email_verified is not None else None,
+            'disableUser': bool(disabled) if disabled is not None else None,
+        }
+        remove = []
+        if display_name is not None:
+            if display_name is DELETE_ATTRIBUTE:
+                remove.append('DISPLAY_NAME')
+            else:
+                payload['displayName'] = _auth_utils.validate_display_name(display_name)
+        if photo_url is not None:
+            if photo_url is DELETE_ATTRIBUTE:
+                remove.append('PHOTO_URL')
+            else:
+                payload['photoUrl'] = _auth_utils.validate_photo_url(photo_url)
+        if remove:
+            payload['deleteAttribute'] = remove
+        if phone_number is not None:
+            if phone_number is DELETE_ATTRIBUTE:
+                payload['deleteProvider'] = ['phone']
+            else:
+                payload['phoneNumber'] = _auth_utils.validate_phone(phone_number)
+        if custom_claims is not None:
+            if custom_claims is DELETE_ATTRIBUTE:
+                custom_claims = {}
+            json_claims = json.dumps(custom_claims) if isinstance(
+                custom_claims, dict) else custom_claims
+            payload['customAttributes'] = _auth_utils.validate_custom_claims(json_claims)
+        payload = {k: v for k, v in payload.items() if v is not None}
+        try:
+            body, http_resp = self._client.body_and_response(
+                'post', '/accounts:update', json=payload)
+        except requests.exceptions.RequestException as error:
+            raise _auth_utils.handle_auth_backend_error(error)
+        else:
+            if not body or not body.get('localId'):
+                raise _auth_utils.UnexpectedResponseError(
+                    'Failed to update user: {0}.'.format(uid), http_response=http_resp)
+            return body.get('localId')
+def AddFilesWithUnknownHashes(
+    client_path_blob_ids
+):
+  all_client_path_blob_ids = list()
+  for client_path, blob_ids in iteritems(client_path_blob_ids):
+    for blob_id in blob_ids:
+      all_client_path_blob_ids.append((client_path, blob_id))
+  client_path_offset = collections.defaultdict(lambda: 0)
+  client_path_sha256 = collections.defaultdict(hashlib.sha256)
+  client_path_blob_refs = collections.defaultdict(list)
+  client_path_blob_id_batches = collection.Batch(
+      items=all_client_path_blob_ids, size=_BLOBS_READ_BATCH_SIZE)
+  for client_path_blob_id_batch in client_path_blob_id_batches:
+    blob_id_batch = set(blob_id for _, blob_id in client_path_blob_id_batch)
+    blobs = data_store.BLOBS.ReadBlobs(blob_id_batch)
+    for client_path, blob_id in client_path_blob_id_batch:
+      blob = blobs[blob_id]
+      if blob is None:
+        message = "Could not find one of referenced blobs: {}".format(blob_id)
+        raise BlobNotFoundError(message)
+      offset = client_path_offset[client_path]
+      blob_ref = rdf_objects.BlobReference(
+          offset=offset, size=len(blob), blob_id=blob_id)
+      client_path_blob_refs[client_path].append(blob_ref)
+      client_path_offset[client_path] = offset + len(blob)
+      client_path_sha256[client_path].update(blob)
+  client_path_hash_id = dict()
+  hash_id_blob_refs = dict()
+  for client_path in iterkeys(client_path_blob_ids):
+    sha256 = client_path_sha256[client_path].digest()
+    hash_id = rdf_objects.SHA256HashID.FromBytes(sha256)
+    client_path_hash_id[client_path] = hash_id
+    hash_id_blob_refs[hash_id] = client_path_blob_refs[client_path]
+  data_store.REL_DB.WriteHashBlobReferences(hash_id_blob_refs)
+  metadatas = dict()
+  for client_path in iterkeys(client_path_blob_ids):
+    metadatas[client_path_hash_id[client_path]] = FileMetadata(
+        client_path=client_path, blob_refs=client_path_blob_refs[client_path])
+  EXTERNAL_FILE_STORE.AddFiles(metadatas)
+  return client_path_hash_id
+def ready(self) -> bool:
+        if not self.run_test:
+            return False
+        if self.first_step is None:
+            return False
+        if self.middlewares:
+            for middleware in self.middlewares: 
+                if middleware.ready():
+                    continue
+                else: return False 
+        else: 
+            return False
+        if self.interfaces:
+            for interface in self.interfaces:
+                if self.interfaces[interface].ready(): 
+                    continue
+                else:
+                    return False 
+        else: 
+            return False
+        return True
+def _compile30(self, source):
+        if not self.libs30:
+            self.skipTest('No wx-config for wx30 found')
+        self._compile(source, self.libs30, self.cxxflags30)
+def request_sections(courses: List[Course]) -> List[Section]:
+    logger.info("Pulling section data")
+    sections: List[Section] = []
+    for course in courses:
+        sections.extend(course.get_sections())
+    return sections

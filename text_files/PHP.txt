@@ -1,0 +1,266 @@
+private function createPipelineCallback() : Closure
+    {
+        return function ($stack, $pipe) {
+            return function ($request) use ($stack, $pipe) {
+                if ($pipe instanceof Closure) {
+                    return call_user_func($pipe, $request, $stack);
+                } elseif (!is_object($pipe)) {
+                    list($callback, $parameters) = $this->createParameters($pipe, $request, $stack, true);
+                } else {
+                    if (!method_exists($pipe, $this->method)) {
+                        throw new PipelineException(sprintf("%s::%s doesn't exist", get_class($pipe), $this->method));
+                    }
+                    list($callback, $parameters) = $this->createParameters($pipe, $request, $stack);
+                }
+                return $this->call($callback, $parameters);
+            };
+        };
+    }
+public function action_editIgnoreList($memID)
+	{
+		global $context, $user_profile, $memberContext;
+		$db = database();
+		loadTemplate('ProfileOptions');
+		$context['sub_template'] = 'editIgnoreList';
+		loadJavascriptFile('suggest.js', array('defer' => true));
+		$ignoreArray = explode(',', $user_profile[$memID]['pm_ignore_list']);
+		foreach ($ignoreArray as $k => $dummy)
+		{
+			if ($dummy == '')
+				unset($ignoreArray[$k]);
+		}
+				if (isset($_GET['remove']))
+		{
+			checkSession('get');
+			foreach ($ignoreArray as $key => $id_remove)
+				if ($id_remove == (int) $_GET['remove'])
+					unset($ignoreArray[$key]);
+			$user_profile[$memID]['pm_ignore_list'] = implode(',', $ignoreArray);
+			updateMemberData($memID, array('pm_ignore_list' => $user_profile[$memID]['pm_ignore_list']));
+			redirectexit('action=profile;area=lists;sa=ignore;u=' . $memID);
+		}
+		elseif (isset($_POST['new_ignore']))
+		{
+			checkSession();
+			$_POST['new_ignore'] = strtr(Util::htmlspecialchars($_POST['new_ignore'], ENT_QUOTES), array('&quot;' => '"'));
+			preg_match_all('~"([^"]+)"~', $_POST['new_ignore'], $matches);
+			$new_entries = array_unique(array_merge($matches[1], explode(',', preg_replace('~"[^"]+"~', '', $_POST['new_ignore']))));
+			foreach ($new_entries as $k => $dummy)
+			{
+				$new_entries[$k] = strtr(trim($new_entries[$k]), array('\'' => '&#039;'));
+				if (strlen($new_entries[$k]) == 0 || in_array($new_entries[$k], array($user_profile[$memID]['member_name'], $user_profile[$memID]['real_name'])))
+					unset($new_entries[$k]);
+			}
+			if (!empty($new_entries))
+			{
+				$request = $db->query('', '
+					SELECT id_member
+					FROM {db_prefix}members
+					WHERE member_name IN ({array_string:new_entries}) OR real_name IN ({array_string:new_entries})
+					LIMIT {int:count_new_entries}',
+					array(
+						'new_entries' => $new_entries,
+						'count_new_entries' => count($new_entries),
+					)
+				);
+				while ($row = $db->fetch_assoc($request))
+					$ignoreArray[] = (int) $row['id_member'];
+				$db->free_result($request);
+				$user_profile[$memID]['pm_ignore_list'] = implode(',', $ignoreArray);
+				updateMemberData($memID, array('pm_ignore_list' => $user_profile[$memID]['pm_ignore_list']));
+			}
+			redirectexit('action=profile;area=lists;sa=ignore;u=' . $memID);
+		}
+		$ignored = array();
+		if (!empty($ignoreArray))
+		{
+			require_once(SUBSDIR . '/Members.subs.php');
+			$result = getBasicMemberData($ignoreArray, array('sort' => 'real_name', 'limit' => substr_count($user_profile[$memID]['pm_ignore_list'], ',') + 1));
+			foreach ($result as $row)
+				$ignored[] = $row['id_member'];
+		}
+		$context['ignore_count'] = count($ignored);
+		loadMemberData($ignored, false, 'profile');
+		$context['ignore_list'] = array();
+		foreach ($ignored as $ignore_member)
+		{
+			loadMemberContext($ignore_member);
+			$context['ignore_list'][$ignore_member] = $memberContext[$ignore_member];
+		}
+	}
+public function delete($username, $repo, $deleteUser)
+    {
+        return $this->processResponse(
+            $this->requestDelete("repos/$username/$repo/collaborators/$deleteUser")
+        );
+    }
+public function search()
+    {
+        function setCategories(MoviesController $controller)
+        {
+            $categories = $controller->Movies->Categories->find('list', ['limit' => 200]);
+            $controller->set(compact('categories'));
+        }
+        if (!$this->request->is('post')) {
+            setCategories($this);
+            return;
+        }
+        $data = $this->request->getData();
+        $searchString = $data['searchstring'];
+        $categoryId = $data['category_id'];
+        $this->log($searchString, LogLevel::DEBUG);
+        if (!empty($searchString)) {
+            $movies = $this->Movies->find('all', ['conditions' => ['textLong like %' => $categoryId]]);
+            $this->set(compact('movies'));
+        }
+        if (!empty($categoryId)) {
+            $movies = $this->Movies->find('all', ['conditions' => ['category_id' => $categoryId]]);
+            $this->set(compact('movies'));
+        }
+        setCategories($this);
+    }
+public function testDropSuccessForAdmin() {
+		$this->setAjaxRequest();
+		$dropData = [
+			0 => [
+				[
+					'id' => '2'
+				],
+				[
+					'id' => '1'
+				],
+				[
+					'id' => '3'
+				],
+				[
+					'id' => '4'
+				],
+				[
+					'id' => '5'
+				],
+				[
+					'id' => '6'
+				],
+			]
+		];
+		$userInfo = [
+			'role' => USER_ROLE_USER | USER_ROLE_ADMIN,
+			'prefix' => 'admin',
+		];
+		$opt = [
+			'method' => 'POST',
+			'data' => [
+				'target' => 1,
+				'parent' => null,
+				'tree' => json_encode($dropData),
+			],
+			'return' => 'contents',
+		];
+		$this->applyUserInfo($userInfo);
+		$this->generateMockedController();
+		$url = '/admin/departments/drop.json';
+		$result = $this->testAction($url, $opt);
+		$result = json_decode($result, true);
+		$expected = [
+			'result' => true
+		];
+		$this->assertData($expected, $result);
+		$this->resetAjaxRequest();
+	}
+public function startAction(Request $request)
+    {
+        $operator = $this->getOperator();
+        $thread_id = $request->attributes->getInt('thread_id');
+        $remote_level = get_remote_level($request->headers->get('User-Agent'));
+        if ($remote_level != 'ajaxed') {
+            return $this->showErrors(array(getlocal('Old browser is used, please update it')));
+        }
+        $thread = Thread::load($thread_id);
+        if (!$thread || !isset($thread->lastToken)) {
+            return $this->showErrors(array(getlocal('Wrong thread')));
+        }
+        $view_only = ($request->query->get('viewonly') == 'true');
+        $force_take = ($request->query->get('force') == 'true');
+        $try_take_over = !$view_only
+            && $thread->state == Thread::STATE_CHATTING
+            && $operator['operatorid'] != $thread->agentId;
+        if ($try_take_over) {
+            if (!is_capable(CAN_TAKEOVER, $operator)) {
+                return $this->showErrors(array(getlocal('Cannot take over')));
+            }
+            if ($force_take == false) {
+                $link = $this->generateUrl(
+                    'chat_operator_start',
+                    array(
+                        'thread_id' => $thread_id,
+                        'force' => 'true',
+                    )
+                );
+                $page = array(
+                    'user' => $thread->userName,
+                    'agent' => $thread->agentName,
+                    'link' => $link,
+                    'title' => getlocal('Change operator'),
+                );
+                $page_style = new PageStyle(PageStyle::getCurrentStyle());
+                return $page_style->render('confirm', $page);
+            }
+        }
+        if (!$view_only) {
+            if (!$thread->take($operator)) {
+                return $this->showErrors(array(getlocal('Cannot take thread')));
+            }
+        } elseif (!is_capable(CAN_VIEWTHREADS, $operator)) {
+            return $this->showErrors(array(getlocal('Cannot view threads')));
+        }
+        $redirect_to = $this->generateUrl(
+            'chat_operator',
+            array(
+                'thread_id' => intval($thread_id),
+                'token' => urlencode($thread->lastToken),
+            )
+        );
+        return $this->redirect($redirect_to);
+    }
+public function store(Request $request)
+    {
+        $validated = $this->validateInput($request);
+        $role = Role::create(array_except($validated, 'permission'));
+        $role->syncPermissions($validated['permission']);
+        $permissions =  $role->permissions;
+        $role->permission = $permissions->pluck('name');
+        return $role->loadMissing('permissions');
+    }
+public function store(Request $request)
+    {
+        $this->validate($request, [
+            'formName' => 'required|string|max:191'
+        ]);
+        $input['formName'] = $request->formName; 
+        $input['formLink'] = str_random(10); 
+        $input['formInfo'] = $request->formInfo; 
+        $input['cuponCode'] = $request->cuponCode; 
+        $input['orderForm'] = json_encode($request->form); 
+        $order = OrderForm::create($input);
+        return  response()->json(compact('order'), 200);
+    }
+public function register()
+    {
+        $this->di->setShared(
+            $this->serviceName,
+            function () {
+                $srv = new ModelsManager();
+                return $srv;
+            }
+        );
+    }
+public function index()
+    {
+        if(modelCliente::first()==null) {
+            return redirect()->route('clientes.create')
+                ->withErrors('No existen clientes en la base de datos');
+        }
+        $ofertas = modelOferta::orderBy('ofe_anio','desc')
+            ->paginate(15);
+        return view('ofertas.index', compact('ofertas'));
+    }

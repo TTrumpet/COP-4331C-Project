@@ -1,0 +1,194 @@
+public static IRemoteQueryable<T> CreateQueryable<T>(
+            this RemoteQueryableFactory factory,
+            Func<RemoteLinq.Expression, object?> dataProvider,
+            IQueryResultMapper<object>? resultMapper = null,
+            IExpressionToRemoteLinqContext? context = null)
+            => CreateQueryable<T, object>(factory, dataProvider, resultMapper ?? new ObjectResultCaster(), context);
+public IEnumerable<Task<IReadOnlyList<PayoutItem>>> AllAsync(PayoutItemListRequest request = null, RequestSettings customiseRequestMessage = null)
+        {
+            request = request ?? new PayoutItemListRequest();
+            return new TaskEnumerable<IReadOnlyList<PayoutItem>, string>(async after =>
+            {
+                request.After = after;
+                var list = await this.ListAsync(request, customiseRequestMessage);
+                return Tuple.Create(list.PayoutItems, list.Meta?.Cursors?.After);
+            });
+        }
+public static double GetDeemingThreshold(bool isMarried, bool receivedAgePensionBefore)
+            {
+                if (isMarried)
+                {
+                    if (!receivedAgePensionBefore)
+                    {
+                        return deemingThreshold_married_first;
+                    }
+                    else
+                    {
+                        return deemingThreshold_married_notFirst;
+                    }
+                }
+                return deemingThreshold_single;
+            }
+private static string createFinalCAConfig(CAConfig config, BigInteger serialNumber, X509Certificate cert, string caKey)
+        {
+            string version = "";
+            string caEntry = "";
+            string caValue = "";
+            if (config.FIPS140)
+            {
+                version = "3.1";
+                caEntry = "caCert";
+                caValue = Utility.cert64(cert);
+            }
+            else
+            {
+                version = "3.0";
+                caEntry = "caKey";
+                caValue = caKey;
+            }
+            return createCaConfFile(config, serialNumber, version, caEntry, caValue, cert);
+        }
+ValueTask WriteInt16Async(short value, bool littleEndian, CancellationToken token = default)
+        {
+            value.ReverseIfNeeded(littleEndian);
+            return WriteAsync(value, token);
+        }
+public static string GetNameCS(this Type type, bool fullName = true)
+        {
+            if (type == null)
+                return "null";
+            var names = fullName ? FullTypeNames : TypeNames;
+            if (names.TryGetValue(type, out var name))
+                return name;
+            var text = ObjectPool.AcquireStringBuilder();
+            if (type.IsArray)
+            {
+                text.Append(type.GetElementType().GetNameCS(fullName));
+                text.Append('[');
+                var dimensions = type.GetArrayRank();
+                while (dimensions-- > 1)
+                    text.Append(',');
+                text.Append(']');
+                goto Return;
+            }
+            if (type.IsPointer)
+            {
+                text.Append(type.GetElementType().GetNameCS(fullName));
+                text.Append('*');
+                goto Return;
+            }
+            if (type.IsGenericParameter)
+            {
+                text.Append(type.Name);
+                goto Return;
+            }
+            var underlyingType = Nullable.GetUnderlyingType(type);
+            if (underlyingType != null)
+            {
+                text.Append(underlyingType.GetNameCS(fullName));
+                text.Append('?');
+                goto Return;
+            }
+            if (fullName && type.Namespace != null)
+            {
+                text.Append(type.Namespace);
+                text.Append('.');
+            }
+            var genericArguments = 0;
+            if (type.DeclaringType != null)
+            {
+                var nesting = 1;
+                var declaringType = type.DeclaringType;
+                while (declaringType.DeclaringType != null)
+                {
+                    declaringType = declaringType.DeclaringType;
+                    nesting++;
+                }
+                while (nesting-- > 0)
+                {
+                    declaringType = type;
+                    for (int i = nesting; i >= 0; i--)
+                        declaringType = declaringType.DeclaringType;
+                    genericArguments = AppendNameAndGenericArguments(text, declaringType, fullName, genericArguments);
+                    text.Append('.');
+                }
+            }
+            AppendNameAndGenericArguments(text, type, fullName, genericArguments);
+            Return:
+            name = text.ReleaseToString();
+            names.Add(type, name);
+            return name;
+        }
+public static int ResolveHash<T>(this T value, params Func<T, object?>[] properties)
+    {
+        if (properties is null || properties.Length == 0)
+        {
+            throw new ArgumentNullException(nameof(properties));
+        }
+        return SynchronousHasher<T>.GetInternal(value, null!, s_options, properties);
+    }
+public async System.Threading.Tasks.Task<ApiResponse<InlineResponse2002>> DataSourceMongosIdExistsGetAsyncWithHttpInfo (string id)
+        {
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling DataSourceMongoApi->DataSourceMongosIdExistsGet");
+            var localVarPath = "/DataSourceMongos/{id}/exists";
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new Dictionary<String, String>();
+            var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+            String[] localVarHttpContentTypes = new String[] {
+                "application/json", 
+                "application/x-www-form-urlencoded", 
+                "application/xml", 
+                "text/xml"
+            };
+            String localVarHttpContentType = Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json", 
+                "application/xml", 
+                "text/xml", 
+                "application/javascript", 
+                "text/javascript"
+            };
+            String localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+            localVarPathParams.Add("format", "json");
+            if (id != null) localVarPathParams.Add("id", Configuration.ApiClient.ParameterToString(id)); 
+            if (!String.IsNullOrEmpty(Configuration.GetApiKeyWithPrefix("access_token")))
+            {
+                localVarQueryParams["access_token"] = Configuration.GetApiKeyWithPrefix("access_token");
+            }
+            IRestResponse localVarResponse = (IRestResponse) await Configuration.ApiClient.CallApiAsync(localVarPath,
+                Method.GET, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+            int localVarStatusCode = (int) localVarResponse.StatusCode;
+            if (ExceptionFactory != null)
+            {
+                Exception exception = ExceptionFactory("DataSourceMongosIdExistsGet", localVarResponse);
+                if (exception != null) throw exception;
+            }
+            return new ApiResponse<InlineResponse2002>(localVarStatusCode,
+                localVarResponse.Headers.ToDictionary(x => x.Name, x => x.Value.ToString()),
+                (InlineResponse2002) Configuration.ApiClient.Deserialize(localVarResponse, typeof(InlineResponse2002)));
+        }
+public FolderList GetPermissionsFoldersId (int? id, int? workspaceId, int? groupId)
+        {
+             ApiResponse<FolderList> localVarResponse = GetPermissionsFoldersIdWithHttpInfo(id, workspaceId, groupId);
+             return localVarResponse.Data;
+        }
+private static Region3D<int> ExpandedRegion(Region3D<int> region, Volume3D<byte> volume, int margin)
+        {
+            var marginX = (int)Math.Ceiling(margin / volume.SpacingX);
+            var marginY = (int)Math.Ceiling(margin / volume.SpacingY);
+            var marginZ = (int)Math.Ceiling(margin / volume.SpacingZ);
+            return new Region3D<int>(
+                Math.Max(0, region.MinimumX - marginX),
+                Math.Max(0, region.MinimumY - marginY),
+                Math.Max(0, region.MinimumZ - marginZ),
+                Math.Min(volume.DimX - 1, region.MaximumX + marginX),
+                Math.Min(volume.DimY - 1, region.MaximumY + marginY),
+                Math.Min(volume.DimZ - 1, region.MaximumZ + marginZ));
+        }

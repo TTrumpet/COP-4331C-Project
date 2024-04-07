@@ -1,0 +1,319 @@
+public static void initPlayers(){
+		System.out.println("Options 2 to 9 are different AIs, mmSimple2 being the strongest and nn1 the weakest\nPick each players type\n");
+		Player.Type p1Type=null, p2Type=null;
+		System.out.println("Black player:\n1.Human\n2.Random\n3.MMSimple1\n4.MMSimple2\n5.MMSimple3\n6.MMPositional1\n7.MMPositional2\n8.MMPositional3\n9.NN1\n10.NN2");
+		int in = s.nextInt();
+		switch(in) {
+			case 1:
+				p1Type = Player.Type.Human;
+				break;
+			case 2:
+				p1Type = Player.Type.Random;
+				break;
+			case 3:
+				p1Type = Player.Type.MM1;
+				break;
+			case 4:
+				p1Type = Player.Type.MM3;
+				break;
+			case 5:
+				p1Type = Player.Type.MM5;
+				break;
+			case 6:
+				p1Type = Player.Type.MM2;
+				break;
+			case 7:
+				p1Type = Player.Type.MM4;
+				break;
+			case 8:
+				p1Type = Player.Type.MM6;
+				break;
+			case 9:
+				p1Type = Player.Type.NN1;
+				break;
+			case 10:
+				p1Type = Player.Type.NN2;
+				break;
+		}
+		System.out.println("White player:\n1.Human\n2.Random\n3.MMSimple1\n4.MMSimple2\n5.MMSimple3\n6.MMPositional1\n7.MMPositional2\n8.MMPositional3\n9.NN1\n10.NN2");
+		in = s.nextInt();
+		switch(in) {
+			case 1:
+				p2Type = Player.Type.Human;
+				break;
+			case 2:
+				p2Type = Player.Type.Random;
+				break;
+			case 3:
+				p2Type = Player.Type.MM1;
+				break;
+			case 4:
+				p2Type = Player.Type.MM3;
+				break;
+			case 5:
+				p2Type = Player.Type.MM5;
+				break;
+			case 6:
+				p2Type = Player.Type.MM2;
+				break;
+			case 7:
+				p2Type = Player.Type.MM4;
+				break;
+			case 8:
+				p2Type = Player.Type.MM6;
+				break;
+			case 9:
+				p2Type = Player.Type.NN1;
+				break;
+			case 10:
+				p2Type = Player.Type.NN2;
+				break;
+		}
+		player1 = new Player(p1Type, true);
+		player2 = new Player(p2Type, false);
+	}
+protected Set<String> doGetDefaultProfiles() {
+		synchronized (defaultProfiles) {
+			if (defaultProfiles.equals(getReservedDefaultProfiles())) {
+				String profiles = getProperty(DEFAULT_PROFILES_PROPERTY_NAME);
+				if (StringUtils.hasText(profiles)) {
+					setDefaultProfiles(StringUtils.commaDelimitedListToStringArray(StringUtils.trimAllWhitespace(profiles)));
+				}
+			}
+			return defaultProfiles;
+		}
+	}
+public static int solve(int a,int b,char ch)
+    {
+        switch(ch)
+        {
+            case '+':
+                return a+b;
+            case '-':
+                return a-b;
+            case '*':
+                return a*b;
+            case '/':
+                return a/b;
+            case '^':
+                return (int)Math.pow(a, b);
+            default:
+                return -1;
+        }
+    }
+String cppToJavaType(IType type, TypeType tp) throws DOMException
+	{
+		if (type instanceof IBasicType)
+		{
+			IBasicType basic = (IBasicType) type;
+			if (tp == TypeType.RAW)
+				return evaluateSimpleType(basic.getKind(), basic.isShort(), basic.isLongLong(), basic.isUnsigned());
+			else if (tp == TypeType.INTERFACE)
+				return "I" + evaluateSimpleTypeBoxed(basic.getKind(), basic.isShort(), basic.isLongLong(), basic.isUnsigned());
+			else
+				return "M" + evaluateSimpleTypeBoxed(basic.getKind(), basic.isShort(), basic.isLongLong(), basic.isUnsigned());
+		}
+		else if (type instanceof IArrayType)
+		{
+			IArrayType array = (IArrayType) type;
+			String jt = cppToJavaType(array.getType(), tp);
+			if (tp == TypeType.RAW)
+				return jt;
+			else if (tp == TypeType.INTERFACE)
+				return jt;
+			else
+				return jt + "Multi";
+		}
+		else if (type instanceof ICompositeType)
+		{
+			ICompositeType comp = (ICompositeType) type;
+			String simple = getSimpleType(comp.getName());
+				ParameterizedType param = ast.newParameterizedType(simple);
+				List<Type> list = getTypeParams(template.getTemplateArguments());
+				param.typeArguments().addAll(list);
+				return param;
+			}
+			else
+			{
+				return simple;
+			}
+		}
+		else if (type instanceof IPointerType)
+		{
+			IType baseType = getPointerBaseType(type);
+			int ptrCount = getPointerIndirectionCount(type);
+			if (isBasicType(baseType) && ptrCount == 1)
+			{
+				return cppToJavaType(baseType, tp);
+			}
+			else if (tp == TypeType.RAW)
+			{
+				return cppToJavaType(baseType, tp);
+			}
+			else
+			{
+				 One level of indirection becomes:
+				   IPtrObject<BASE_TYPE>
+				 Two levels of indirection become:
+				   IPtrObject<IPtrObject<BASE_TYPE>>
+				 and so on.
+				String wrap = cppToJavaType(baseType, tp);
+				if (isBasicType(baseType))
+					ptrCount--;
+				while (ptrCount-- > 0)
+				{
+					if (tp == TypeType.INTERFACE)
+						wrap = "IPtrObject<" + wrap + ">";
+					else if (tp == TypeType.IMPLEMENTATION)
+						wrap = "PtrObject<" + wrap + ">";
+				}
+				return wrap;
+			}
+		}
+		else if (type instanceof ICPPReferenceType)
+		{
+			ICPPReferenceType ref = (ICPPReferenceType) type;
+			if ((ref.getType() instanceof IQualifierType) || 
+				ref.getType() instanceof ICPPClassType /* &&
+				 ((IQualifierType) ref.getType()).isConst()) */)
+			{
+				return cppToJavaType(ref.getType(), tp);
+			}
+			else if (ref.getType() instanceof IBasicType || 
+					(ref.getType() instanceof ITypedef && 
+					((ITypedef) ref.getType()).getType() instanceof IBasicType))
+			{
+				IBasicType basic;
+				if (ref.getType() instanceof ITypedef)
+					basic = ((IBasicType)((ITypedef) ref.getType()).getType());
+				else
+					basic = (IBasicType) ref.getType();
+				String basicStr = evaluateSimpleTypeBoxed(basic.getKind(), basic.isShort(), basic.isLongLong(), basic.isUnsigned());
+				String simpleType = "I" + basicStr;
+				return simpleType;
+			}
+			else
+				ParameterizedType paramType = ast.newParameterizedType(jast.newType("Ref"));    		  
+				paramType.typeArguments().add(cppToJavaType(ref.getType(), false, true));  		  
+				return paramType;
+			}
+		}
+		else if (type instanceof IQualifierType)
+		{
+			IQualifierType qual = (IQualifierType) type;
+			return cppToJavaType(qual.getType(), tp);
+		}
+		else if (type instanceof IProblemBinding)
+		{
+			IProblemBinding prob = (IProblemBinding) type;
+			MyLogger.logImportant("PROBLEM:" + prob.getMessage() + prob.getFileName() + prob.getLineNumber());
+			return "PROBLEM__";
+		}
+		else if (type instanceof ITypedef)
+		{
+			ITypedef typedef = (ITypedef) type;
+			return cppToJavaType(typedef.getType(), tp);
+		}
+		else if (type instanceof IEnumeration)
+		{
+			IEnumeration enumeration = (IEnumeration) type;
+			return getSimpleType(enumeration.getName());
+		}
+		else if (type instanceof IFunctionType)
+		{
+			IFunctionType func = (IFunctionType) type;
+			return "FunctionPointer";
+		}
+		else if (type instanceof IProblemType)
+		{
+			IProblemType prob = (IProblemType)type; 
+			MyLogger.logImportant("Problem type: " + prob.getMessage());
+			exitOnError();
+			return "PROBLEM";
+		}
+		else if (type instanceof ICPPTemplateTypeParameter)
+		{
+			ICPPTemplateTypeParameter template = (ICPPTemplateTypeParameter) type;
+			MyLogger.logImportant("template type");
+			return template.toString();
+		}
+		else if (type != null)
+		{
+			MyLogger.logImportant("Unknown type: " + type.getClass().getCanonicalName() + type.toString());
+			MyLogger.exitOnError();
+		}
+		return null;
+	}
+@OnThread(Tag.Any)
+    public void attachWorldHandler(WorldHandler worldHandler)
+    {
+        this.worldHandler = worldHandler;
+        worldHandler.addWorldListener(this);
+        addSimulationListener(worldHandler);
+        start();
+    }
+@Override
+    public ArrayList<Course> searchProfessorCourse(Professor professor){
+        String query = "SELECT * FROM Course WHERE professor_id = ?";
+        ArrayList<Course> courses = new ArrayList<Course>();
+        try{
+            List<Map<String, Object>> result = jdbcTemplate.queryForList(query, professor.getNetid());
+            if (result.size() > 0) {
+                for (int i = 0; i < result.size(); i ++){
+                    Course course = new Course();
+                    Map<String, Object> map = result.get(i);
+                    course.setCourse_name((String) map.get("course_name"));
+                    course.setCourse_code((String) map.get("code"));
+                    course.setSemester((String) map.get("semester"));
+                    course.setLocation((String) map.get("location"));
+                    course.setDept_name((String) map.get("department"));
+                    course.setProfessor_id(professor.getNetid());
+                    courses.add(course);
+                }
+            }
+        } catch (DataAccessException e){
+            SQLException exception = (SQLException) e.getCause();
+            exception.printStackTrace();
+        }
+        return courses;
+    }
+private void writeIndent() throws IOException {
+    if (this.indent > 0) {
+      int i = this.indent;
+      while (i > 0) {
+        this.write(' ');
+        i--;
+      }
+    }
+  }
+boolean IsFuture(String s) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date d1 = sdf.parse(s);
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE,1);
+        Date d2 = cal.getTime();
+        if(d1.compareTo(d2) > 0){
+            return true;
+        }
+        else
+            return false;
+    }
+public CompletionStage<Void> execute(final Instant modified, final IRI id) {
+        return preparedStatementAsync().thenApply(stmt ->
+                stmt.bind().set("modified", modified, Instant.class)
+                           .set("identifier", id, IRI.class)
+                           .setConsistencyLevel(consistency))
+            .thenCompose(session::executeAsync)
+            .thenAccept(r -> LOGGER.debug("Executed query: {}", queryString));
+    }
+private void determineCaption()
+    {
+        if ((getType() == TYPE_USER_MENU) || (getType() == TYPE_USER_TOOLBAR))
+        {
+            setText(getXMLStoreItem().getDisplay());
+        }
+        else
+        {
+            setText("UNKNOWN");
+        }
+    }

@@ -1,0 +1,181 @@
+fn adjust_tangents(&mut self, at: usize) {
+        let length = self.keyframes.len();
+        let mut tangent = T::FLAT_TANGENT;
+        match self.tangents_control[at] {
+            TangentControl::Auto => {
+                if length > 2 {
+                    let p = if at > 0 { at - 1 } else { 0 };
+                    let n = if (at + 1) < length {
+                        at + 1
+                    } else {
+                        length - 1
+                    };
+                    tangent = T::auto_tangent(
+                        self.time_stamps[p],
+                        self.time_stamps[at],
+                        self.time_stamps[n],
+                        &self.keyframes[p],
+                        &self.keyframes[at],
+                        &self.keyframes[n],
+                    );
+                }
+            }
+            TangentControl::Free => {
+                // Copy left tangent into the right tangent
+                self.tangents_out[at] = self.tangents_in[at];
+                return;
+            }
+            TangentControl::Flat => {}
+            _ => {
+                // Do nothing
+                return;
+            }
+        }
+        self.tangents_in[at] = tangent;
+        self.tangents_out[at] = tangent;
+    }
+pub fn position_to_unicode_line_char(&self, offset: usize) -> (usize, usize) {
+        if offset == 0 {
+            return (0, 0);
+        }
+        let line = match self.line_starts.binary_search(&offset) {
+            Ok(exact) => exact,
+            Err(0) => return (0, 0),
+            Err(n) => n - 1,
+        };
+        let line_start = self.line_starts[line];
+        let rest = &self.source[line_start..];
+        let offset = offset - line_start;
+        let mut line_count = 0;
+        for (n, _) in rest.char_indices() {
+            if n == offset {
+                return (line, line_count);
+            }
+            if n > offset {
+                break;
+            }
+            line_count += 1;
+        }
+        (line, line_count)
+    }
+pub fn rustbook(build: &Build, stage: u32, target: &str, name: &str, out: &Path) {
+    t!(fs::create_dir_all(out));
+    let out = out.join(name);
+    let compiler = Compiler::new(stage, &build.config.build);
+    let src = build.src.join("src/doc").join(name);
+    let index = out.join("index.html");
+    let rustbook = build.tool(&compiler, "rustbook");
+    if up_to_date(&src, &index) && up_to_date(&rustbook, &index) {
+        return
+    }
+    println!("Rustbook stage{} ({}) - {}", stage, target, name);
+    let _ = fs::remove_dir_all(&out);
+    build.run(build.tool_cmd(&compiler, "rustbook")
+                   .arg("build")
+                   .arg(&src)
+                   .arg(out));
+}
+fn load_block_payload(
+    db_env: Arc<Environment>,
+    artifacts: Database,
+    payload_key: &IdKey,
+    log: &ReplicaLogger,
+) -> lmdb::Result<BlockPayload> {
+    let tx = db_env.begin_ro_txn()?;
+    let bytes = tx.get(artifacts, &payload_key)?;
+    bincode::deserialize::<BlockPayload>(bytes).map_err(|err| {
+        error!(log, "Error deserializing block payload: {:?}", err);
+        lmdb::Error::Panic
+    })
+}
+pub fn fog_ingest_sigstruct(self, sig: Option<Signature>) -> Self {
+        let mut retval = self;
+        retval.fog_ingest_sig = sig;
+        retval
+    }
+fn bump(&mut self) {
+        self.token = self.macro_stack.pop();
+        if self.token.is_some() {
+            return;
+        }
+        loop {
+            self.token = match self.stack.last_mut() {
+                Some(stream) => stream
+                    .iter
+                    .next()
+                    .map(|tkn| (tkn.0, Span::new(stream.source, tkn.1, tkn.2))),
+                None => return,
+            };
+            if self.token.is_none() {
+                self.stack.pop();
+            } else {
+                break;
+            }
+        }
+    }
+fn pool_tokens_to_trading_tokens(
+        &self,
+        pool_tokens: u128,
+        pool_token_supply: u128,
+        swap_token_a_amount: u128,
+        swap_token_b_amount: u128,
+    ) -> Option<TradingTokenResult> {
+        // Split the pool tokens in half, send half as token A, half as token B
+        let token_a_pool_tokens = pool_tokens.checked_div(2)?;
+        let token_b_pool_tokens = pool_tokens.checked_sub(token_a_pool_tokens)?;
+        let token_b_price = self.token_b_price as u128;
+        let total_value = swap_token_b_amount
+            .checked_mul(token_b_price)?
+            .checked_add(swap_token_a_amount)?;
+        let token_a_amount = token_a_pool_tokens
+            .checked_mul(total_value)?
+            .checked_div(pool_token_supply)?;
+        let token_b_amount = token_b_pool_tokens
+            .checked_mul(total_value)?
+            .checked_div(token_b_price)?
+            .checked_div(pool_token_supply)?;
+        Some(TradingTokenResult {
+            token_a_amount,
+            token_b_amount,
+        })
+    }
+pub fn select_word_at_caret(&mut self) -> bool {
+        debug!("[compose_area] select_word_at_caret");
+        if let Some(wac) = self.get_word_at_caret() {
+            let node = wac.node();
+            set_selection_range(
+                &Position::Offset(&node, wac.start_offset()),
+                Some(&Position::Offset(&node, wac.end_offset())),
+            )
+            .is_some()
+        } else {
+            false
+        }
+    }
+pub fn size_hint(&self) -> Size {
+        let (obj_data, funcs) = self.get_list_widget_item_obj_funcs();
+        unsafe {
+            let ret_val = ((*funcs).size_hint)(obj_data);
+            let t = ret_val;
+            let ret_val;
+            if t.host_data != ::std::ptr::null() {
+                ret_val = Size::new_from_rc(t);
+            } else {
+                ret_val = Size::new_from_owned(t);
+            }
+            ret_val
+        }
+    }
+pub fn uint_to_g2(num: u32) -> G2 {
+    let mut num = num;
+    let mut power = G2::one();
+    let mut ans = G2::zero();
+    while num != 0 {
+        if (num & 1) != 0 {
+            ans.add_assign(&power);
+        }
+        power.double();
+        num >>= 1;
+    }
+    ans
+}

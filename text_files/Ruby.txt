@@ -1,0 +1,100 @@
+def copy_model_errors_to_change_set
+      request_change_set.model.errors.each do |key, value|
+        request_change_set.errors.add(key, value)
+      end
+    end
+def run(options)
+      create_bundle_path
+      if Bundler.settings[:frozen]
+        @definition.ensure_equivalent_gemfile_and_lockfile(options[:deployment])
+      end
+      if dependencies.empty?
+        Bundler.ui.warn "The Gemfile specifies no dependencies"
+        lock
+        return
+      end
+      resolve_if_need(options)
+      install(options)
+      lock unless Bundler.settings[:frozen]
+      Standalone.new(options[:standalone], @definition).generate if options[:standalone]
+    end
+def command_line(options = {})
+        download_path = path(options)
+        output_flag = "-o '#{download_path}.%(ext)s'"
+        "youtube-dl #{@video.source_url} #{FORMAT_ARG} #{options[:flags]} #{output_flag}"
+      end
+def connect_to_sub_server(sub_push="sub_push")
+    $log_publisher = context.socket(ZMQ::PUB) 
+    trap_int($log_publisher)
+    $log_publisher.connect("inproc://#{sub_push}")
+  end
+def each_to_otherfunc(dasm)
+		each_to { |to, type|
+			to = dasm.normalize(to)
+			yield to if type == :indirect or dasm.function[to] or not dasm.decoded[to]
+		}
+	end
+def upload_locally_staged_rpms_to(hirs_host, rpm_staging_dir)
+    rpms = Dir['*.rpm'] + Dir[File.join('rpms','*.rpm')]
+    rpms.each do |f|
+      scp_to(hirs_host,f,rpm_staging_dir)
+    end
+  end
+def format_datetime value, default
+      if value then
+        value.strftime(DATETIME_FORMAT)
+      else
+        default
+      end
+    end
+def require_all_libs_relative_to( fname, dir = nil )
+      dir ||= ::File.basename(fname, '.*')
+      search_me = ::File.expand_path(
+          ::File.join(::File.dirname(fname), dir, '*.rb'))
+      Dir.glob(search_me).sort.each {|rb| require rb}
+    end
+def start_tpm_1_2_sim(hirs_host)
+    os = fact_on(hirs_host,'operatingsystemmajrelease')
+    on hirs_host, 'yum install -y trousers gcc tpm-tools'
+    if os.eql?('7')
+      on hirs_host, 'systemctl start tpm12-simulator'
+      on hirs_host, 'systemctl start tpm12-tpmbios'
+      on hirs_host, 'systemctl restart tpm12-simulator'
+      on hirs_host, 'systemctl restart tpm12-tpmbios'
+      on hirs_host, 'systemctl start tpm12-tpminit'
+      on hirs_host, 'systemctl start tpm12-tcsd'
+    else os.eql?('6')
+      on hirs_host, 'service tpm12-simulator start '
+      on hirs_host, 'service tpm12-tpmbios start '
+      on hirs_host, 'service tpm12-simulator restart '
+      on hirs_host, 'service tpm12-tpmbios start '
+      on hirs_host, 'service tpm12-tpminit start '
+      on hirs_host, 'service tpm12-tcsd start '
+    end
+  end
+def change_mount_target_compartment(mount_target_id, change_mount_target_compartment_details, opts = {})
+      logger.debug 'Calling operation FileStorageClient#change_mount_target_compartment.' if logger
+      raise "Missing the required parameter 'mount_target_id' when calling change_mount_target_compartment." if mount_target_id.nil?
+      raise "Missing the required parameter 'change_mount_target_compartment_details' when calling change_mount_target_compartment." if change_mount_target_compartment_details.nil?
+      raise "Parameter value for 'mount_target_id' must not be blank" if OCI::Internal::Util.blank_string?(mount_target_id)
+      path = '/mountTargets/{mountTargetId}/actions/changeCompartment'.sub('{mountTargetId}', mount_target_id.to_s)
+      operation_signing_strategy = :standard
+      query_params = {}
+      header_params = {}
+      header_params[:accept] = 'application/json'
+      header_params[:'content-type'] = 'application/json'
+      header_params[:'if-match'] = opts[:if_match] if opts[:if_match]
+      header_params[:'opc-request-id'] = opts[:opc_request_id] if opts[:opc_request_id]
+      post_body = @api_client.object_to_http_body(change_mount_target_compartment_details)
+      OCI::Retry.make_retrying_call(applicable_retry_config(opts), call_name: 'FileStorageClient#change_mount_target_compartment') do
+        @api_client.call_api(
+          :POST,
+          path,
+          endpoint,
+          header_params: header_params,
+          query_params: query_params,
+          operation_signing_strategy: operation_signing_strategy,
+          body: post_body
+        )
+      end
+    end

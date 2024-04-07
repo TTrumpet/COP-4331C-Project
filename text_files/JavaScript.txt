@@ -1,0 +1,185 @@
+function insertDtmf(tones, duration, interToneGap) {
+  if (gDtmfSender == null)
+    throw failTest('Trying to send DTMF, but there is no DTMF sender.');
+  gDtmfSender.insertDTMF(tones, duration, interToneGap);
+}
+function convertDocumentsForSave(attachmentsList, actorId) {
+    const allAttachments = attachmentsList.toJS();
+    const documents = [];
+    const attachments = [];
+    const actorDocument = [];
+    let generatedDocumentId = -10;
+    if (allAttachments.length > 0) {
+        allAttachments.forEach((item) => {
+            let docId;
+            if (item.documentId) {
+                docId = item.documentId;
+            } else {
+                docId = generatedDocumentId;
+                generatedDocumentId--;
+            }
+            documents.push({
+                actorId,
+                documentId: docId,
+                documentTypeId: item.documentTypeId,
+                description: item.documentDescription || null,
+                statusId: item.statusId
+            });
+            attachments.push({
+                contentType: item.attachments[0].contentType,
+                documentId: docId,
+                attachmentSizeId: 'original',
+                extension: item.attachments[0].extension
+            });
+            if (item.attachmentId) {
+                attachments[(attachments.length - 1)].attachmentId = item.attachmentId;
+            }
+            if ((item.statusId === 'new' && !item.attachmentId) || item.statusId === 'pending') {
+                attachments[(attachments.length - 1)].filename = item.filename;
+            }
+            actorDocument.push({
+                actorId,
+                documentId: docId,
+                documentOrder: 255
+            });
+        });
+    }
+    return {
+        document: documents,
+        attachment: attachments,
+        actorDocument: actorDocument
+    };
+}
+get cohorts() {
+    if (!this._cohorts) {
+      return [];
+    }
+    return this._cohorts.toArray();
+  }
+function after(method, fn) {
+        var _orig = $.fn[method];
+        if (fn && _orig) {
+            $.fn[method] = function() {
+                var args = [].slice.call(arguments),
+                    results;
+                results = _orig.apply(this, args);
+                fn.apply(this, args);
+                return results;
+            };
+        }
+    }
+function RenderingGroup(index, scene, opaqueSortCompareFn, alphaTestSortCompareFn, transparentSortCompareFn) {
+        if (opaqueSortCompareFn === void 0) { opaqueSortCompareFn = null; }
+        if (alphaTestSortCompareFn === void 0) { alphaTestSortCompareFn = null; }
+        if (transparentSortCompareFn === void 0) { transparentSortCompareFn = null; }
+        this.index = index;
+        this._opaqueSubMeshes = new SmartArray(256);
+        this._transparentSubMeshes = new SmartArray(256);
+        this._alphaTestSubMeshes = new SmartArray(256);
+        this._depthOnlySubMeshes = new SmartArray(256);
+        this._particleSystems = new SmartArray(256);
+        this._spriteManagers = new SmartArray(256);
+        this._edgesRenderers = new SmartArrayNoDuplicate(16);
+        this._scene = scene;
+        this.opaqueSortCompareFn = opaqueSortCompareFn;
+        this.alphaTestSortCompareFn = alphaTestSortCompareFn;
+        this.transparentSortCompareFn = transparentSortCompareFn;
+    }
+function combineSpacedArgs(arr, argnum) {
+  var combined = '';
+  for (var word = argnum; word < arr.length; word++) {
+    combined += arr[word] + ' ';
+  }
+  return combined;
+}
+_getChangeNumber(change) {
+      if (change.hasOwnProperty('_change_number')) {
+        return change._change_number;
+      }
+      return change._number;
+    }
+static createInChangeVariableActionUnderValueModel(container) {
+            internal.createInVersionCheck(container.model, EnumerationValueRefExpression.structureTypeName, {
+                start: "7.9.0",
+                end: "9.7.0"
+            });
+            return internal.instancehelpers.createElement(container, EnumerationValueRefExpression, "valueModel", false);
+        }
+function JitsiLocalTrack(
+        rtcId,
+        stream,
+        track,
+        mediaType,
+        videoType,
+        resolution,
+        deviceId,
+        facingMode) {
+    this.rtcId = rtcId;
+    JitsiTrack.call(
+        this,
+        null ,
+        stream,
+        track,
+        () => {
+            if (!this.dontFireRemoveEvent) {
+                this.eventEmitter.emit(JitsiTrackEvents.LOCAL_TRACK_STOPPED);
+            }
+            this.dontFireRemoveEvent = false;
+        } ,
+        mediaType,
+        videoType);
+    this.dontFireRemoveEvent = false;
+    this.resolution = resolution;
+    if (RTCBrowserType.isFirefox()) {
+        this.resolution = null;
+    }
+    this.deviceId = deviceId;
+    this.storedMSID = this.getMSID();
+    this.inMuteOrUnmuteProgress = false;
+    this._facingMode = facingMode;
+    this._trackEnded = false;
+    this._bytesSent = null;
+    this._testByteSent = true;
+    this._realDeviceId = this.deviceId === '' ? undefined : this.deviceId;
+    this.stopStreamInProgress = false;
+    this._noDataFromSourceTimeout = null;
+    this._onDeviceListChanged = devices => {
+        this._setRealDeviceIdFromDeviceList(devices);
+        if (typeof this.getTrack().readyState === 'undefined'
+                && typeof this._realDeviceId !== 'undefined'
+                && !devices.find(d => d.deviceId === this._realDeviceId)) {
+            this._trackEnded = true;
+        }
+    };
+    if (this.isAudioTrack() && RTCUtils.isDeviceChangeAvailable('output')) {
+        this._onAudioOutputDeviceChanged = this.setAudioOutput.bind(this);
+        RTCUtils.addListener(
+            RTCEvents.AUDIO_OUTPUT_DEVICE_CHANGED,
+            this._onAudioOutputDeviceChanged);
+    }
+    RTCUtils.addListener(
+        RTCEvents.DEVICE_LIST_CHANGED,
+        this._onDeviceListChanged);
+    this._initNoDataFromSourceHandlers();
+}
+function attributeGenerator (ref, type, data) {
+  if ( ref === void 0 ) ref = {};
+  var attribute = ref.attribute;
+  return {
+    text: function text () {
+      var attributeStr = '';
+      var watchedAttrs = [];
+      for (var attr in data) {
+        if (data.hasOwnProperty(attr)) {
+          watchedAttrs.push(attr);
+          attributeStr += isUndefined(data[attr]) || booleanHtmlAttributes.includes(attr)
+            ? attr
+            : (attr + "=\"" + (isArray(data[attr]) ? data[attr].join(' ') : data[attr]) + "\"");
+          attributeStr += ' ';
+        }
+      }
+      attributeStr += attribute + "=\"" + ((watchedAttrs.sort()).join(',')) + "\"";
+      return attributeStr
+    }
+  }
+}
