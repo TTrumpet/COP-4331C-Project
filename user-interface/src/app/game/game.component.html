@@ -4,28 +4,26 @@
             <img src="../../assets/images/material-symbols_timer-outline.svg" alt="timer-icon" width="41.25px" height="48.15px">
         </div>
         <div class="time-box">
-            <span class = "green"> {{display}}</span>
+            <span class="green"> {{display}}</span>
         </div>
 
         <!--car(s)-->
         <div class="car">
-            <img id="car1" src="../assets/images/car.svg" alt="green car side view" width="1832.4" height="590.65">
+             <img id="car1" src="../assets/images/car.svg" alt="green car side view" width="1832.4" height="590.65">
         </div>
+        
 
         <div class="centered">
             <div class="code-box">
-                <p id="previous-line">{{ previousLine }}</p>
-                <p id="current-line">{{ displayGreyLine }}</p>
-                <p id="next-line">{{ nextLine }}</p>
+                <div id="previous-line">{{ previousLine }}</div>
+                <div id="current-line">{{ displayGreyLine }}</div>
+                <div id="next-line">{{ nextLine }}</div>
             </div>
             
-            <div id="current-line-white">{{ displayWhiteLine }}</div>
-
-            <!--  ellipse track
-            <div class="track">
-                <img id="track-img" src="../../assets/images/track.svg" alt="track" width="1440" height="1024">
+            <div id="green-line-container">
+                <div id="current-line-green">{{ displayWhiteLine }}</div>
             </div>
-            -->
+
         </div>
     </main>
 </body>

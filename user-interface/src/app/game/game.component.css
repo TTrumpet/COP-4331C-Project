@@ -26,7 +26,7 @@ body {
     text-align: center;
 }
 
-.centered {
+ .centered {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -34,8 +34,8 @@ body {
 }
 
 .code-box {
-    width: 850px;
-    height: 650px;
+    width: 750px;
+    height: 550px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -45,15 +45,13 @@ body {
     align-items: center;
     flex-direction: column;
     background-color: rgba(24, 82, 43, 0.075);
+    word-break: break-all;
 }
 
-p {
-    width: 850px;
-    height: 290px;
-    text-align: left;
-    text-align: left;
+#previous-line, #next-line, #current-line {
+    width: 750px;
+    height: 190px;
     color: grey;
-    white-space: pre;
     font-family: 'Courier New', Courier, monospace;
 }
 
@@ -65,43 +63,51 @@ p {
     font-size: 24px;
 }
 
-#current-line-white {
-    font-size: 24px;
-    white-space: pre;
-    width: 850px;
-    height: 177px;
-    color: #55eb53;
+#green-line-container {
+    width: 750px;
+    height: 182px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    display: flex;
+    word-break: break-all;
+    white-space: pre-wrap;
+}
+
+#current-line-green {
+    font-size: 24px;
+    color: #55eb53;
     font-family: 'Courier New', Courier, monospace;
 }
 
-/*
-#track-img {
-    height: 100vh;
-    width: 100vw;
+/*@keyframes initial-car-onto-track {
+
+}*/
+
+@keyframes initial-car-start-translation {
+    from {transform: translate(0px) scaleX(-1);;}
+    to {transform: translate(25vw) scaleX(-1);;}
 }
-*/
+
+@keyframes car-back-and-forth {
+    from {transform: translate(-50px) scaleX(-1);}
+    to {transform: translate(50px) scaleX(-1);}
+}
 
 .car {
     width: 100vw;
     height: 100vh;
-    border: 2px solid white;
     position: relative;
 }
 
 #car1 {
-    width: 91.62px;
-    height: 29.5325px;
+    border: 4px solid pink;
+    width: 25vw;
+    height: 15vh;
     position: absolute;
+    top: 80%;
+    left: 10%;
     transform: scaleX(-1);
-}
-
-/* when the view width is smaller than 1200, then the track shrinks
-   when the view length is smaller than 855, then the track shrinks 
-   otherwise, the track is the same length and width as the screen size */
-@media screen and (max-width: 1200px), screen and (max-height: 855px) {
-
+    z-index: 100;
 }

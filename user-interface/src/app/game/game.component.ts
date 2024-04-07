@@ -4,6 +4,8 @@ import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule, ActivatedRout
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { HostListener } from '@angular/core';
 import { LoadingComponent } from '../loading/loading.component';
+import { UserService } from '../user.service';
+import { ProfileService } from '../profile.service';
 
 @Component({
   selector: 'app-game',
@@ -17,7 +19,7 @@ export class GameComponent {
   display: any;
 
   // change into code snippets
-  codeText: string[] = this._parent.codeText;;
+  codeText: string[] = this._parent.codeText;
 
   num = 0; // index of code text
   previousLine = ""; // previous line
@@ -29,45 +31,45 @@ export class GameComponent {
   key = ''; // char from KeyboardEvent
   count = 0;  // count of correct amount of characters
   finalcount = 0; // use to record count after game is completed (since hostlistener cannot be disabled)
-  spacecount = 1;
+  newLines = ""; // for wrapped strings
+  spacecount = 1; // display spaces
   isGameStart = false;
+  isGameEnd = false;
 
-  // car variables
-  numChars = this.currentLine.length; // for seeing how fast the car moves
-
-  constructor(private _parent: LoadingComponent, public dialog : MatDialog, private route : ActivatedRoute, private router : Router) {
+  constructor(private _parent: LoadingComponent, public dialog : MatDialog, private route : ActivatedRoute, private router : Router,  private userService : UserService, private profileService : ProfileService) {
     
   }
 
-  /*ngOnInit() {
+  ngOnInit() {
     if (this.userService.getLog() == false)
       this.router.navigate([''], {}); 
-  }*/
+  }
 
   ngAfterContentInit() {
+    // have car moving onto the track
     setTimeout( () => {
       this._parent.text = "3";
       console.log("3");
-    }, 3000)
+    }, 1000)
     setTimeout( () => {
       this._parent.text = "2";
       console.log("2");
-    }, 6000)
+    }, 2000)
     setTimeout( () => {
       this._parent.text = "1";
       console.log("1");
-    }, 9000)
+    }, 3000)
     setTimeout( () => {
       this._parent.text = "START!";
       console.log("START!");
-    }, 12000)
+    }, 4000)
     setTimeout( () => {
       this._parent.text = "";
-    }, 15000)
+    }, 5000)
     setTimeout( () => {
       this.playGame();
       this.isGameStart = true;
-    }, 15000)
+    }, 5000)
   }
 
   playGame() {
@@ -94,15 +96,17 @@ export class GameComponent {
       this.display = `${textSec} Seconds`;
 
       if (seconds == 0) {
+        // also include car speeding off and slowing down dotted line -> transition to loading screen
         this._parent.text = "FINISH!"
+        this.isGameEnd = true;
         this.finalcount = this.count;
         this._parent.finalCount = this.finalcount;
         console.log(this._parent.finalCount);
         setTimeout( () => {
           clearInterval(timer);
           this._parent.text = "loading...";
-          this.router.navigate(['/loading']);
-          this._parent.gameOver();
+          //this.router.navigate(['/loading']);
+          //this._parent.gameOver();
         }, 3000)
       }
     }, 1000);
@@ -123,14 +127,22 @@ export class GameComponent {
     if (this.key == this.currentLine.charAt(0)) {
       this.currentLine = this.currentLine.substring(1);
 
-      // adding leading spaces
       this.displayWhiteLine = "";
-      for (let i = 0; i < this.spacecount; i++) {
-        this.displayWhiteLine += " ";
+
+      // adding new line characters for wrapped strings
+      if (this.spacecount % 52 == 0) {
+          this.newLines += '\r\n';
+          this.spacecount = 0;
       }
+      this.displayWhiteLine += this.newLines;
+
+       // adding leading spaces
+      for (let i = 0; i < this.spacecount; i++)
+        this.displayWhiteLine += " ";
+        
       // adding the substring
       this.displayWhiteLine += this.currentLine;
-
+    
       this.spacecount = this.spacecount + 1;
       this.count++;
     }
@@ -138,7 +150,10 @@ export class GameComponent {
 
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event:KeyboardEvent) {
-    if (this.isGameStart) {
+    if (this.isGameEnd) { // stops reading keyboard events when game ends
+      return;
+    }
+    if (this.isGameStart) { // starts reading keyboard events when game starts
       this.key = event.key;
       this.checkKeypress();
     }

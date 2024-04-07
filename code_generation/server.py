@@ -34,7 +34,7 @@ app = Flask(__name__)
 api = Api(app)
 
 #Set Uri to equal "mysql+pymysql://"User":"pass"@127.0.0.1:3306/"dbName"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@127.0.0.1:3306/mydb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:yellowcat222@127.0.0.1:3306/sys'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #can be true if pref
 
 #for connection with ang
@@ -94,6 +94,7 @@ def create_user():
 
 @app.route('/login', methods=['POST'])
 def login():
+    print("login")
     data = request.get_json()
     name = data.get('name')
     password = data.get('password')
@@ -183,32 +184,29 @@ def update_profile():
         db.session.rollback()
         return jsonify({"message": "An error occurred while updating the profile", "error": str(e)}), 500
 
+@app.route('/get_code', methods=['POST'])
+def get_code():
+    print("in code gen")
+    data = request.get_json()
+    language = data.get('language')
+    data = load_dataset("Fsoft-AIC/the-vault-function", split_set=["train"], languages=[language], streaming=True, trust_remote_code=True)
+    print("data loaded")
+    f = open('../user-interface/src/assets/codesnippets.txt', 'w')
+    for i in range(5):
+        for index, sample in enumerate(data):
+            if not random.randint(0, index):
+                f.write(sample['code'].split('\n'))
+                print(i + " loaded code snippet")
+    return jsonify({"message": "not an error error"}), 500
+
 if __name__ == '__main__':
     app.run()
 
-class CodeGeneration(Resource):
-    def __init__(self, language):
-        self.language = language
-        data = load_dataset("Fsoft-AIC/the-vault-function", split_set=["train"], languages=[language], streaming=True, trust_remote_code=True)
-        self.data = data['train']
-        data['train'] = data['train'].shuffle()
-
-    def code_gen(self):
-        #self.data = self.data.shuffle()
-        for index, sample in enumerate(self.data):
-            if not random.randint(0, index):
-                return sample['code'].split('\n')
-
-    #@app.route('/loading', methods=['GET'])
-    def code_gen_wrapper(self):
-        f = open('../user-interface/src/assets/codesnippets.txt', 'w')
-        for i in range(5):
-            f.write(code_gen())
-
+    
 
 
 #@app.route('/code_gen', methods=['GET'])
-api.add_resource(CodeGeneration,'/start_game/<language>')
+#api.add_resource(CodeGeneration,'/start_game/<language>')
 
 # Base = declarative_base()
 

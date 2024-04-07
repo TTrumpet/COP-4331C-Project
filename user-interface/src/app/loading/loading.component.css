@@ -4,7 +4,7 @@ main {
     background-color: black;
 }
 
-div {
+.text-box {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -30,4 +30,13 @@ div {
     letter-spacing: 8px;
     word-wrap: break-word;
     animation: glow 1s infinite alternate;
+}
+
+.track-grey {
+    border: 4px solid yellow;
+    background-color: grey;
+    height: 15vh;
+    width: 100vw;
+    bottom: 0;
+    position: absolute;
 }
