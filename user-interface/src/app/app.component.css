@@ -109,6 +109,7 @@ button {
 }
 
 footer {
+    z-index: 100;
     position: absolute;
     text-align: center;
     bottom: 0;

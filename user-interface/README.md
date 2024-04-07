@@ -108,3 +108,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - (4/1) Created advertisement footer -Victoria
 - (4/4) Created loading screen and timer function for play game -Victoria
 - (4/5) Created keypress and code snippet display functions. Edited loading page UI -Victoria
+- (4/6) Worked on loading and game UI and functionality. -Victoria

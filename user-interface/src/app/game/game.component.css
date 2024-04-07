@@ -34,8 +34,7 @@ body {
 }
 
 .code-box {
-    border: 2px solid yellow;
-    width: 650px;
+    width: 850px;
     height: 650px;
     position: absolute;
     top: 50%;
@@ -45,11 +44,11 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background-color: rgba(24, 82, 43, 0.075);
 }
 
 p {
-    border: 2px solid orange;
-    width: 650px;
+    width: 850px;
     height: 290px;
     text-align: left;
     text-align: left;
@@ -62,11 +61,15 @@ p {
     color: white;
 }
 
+#current-line {
+    font-size: 24px;
+}
+
 #current-line-white {
-    border: 2px solid blue;
+    font-size: 24px;
     white-space: pre;
-    width: 650px;
-    height: 180px;
+    width: 850px;
+    height: 177px;
     color: #55eb53;
     position: absolute;
     top: 50%;
@@ -75,13 +78,30 @@ p {
     font-family: 'Courier New', Courier, monospace;
 }
 
+/*
 #track-img {
-    border: 4px solid pink;
+    height: 100vh;
+    width: 100vw;
+}
+*/
+
+.car {
+    width: 100vw;
+    height: 100vh;
+    border: 2px solid white;
+    position: relative;
 }
 
 #car1 {
-    border: 2px solid white;
     width: 91.62px;
     height: 29.5325px;
     position: absolute;
+    transform: scaleX(-1);
+}
+
+/* when the view width is smaller than 1200, then the track shrinks
+   when the view length is smaller than 855, then the track shrinks 
+   otherwise, the track is the same length and width as the screen size */
+@media screen and (max-width: 1200px), screen and (max-height: 855px) {
+
 }

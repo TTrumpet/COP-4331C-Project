@@ -193,12 +193,19 @@ class CodeGeneration(Resource):
         self.data = data['train']
         data['train'] = data['train'].shuffle()
 
-    @app.route('/start_game/<language>', methods=['GET'])
     def code_gen(self):
         #self.data = self.data.shuffle()
         for index, sample in enumerate(self.data):
             if not random.randint(0, index):
                 return sample['code'].split('\n')
+
+    #@app.route('/loading', methods=['GET'])
+    def code_gen_wrapper(self):
+        f = open('../user-interface/src/assets/codesnippets.txt', 'w')
+        for i in range(5):
+            f.write(code_gen())
+
+
 
 #@app.route('/code_gen', methods=['GET'])
 api.add_resource(CodeGeneration,'/start_game/<language>')

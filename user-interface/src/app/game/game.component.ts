@@ -45,7 +45,6 @@ export class GameComponent {
   }*/
 
   ngAfterContentInit() {
-    this.placeCar();
     setTimeout( () => {
       this._parent.text = "3";
       console.log("3");
@@ -69,11 +68,6 @@ export class GameComponent {
       this.playGame();
       this.isGameStart = true;
     }, 15000)
-  }
-
-  // put the car on the track
-  placeCar() {
-
   }
 
   playGame() {
@@ -102,7 +96,6 @@ export class GameComponent {
       if (seconds == 0) {
         this._parent.text = "FINISH!"
         this.finalcount = this.count;
-        console.log(this.finalcount);
         this._parent.finalCount = this.finalcount;
         console.log(this._parent.finalCount);
         setTimeout( () => {

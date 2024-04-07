@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule, ActivatedRoute, Router } from '@angular/router';
 
@@ -12,17 +13,25 @@ import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule, ActivatedRout
 export class LoadingComponent {
   text = "loading...";
   finalCount = 0;
+  codeString: string = "";
   codeText: string[] = [];
+  private httpClient: HttpClient;
 
-  constructor(private route : ActivatedRoute, private router : Router) {
-    
+  constructor(http: HttpClient, private route : ActivatedRoute, private router : Router) {
+    this.httpClient = http;
   }
 
   ngOnInit() {
-    // else the game hasn't started yet, so load code snippets and navigate to game page
-      this.codeText = ["hi", "bye", "code cruiser is fun", "i love coding"];
-      this.router.navigate(['/loading/game']);
-    }
+    // the game hasn't started yet, so load code snippets and navigate to game page
+    console.log("in loading component");
+    this.httpClient.get('../assets/codesnippets.txt', {responseType: 'text'}).subscribe(data => {
+        this.codeString = data;
+        console.log(this.codeString);
+        this.codeText = this.codeString.split("\r\n");
+        console.log(this.codeText);
+        this.router.navigate(['/loading/game']);
+    });
+}
 
   gameOver() {
     // if the game is over, wait till the game is saved into database and show stats
