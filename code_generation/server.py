@@ -94,7 +94,6 @@ def create_user():
 
 @app.route('/login', methods=['POST'])
 def login():
-    print("login")
     data = request.get_json()
     name = data.get('name')
     password = data.get('password')
@@ -189,17 +188,33 @@ def get_code():
     print("in code gen")
     data = request.get_json()
     language = data.get('language')
-    data = load_dataset("Fsoft-AIC/the-vault-function", split_set=["test"], languages=[language], streaming=True, trust_remote_code=True)
+    print(language)
+
+    data = load_dataset("Fsoft-AIC/the-vault-function", split_set=["test"], trust_remote_code=True, cache_dir='./cache')
     data = data['test']
-    data = data.shuffle(buffer_size=100)
+    data = data.shuffle()
     print("data loaded")
     f = open('../user-interface/src/assets/codesnippets.txt', 'w')
-    for i in range(5):
-        for index, sample in enumerate(data):
-            if not random.randint(0, index):
-                f.write(sample['code'].split('\n'))
-                print(i + " loaded code snippet")
+    counter = 10
+    for index, sample in enumerate(data):
+        #print(sample)
+        if counter == 0:
+            return jsonify({"message": "success"}), 500
+        if sample['language'] == language:
+            code = sample['code'].replace('\t', '')
+            code = code.replace('    ', '')
+            #code = code.lstrip()
+            #print(f"{code}")
+            try:
+                f.write(code)
+            except:
+                counter += 1
+            print("code snippet loaded")
+            counter -= 1
+
     return jsonify({"message": "not an error error"}), 500
+
+
 
 if __name__ == '__main__':
     app.run()
