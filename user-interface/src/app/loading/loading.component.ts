@@ -37,20 +37,18 @@ export class LoadingComponent {
       this.language = this.profileService.language;
       console.log(this.language);
 
-      // createUser(name: string, password: string): Observable<any> {
-      //   return this.http.post<any>(`${this.baseUrl}/create_user`, { name, password, "python":String});
-      // }
-      this.httpClient.post(`${this.baseUrl}/get_code`, {language : this.language});
+      this.httpClient.post(`${this.baseUrl}/get_code`, {language : this.language}).subscribe(data => {
+
+      });
+      
       setTimeout( () => {
         console.log("Done");
         this.httpClient.get('../assets/codesnippets.txt', {responseType: 'text'}).subscribe(data => {
             this.codeString = data;
-            console.log(this.codeString);
             this.codeText = this.codeString.split("\r\n");
-            console.log(this.codeText);
             this.router.navigate(['/loading/game']);
         });    
-      }, 3000)
+      }, 10000)
     }
 }
 

@@ -1,4 +1,134 @@
-ver long paragraph so I can test if the text is wrapping. if it is then that would be great since coding front end things is very fun.
-new line code snippet
-hello
-goodbye
+public void heartbeat(int partition, Offset offset) {
+synchronized (perPartitionDayWriters) {
+final Counter.Child heartbeatsSent = PrometheusMetrics.hearbeatsSentCounter(eventName, partition);
+try {
+if ((!perPartitionDayWriters.containsKey(partition) || perPartitionDayWriters.get(partition).isEmpty())
+&& !shouldSkipOffset(offset.getOffset(), partition)) {
+final ExpiringConsumer<MESSAGE_KIND> heartbeatWriter = writerBuilder.apply(offset.getPartition(), LocalDateTime.now());
+long now = System.currentTimeMillis();
+MESSAGE_KIND msg = (MESSAGE_KIND) ProtoConcatenator
+.concatToProtobuf(now, offset.getOffset(), Arrays.asList(emptyHeader, emptyMessageBuilder.build()))
+.build();
+heartbeatWriter.write(now, msg, offset);
+final Path writtenFilePath = heartbeatWriter.close();
+if (writtenFilePath != null) {
+heartbeatsSent.inc();
+LOGGER.info("Written heartbeat file {}", writtenFilePath.toUri().getPath());
+}
+}
+} catch (IOException e) {
+LOGGER.warn("Could not write heartbeat", e);
+}
+}
+}private boolean purify(ExprTriple triple) {
+if (triple.getAfter().isEmpty()
+&& triple.getNode().isSideEffectFree(false)) {
+assert triple.getNode().parent() == null;
+return false;
+} else {
+shift(triple, false);
+assert triple.getNode().parent() == null;
+return true;
+}
+}public final boolean add(final Object component) {
+if (!(component instanceof Component)) {
+throw new IllegalArgumentException("Argument not a "
++ Component.class.getName());
+}
+return super.add(component);
+}public ResultMatcher booleanValue(final Boolean value) {
+return result -> {
+MockHttpServletResponse response = result.getResponse();
+this.xpathHelper.assertBoolean(response.getContentAsByteArray(), getDefinedEncoding(response), value);
+};
+}public static long sendShutdownSignal(final InetAddress mgmtAddress, final int mgmtPort) throws IOException {
+  Socket s = new Socket(mgmtAddress, mgmtPort);
+  OutputStream out = s.getOutputStream();
+  out.write(("\r\n").getBytes());
+  out.flush();
+  InputStream is = s.getInputStream();
+  long start = System.currentTimeMillis();
+  is.read(); 
+  s.close();
+  return System.currentTimeMillis() - start;
+   }private Version reduceToLatestVersion(Name module) {
+if (moduleVersionPool.get(module).size() > 1) {
+Iterator<Version> versions = moduleVersionPool.get(module).iterator();
+Version latest = versions.next();
+while (versions.hasNext()) {
+Version version = versions.next();
+if (version.compareTo(latest) > 0) {
+latest = version;
+}
+}
+moduleVersionPool.replaceValues(module, Arrays.asList(latest));
+constraintQueue.addAll(constraints.get(module));
+processConstraints();
+return latest;
+} else {
+Iterator<Version> iterator = moduleVersionPool.get(module).iterator();
+assert iterator.hasNext();
+return iterator.next();
+}
+}public void registerAnnotated(Object registeredHandler, Object eventHandler) {
+if (handlers.containsKey(eventHandler)) {
+throw new IllegalStateException("This handler has already been registered.");
+}
+Method[]   methods = eventHandler.getClass().getMethods();
+HashMap<Class, List<EventHandler>> thisHandler = new HashMap<>();
+for (Method method : methods) {
+EventHandle handleAnn = method.getAnnotation(EventHandle.class);
+if (handleAnn != null) {
+if (method.getParameterCount() != 1 ||
+method.getParameters()[0].getType().isAssignableFrom(Event.class)) {
+throw new IllegalStateException("Methods annotated with @EventHandle must only have 1 parameter that extends Event.");
+}
+Class parameter = method.getParameters()[0].getType();
+if (!handles.containsKey(parameter)) {
+handles.put(parameter, getNewList());
+}
+if (!thisHandler.containsKey(parameter)) {
+thisHandler.put(parameter, getNewList());
+}
+try {
+MethodHandles.Lookup lookup   = MethodHandles.lookup();
+MethodHandle methodHandle = lookup.unreflect(method);
+MethodType invokedType = MethodType.methodType(EventHandler.class, eventHandler
+.getClass());
+MethodType samType= MethodType.methodType(void.class, Event.class);
+MethodType instantiatedMethodType = MethodType.methodType(void.class, parameter);
+EventHandler lambda = (EventHandler) LambdaMetafactory.metafactory(lookup, "accept", invokedType, samType, methodHandle, instantiatedMethodType)
+.getTarget()
+.invoke(eventHandler);
+handles.get(parameter).add(lambda);
+thisHandler.get(parameter).add(lambda);
+} catch (Throwable throwable) {
+throwable.printStackTrace();
+}
+}
+}
+if (!thisHandler.isEmpty()) {
+if (handlers.containsKey(registeredHandler)) {
+handlers.get(registeredHandler).putAll(thisHandler);
+} else {
+handlers.put(registeredHandler, thisHandler);
+}
+}
+}public boolean isSameTag(TagNode other) {
+if (other == null) {
+return false;
+}
+return equals(other);
+}public Update read() throws IOException, InterruptedException {
+if (!ready()) {
+  for (long attempts = 0; getUpdates() == 0; attempts++) {
+Thread.sleep(backOff.applyAsLong(attempts));
+  }
+}
+return updates.remove();
+  }public static void createFile() throws IOException {
+Path testPath = Paths.get("test/test.txt");
+Files.write(testPath, "hello".getBytes(StandardCharsets.UTF_8),
+StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING,
+StandardOpenOption.WRITE);
+}

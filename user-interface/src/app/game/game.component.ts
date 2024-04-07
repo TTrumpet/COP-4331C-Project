@@ -79,14 +79,10 @@ export class GameComponent {
   }
 
   playGame() {
-    // change the time to what the player selects
-    this.timer(0.5);
-
-    // add generating new code snippets after some time
+    this.timer(this.profileService.time);
   }
 
-  timer(minute: number) {
-    let seconds: number = minute * 60;
+  timer(seconds: number) {
     let textSec: any = '0';
     let statSec: number = seconds;
 
@@ -102,27 +98,26 @@ export class GameComponent {
       this.display = `${textSec} Seconds`;
 
       if (seconds == 0) {
-        // also include car speeding off and slowing down dotted line -> transition to loading screen
         this._parent.text = "FINISH!"
         this.isGameEnd = true;
         this.finalcountCorrect = this.countCorrect;
         this.finalcountWrong = this.countWrong;
         this._parent.finalCountCorrect = this.finalcountCorrect;
         this._parent.finalCountWrong = this.finalcountWrong;
-        console.log(this._parent.finalCountCorrect);
         setTimeout( () => {
           clearInterval(timer);
           this._parent.text = "loading...";
-          //this.router.navigate(['/loading']);
-          //this._parent.gameOver();
+          this.router.navigate(['/loading']);
+          this._parent.gameOver();
         }, 3000)
       }
     }, 1000);
   }
 
-    // check if key pressed is equal to the current line's char at index 0
-    // put moving the car inside this function?
   checkKeypress() {
+    console.log("checking key: " + this.key);
+    console.log("current key: " + this.currentLine.charAt(0));
+
     if (this.currentLine.length == 0) {
       this.previousLine = this.codeText[this.num];
       this.num = this.num + 1;
@@ -131,6 +126,7 @@ export class GameComponent {
       this.displayWhiteLine = this.currentLine;
       this.nextLine = this.codeText[this.num + 1];
       this.spacecount = 1;
+      this.newLines = "";
     }
     if (this.key == this.currentLine.charAt(0)) {
       this.currentLine = this.currentLine.substring(1);

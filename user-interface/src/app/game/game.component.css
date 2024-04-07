@@ -46,6 +46,7 @@ body {
     flex-direction: column;
     background-color: rgba(24, 82, 43, 0.075);
     word-break: break-all;
+    white-space: pre-wrap;
 }
 
 #previous-line, #next-line, #current-line {
