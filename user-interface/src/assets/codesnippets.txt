@@ -1,134 +1,183 @@
-public void heartbeat(int partition, Offset offset) {
-synchronized (perPartitionDayWriters) {
-final Counter.Child heartbeatsSent = PrometheusMetrics.hearbeatsSentCounter(eventName, partition);
+@Test
+void testScoreOutput(){
+sequenceScorer = new SequenceScorer(testsig4, testsig4);
+SequenceHits sequenceHits = new SequenceHits();
+sequenceScorer.scoreOutput(BO, sequenceHits);
+}private AspectMetadata createAspectMetadata(Class<?> aspectClass, String aspectName) {
+AspectMetadata am = new AspectMetadata(aspectClass, aspectName);
+if (!am.getAjType().isAspect()) {
+throw new IllegalArgumentException("Class [" + aspectClass.getName() + "] is not a valid aspect type");
+}
+return am;
+}protected void validateValueIfApplicable(WebDataBinder binder, MethodParameter parameter,
+Class<?> targetType, String fieldName, @Nullable Object value) {
+for (Annotation ann : parameter.getParameterAnnotations()) {
+Object[] validationHints = determineValidationHints(ann);
+if (validationHints != null) {
+for (Validator validator : binder.getValidators()) {
+if (validator instanceof SmartValidator) {
 try {
-if ((!perPartitionDayWriters.containsKey(partition) || perPartitionDayWriters.get(partition).isEmpty())
-&& !shouldSkipOffset(offset.getOffset(), partition)) {
-final ExpiringConsumer<MESSAGE_KIND> heartbeatWriter = writerBuilder.apply(offset.getPartition(), LocalDateTime.now());
-long now = System.currentTimeMillis();
-MESSAGE_KIND msg = (MESSAGE_KIND) ProtoConcatenator
-.concatToProtobuf(now, offset.getOffset(), Arrays.asList(emptyHeader, emptyMessageBuilder.build()))
-.build();
-heartbeatWriter.write(now, msg, offset);
-final Path writtenFilePath = heartbeatWriter.close();
-if (writtenFilePath != null) {
-heartbeatsSent.inc();
-LOGGER.info("Written heartbeat file {}", writtenFilePath.toUri().getPath());
+((SmartValidator) validator).validateValue(targetType, fieldName, value,
+binder.getBindingResult(), validationHints);
+}
+catch (IllegalArgumentException ex) {
 }
 }
-} catch (IOException e) {
-LOGGER.warn("Could not write heartbeat", e);
+}
+break;
 }
 }
-}private boolean purify(ExprTriple triple) {
-if (triple.getAfter().isEmpty()
-&& triple.getNode().isSideEffectFree(false)) {
-assert triple.getNode().parent() == null;
-return false;
+}public void showTranslation(TranslationTask task) throws IOException,
+PreprocessorException, ParseException, SyntaxException {
+PrintStream out = task.getOut();
+boolean verbose = task.isVerbose();
+boolean pretty = task.doPrettyPrint();
+boolean tables = task.doShowTables();
+int nfiles = task.getFiles().length;
+Preprocessor preprocessor;
+AST[] asts = new AST[nfiles];
+Map<String, String> macroNames = task.getMacros();
+Map<String, Macro> implicitMacros;
+boolean showTime = task.doShowTime();
+Timer timer = showTime ? new Timer(out) : new Timer();
+boolean silent = task.doSilent();
+this.updateConfiguration(task);
+preprocessor = this.getPreprocessor();
+implicitMacros = preprocessor.getMacros(macroNames);
+for (int i = 0; i < nfiles; i++) {
+File file = task.getFiles()[i];
+String filename = file.getName();
+CTokenSource tokens;
+if (verbose) {
+out.println(bar + " File " + filename + " " + bar);
+ANTLRUtils.source(out, file);
+out.println();
+out.flush();
+timer.markTime("print source for " + filename);
+}
+tokens = preprocessor.outputTokenSource(task.getSystemIncludes(),
+task.getUserIncludes(), implicitMacros, file);
+timer.markTime("construct preprocess tree");
+if (task.isPreprocOnly()) {
+CommonToken token;
+int type;
+if (verbose)
+out.println(bar + " Preprocessor output for " + filename
++ " " + bar);
+if (showTime) {
+do {
+token = (CommonToken) tokens.nextToken();
+type = token.getType();
+} while (type != PreprocessorParser.EOF);
+timer.markTime("preprocess " + filename);
 } else {
-shift(triple, false);
-assert triple.getNode().parent() == null;
+while (true) {
+token = (CommonToken) tokens.nextToken();
+type = token.getType();
+if (type == PreprocessorParser.EOF)
+break;
+if (type == PreprocessorParser.COMMENT)
+out.print(" ");
+else {
+out.print(token.getText());
+}
+}
+out.println();
+out.flush();
+timer.markTime("preprocess and write " + filename);
+}
+} else { 
+ParseTree parseTree;
+parseTree = parser.parse(tokens);
+timer.markTime("preprocess, parse, and build ANTLR tree");
+if (verbose) {
+out.println(bar + " ANTLR Tree for " + filename + " " + bar);
+ANTLRUtils.printTree(out, parseTree.getRoot());
+out.println();
+out.flush();
+timer.markTime("print ANTLR tree");
+}
+asts[i] = builder.getTranslationUnit(configuration, parseTree);
+timer.markTime("build AST for " + filename);
+if (verbose) {
+out.println(bar + " Raw Translation Unit for " + filename
++ " " + bar);
+if (pretty)
+asts[i].prettyPrint(out, false);
+else
+asts[i].print(out);
+out.println();
+out.flush();
+timer.markTime("print AST for " + filename);
+}
+}
+}
+if (!task.isPreprocOnly()) {
+Program program;
+program = link(asts, task.getLanguage());
+timer.markTime("link " + asts.length + " translation units");
+if (verbose) {
+out.println(bar + " Program " + bar);
+timer.markTime("print linked program");
+}
+for (String code : task.getTransformCodes()) {
+Transformer transformer = getTransformer(code);
+if (verbose) {
+printProgram(out, program, pretty, tables);
+out.println();
+out.println(bar + " Program after " + transformer + " "
++ bar);
+out.flush();
+}
+program.apply(transformer);
+timer.markTime("apply transformer "
++ transformer.getShortDescription());
+}
+if (!showTime && !silent)
+printProgram(out, program, pretty, tables);
+if (task.doUnkownFunc()) {
+printUnknownFunctions(out, program);
+}
+}
+if (!showTime && !silent)
+preprocessor.printSourceFiles(out);
+out.flush();
+}public void addBooleanParameter(String key, boolean defaultValue) {
+if (parameterTable != null) {
+parameterTable.putBoolean(key, defaultValue);
+}
+defaultParameterValues.put(key, defaultValue);
+}public static boolean isAccountLocked(String userName, String tenantDomain, String userStoreDomain)
+throws AuthenticationFailedException {
+try {
+return TOTPDataHolder.getInstance().getAccountLockService()
+.isAccountLocked(userName, tenantDomain, userStoreDomain);
+} catch (AccountLockServiceException e) {
+throw new AuthenticationFailedException(
+String.format("Error while validating account lock status of user: %s.", userName), e);
+}
+}static CallSite makeDynamicCallSite(MethodHandle bootstrapMethod,
+String name, MethodType type,
+Object info,
+MemberName callerMethod, int callerBCI) {
+return CallSite.makeSite(bootstrapMethod, name, type, info, callerMethod, callerBCI);
+}public void removeObject(String scopeId, String instanceName)
+{
+VMReference vmr = getVMNoWait();
+if (vmr != null) {
+vmr.removeObject(scopeId, instanceName);
+}
+}private boolean dispatchOperation(Supplier<Result> documentOperation) {
+Result result = documentOperation.get();
+if (result.type() == Result.ResultType.TRANSIENT_ERROR)
+return false;
+if (result.type() == Result.ResultType.FATAL_ERROR)
+throw new DispatchException(new Throwable(result.error().toString()));
+outstanding.incrementAndGet();
 return true;
-}
-}public final boolean add(final Object component) {
-if (!(component instanceof Component)) {
-throw new IllegalArgumentException("Argument not a "
-+ Component.class.getName());
-}
-return super.add(component);
-}public ResultMatcher booleanValue(final Boolean value) {
-return result -> {
-MockHttpServletResponse response = result.getResponse();
-this.xpathHelper.assertBoolean(response.getContentAsByteArray(), getDefinedEncoding(response), value);
-};
-}public static long sendShutdownSignal(final InetAddress mgmtAddress, final int mgmtPort) throws IOException {
-  Socket s = new Socket(mgmtAddress, mgmtPort);
-  OutputStream out = s.getOutputStream();
-  out.write(("\r\n").getBytes());
-  out.flush();
-  InputStream is = s.getInputStream();
-  long start = System.currentTimeMillis();
-  is.read(); 
-  s.close();
-  return System.currentTimeMillis() - start;
-   }private Version reduceToLatestVersion(Name module) {
-if (moduleVersionPool.get(module).size() > 1) {
-Iterator<Version> versions = moduleVersionPool.get(module).iterator();
-Version latest = versions.next();
-while (versions.hasNext()) {
-Version version = versions.next();
-if (version.compareTo(latest) > 0) {
-latest = version;
-}
-}
-moduleVersionPool.replaceValues(module, Arrays.asList(latest));
-constraintQueue.addAll(constraints.get(module));
-processConstraints();
-return latest;
-} else {
-Iterator<Version> iterator = moduleVersionPool.get(module).iterator();
-assert iterator.hasNext();
-return iterator.next();
-}
-}public void registerAnnotated(Object registeredHandler, Object eventHandler) {
-if (handlers.containsKey(eventHandler)) {
-throw new IllegalStateException("This handler has already been registered.");
-}
-Method[]   methods = eventHandler.getClass().getMethods();
-HashMap<Class, List<EventHandler>> thisHandler = new HashMap<>();
-for (Method method : methods) {
-EventHandle handleAnn = method.getAnnotation(EventHandle.class);
-if (handleAnn != null) {
-if (method.getParameterCount() != 1 ||
-method.getParameters()[0].getType().isAssignableFrom(Event.class)) {
-throw new IllegalStateException("Methods annotated with @EventHandle must only have 1 parameter that extends Event.");
-}
-Class parameter = method.getParameters()[0].getType();
-if (!handles.containsKey(parameter)) {
-handles.put(parameter, getNewList());
-}
-if (!thisHandler.containsKey(parameter)) {
-thisHandler.put(parameter, getNewList());
-}
-try {
-MethodHandles.Lookup lookup   = MethodHandles.lookup();
-MethodHandle methodHandle = lookup.unreflect(method);
-MethodType invokedType = MethodType.methodType(EventHandler.class, eventHandler
-.getClass());
-MethodType samType= MethodType.methodType(void.class, Event.class);
-MethodType instantiatedMethodType = MethodType.methodType(void.class, parameter);
-EventHandler lambda = (EventHandler) LambdaMetafactory.metafactory(lookup, "accept", invokedType, samType, methodHandle, instantiatedMethodType)
-.getTarget()
-.invoke(eventHandler);
-handles.get(parameter).add(lambda);
-thisHandler.get(parameter).add(lambda);
-} catch (Throwable throwable) {
-throwable.printStackTrace();
-}
-}
-}
-if (!thisHandler.isEmpty()) {
-if (handlers.containsKey(registeredHandler)) {
-handlers.get(registeredHandler).putAll(thisHandler);
-} else {
-handlers.put(registeredHandler, thisHandler);
-}
-}
-}public boolean isSameTag(TagNode other) {
-if (other == null) {
-return false;
-}
-return equals(other);
-}public Update read() throws IOException, InterruptedException {
-if (!ready()) {
-  for (long attempts = 0; getUpdates() == 0; attempts++) {
-Thread.sleep(backOff.applyAsLong(attempts));
-  }
-}
-return updates.remove();
-  }public static void createFile() throws IOException {
-Path testPath = Paths.get("test/test.txt");
-Files.write(testPath, "hello".getBytes(StandardCharsets.UTF_8),
-StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING,
-StandardOpenOption.WRITE);
+}@Override
+public void invoke(long window, double xOffset, double yOffset)
+{
+nx += (float) xOffset;
+ny += (float) yOffset;
 }

@@ -38,7 +38,7 @@ export class LoadingComponent {
       console.log(this.language);
 
       this.httpClient.post(`${this.baseUrl}/get_code`, {language : this.language}).subscribe(data => {
-
+        console.log(data);
       });
       
       setTimeout( () => {

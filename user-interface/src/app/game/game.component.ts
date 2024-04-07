@@ -51,7 +51,8 @@ export class GameComponent {
     if (this.userService.getLog() == false)
       this.router.navigate([''], {}); 
     else {
-      // have car moving onto the track
+      document.getElementById("current-line-green")!.style.color = '#' + this.profileService.textcolor;
+      this.getCarColor();
       setTimeout( () => {
         this._parent.text = "3";
         console.log("3");
@@ -76,6 +77,25 @@ export class GameComponent {
         this.isGameStart = true;
       }, 5000)
     }
+  }
+
+  getCarColor() {
+    let color = this.profileService.carcolor;
+    let car = document.getElementById("car1") as HTMLImageElement;
+    if (color == "00FF00") // green
+    { car.src = "../assets/images/car-side-green.svg" }
+    else if (color == "FF0000") // turquoise
+    { car.src = "../assets/images/car-side-turquoise.svg" }
+    else if (color == "FFA500") // orange
+    { car.src = "../assets/images/car-side-orange.svg" }
+    else if (color == "FFFF00") // yellow
+    { car.src = "../assets/images/car-side-yellow.svg" }
+    else if (color == "0000FF") // blue
+    { car.src = "../assets/images/car-side-blue.svg" }
+    else if (color == "800080") // purple
+    { car.src = "../assets/images/car-side-purple.svg" }
+    else if (color == "FFC0CB") // pink
+    { car.src = "../assets/images/car-side-pink.svg" }
   }
 
   playGame() {
@@ -115,9 +135,6 @@ export class GameComponent {
   }
 
   checkKeypress() {
-    console.log("checking key: " + this.key);
-    console.log("current key: " + this.currentLine.charAt(0));
-
     if (this.currentLine.length == 0) {
       this.previousLine = this.codeText[this.num];
       this.num = this.num + 1;

@@ -43,7 +43,6 @@ export class ProfileComponent {
   }
   ngOnDestroy(){
     this.subscription.unsubscribe();
-  
   }
 
   setLink(){
