@@ -1,21 +1,60 @@
 body {
+    width: auto;
+    height: auto;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    margin: -55px 0px; /* Added margin to the top and bottom */
-    align-items: center; /* Center content vertically */
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+    text-align-last: center;
 }
 
 #game-results {
-    font-size: 40px;
+    font-size: 7vh;
     font-family: 'neon-rave-font', sans-serif;
-    letter-spacing: 5px;
+    letter-spacing: 0.5vh;
     color: #55eb53;
     font-weight: bold;  
-    margin-left: 50px;
-    margin-top: 0px;
+    margin-top: 5vh;
+    
 }
 
+button {
+    padding: 2vh 5vh;
+    margin-bottom: 1vh;
+    border-radius: 1vh;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    font-size: 3vh;
+    font-weight: 400;
+    text-align: center;
+    background: #55eb53;
+    color: black;
+    
+}
+
+#logout {
+    background: black;
+    color: red;
+}
+
+nav {
+    width: 50vw;
+    height: 10vh;
+    gap: 10vw;
+    margin-top: 3vh;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.totaltime,
+.charsTotal,
+.totalScore,
+.avgCPM,
+.accuracy {
+    font-size: large;
+    margin-top: 5vh; /* Adjust the top margin to add space between stats */
+}
 .green {
     color: #55eb53;
 }

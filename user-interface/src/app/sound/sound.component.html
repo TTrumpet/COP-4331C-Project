@@ -1,6 +1,10 @@
 <h2>Sound Settings</h2>
 
-<p>Sound On / Sound Off</p> <!-- make a switch or check box? -->
+<p>{{ sound }}</p>
+<label class="switch">
+    <input type="checkbox" (click)="changeText()">
+    <span class="slider"></span>
+</label>
 
 <p><br></p>
 <p>Volume:</p>

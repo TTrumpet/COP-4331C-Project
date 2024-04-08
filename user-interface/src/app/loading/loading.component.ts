@@ -4,11 +4,14 @@ import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from '../profile.service';
 import { UserService } from '../user.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { EndgamestatsComponent } from '../endgamestats/endgamestats.component';
+import { EndgameService } from '../endgamestats/endgame.service';
 
 @Component({
   selector: 'app-loading',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, RouterModule],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, RouterModule, MatDialogModule],
   templateUrl: './loading.component.html',
   styleUrl: './loading.component.css'
 })
@@ -24,43 +27,95 @@ export class LoadingComponent {
   codeString: string = "";
   codeText: string[] = []; 
 
-  constructor(http: HttpClient, private route : ActivatedRoute, private router : Router,  private userService : UserService, private profileService : ProfileService) {
+  // multiplayer variables
+  numOfPlayers = 0;
+  onPlayer = 0;
+  player1correct = 0;
+  player1wrong = 0;
+  player2correct = 0;
+  player2wrong = 0;
+  player3correct = 0;
+  player3wrong = 0;
+  player4correct = 0;
+  player4wrong = 0;
+
+  constructor(http: HttpClient, private route : ActivatedRoute, private router : Router,  private userService : UserService, private profileService : ProfileService,public dialog: MatDialog,private endGame : EndgameService) {
     this.httpClient = http;
   }
 
   ngOnInit() {
     // the game hasn't started yet, so load code snippets and navigate to game page
     console.log("in loading component");
-    if (this.userService.getLog() == false)
+    if(this.userService.getLog() == false)
       this.router.navigate([''], {});
     else {
-      this.language = this.profileService.language;
-      console.log(this.language);
-
-      // get the code from the code gen
-      this.httpClient.post(`${this.baseUrl}/get_code`, {language : this.language}).subscribe(data => {
-        console.log(data);
-      });
-      
-      // wait for the code gen to load into the txt file
-      setTimeout( () => {
-        console.log("Done");
-        this.httpClient.get('../assets/codesnippets.txt', {responseType: 'text'}).subscribe(data => {
-            this.codeString = data;
-            this.codeText = this.codeString.split("\r\n");
-            this.router.navigate(['/loading/game']);
-        });    
-      }, 10000)
+      // get number of players
+      this.gameStart(1);
     }
-}
+  }
 
+  gameStart(numOfPlayers : number) {
+    this.numOfPlayers = numOfPlayers;
+    this.language = this.profileService.language;
+    console.log(this.language);
 
+    // get the code gen
+    this.httpClient.post(`${this.baseUrl}/get_code`, {language : this.language}).subscribe(data => {
+      
+    });
+
+    setTimeout( () => {
+      this.httpClient.get('../assets/codesnippets.txt', {responseType: 'text'}).subscribe(data => {
+        this.codeString = data;
+        this.codeText = this.codeString.split("\r\n");
+        console.log(this.codeText);
+        this.router.navigate(['/loading/game']);
+      });    
+    }, 10000)
+  }
 
   gameOver() {
     // if the game is over, wait till the game is saved into database and show stats
+    if (this.numOfPlayers == 1) { // single player stats
       console.log("back in loading!");
       console.log(this.finalCountCorrect);
       console.log(this.finalCountWrong);
+      this.endGame.setResults(this.finalCountWrong,this.finalCountCorrect, this.profileService.time);
+      this.router.navigate(['/loading/results']);
+      // this.dialog.open(EndgamestatsComponent, {
+      //   width: '1010px',
+      //   height: '800px',
+      // });
+    }
+    else { // multiplayer
+      if (this.onPlayer == this.numOfPlayers) {
+        // multi game over
+      }
+      // record results and continue
+      else {
+        this.recordMultiplayerResults();
+        this.gameStart(this.numOfPlayers);
+      }
+    } 
+  }
+
+  recordMultiplayerResults() {
+    if (this.onPlayer == 1) {
+      this.player1correct = this.finalCountCorrect;
+      this.player1wrong = this.finalCountWrong;
+    }
+    if (this.onPlayer == 2) {
+      this.player2correct = this.finalCountCorrect;
+      this.player2wrong = this.finalCountWrong;
+    }
+    if (this.onPlayer == 3) {
+      this.player3correct = this.finalCountCorrect;
+      this.player3wrong = this.finalCountWrong;
+    }
+    if (this.onPlayer == 4) {
+      this.player4correct = this.finalCountCorrect;
+      this.player4wrong = this.finalCountWrong;
+    }
   }
 }
 

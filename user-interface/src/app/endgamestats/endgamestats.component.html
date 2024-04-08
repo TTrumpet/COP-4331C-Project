@@ -1,8 +1,17 @@
 <body>
-    <div id="game-results">Game Result</div>
-    <div class="totaltime">Match Time: <span class="green">{{totaltime}} Seconds </span> </div>
-    <div class="charsTotal">Characters Typed: <span class="green">{{charsTotal}}</span></div>
-    <div class="totalScore">Match Score: <span class="green">{{totalScore}}</span></div>
-    <div class="avgCPM">Characters Per Minute: <span class="green">{{avgCPM}}</span></div>
-    <div class="accuracy">Accuracy: <span class="green">{{accuracy}}%</span></div>
+    <router-outlet></router-outlet>
+    <div class = "Results">
+        <div id="game-results">Game Results</div>
+            <div class = "stats">
+            <div class="totaltime">Match Time: <span class="green">{{time}} Seconds </span> </div>
+            <div class="charsTotal">Characters Typed: <span class="green">{{total}}</span></div>
+            <div class="totalScore">Match Score: <span class="green">{{score}}</span></div>
+            <div class="avgCPM">Characters Per Minute: <span class="green">{{cpm}}</span></div>
+            <div class="accuracy">Accuracy: <span class="green">{{accuracy}}%</span></div>
+        </div>
+    </div>
+    <nav>
+        <button mat-button id="profile" (click)="routeLogin()">Profile</button>
+        <button mat-button id="logout" (click)="logout()">Logout</button>
+    </nav>
 </body>

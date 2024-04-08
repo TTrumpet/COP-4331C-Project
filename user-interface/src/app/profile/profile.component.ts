@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { LanguageComponent } from '../language/language.component';
 import { UserService } from '../user.service';
 import { ProfileService } from '../profile.service';
 import { Subscription } from 'rxjs';
@@ -316,12 +315,20 @@ export class ProfileComponent {
     })
   }
 
-  openGame() {
+  openSingleGame() {
     console.log("updating!"); 
     this.profileService.updateProfile().subscribe({});
     this.router.navigate(['/profile']);
     setTimeout(() => {
       this.router.navigate(['/loading']); // Timer to wait for closeAll before routing to profile
     }, 100);
+  }
+
+  openMultiGame() {
+    
+  }
+
+  logout() {
+    this.router.navigate([''], {});
   }
 }
