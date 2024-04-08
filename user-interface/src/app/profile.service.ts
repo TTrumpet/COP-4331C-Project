@@ -24,12 +24,15 @@ export class ProfileService {
 
   private colorWatch = new BehaviorSubject<any>(this.carcolor);
   colorWatch$ = this.colorWatch.asObservable();
-  updateCol(newCol: String){
+  
+  updateCol(newCol: String) {
     this.colorWatch.next(newCol);
   }
   
 
-  constructor(private userService : UserService,private http: HttpClient){}
+  constructor(private userService : UserService,private http: HttpClient){
+
+  }
   
   initProfile() {
     this.username = this.userService.getUsername();
@@ -51,7 +54,8 @@ export class ProfileService {
       }
     }) 
   }
-  updateProfile(){
+
+  updateProfile() {
     // console.log(this.carcolor);
     // console.log(this.cartrail);
     return this.http.post<any>(`${this.baseUrl}/update_profile`, 

@@ -27,17 +27,21 @@ export class UserService {
   setUsername(username: string) {
     this.username = username;
   }
+
   getUsername(): string {
     return this.username;
   }
+
   getLog(): boolean{
     return this.isLog;
   }
-  setLog(){
+
+  setLog() {
     this.isLog = true;
   }
+
   //Populates user profile
-  populateProfile(name: string){
+  populateProfile(name: string) {
     return this.http.post<any>(`${this.baseUrl}/populate_profile`, {name});
   }
 

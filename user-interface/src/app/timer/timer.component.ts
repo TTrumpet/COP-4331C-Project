@@ -14,16 +14,19 @@ import internal from 'stream';
 export class TimerComponent {
   time = 15;
 
-  constructor(private profileService : ProfileService){}
+  constructor(private profileService : ProfileService){
 
-  ngOnInit(){
+  }
+
+  ngOnInit() {
     this.getTime();
   }
-  getTime()
-  {
+
+  getTime() {
     this.time = this.profileService.time;
   }
-  onTimeChange(newTime: number){
+
+  onTimeChange(newTime: number) {
     this.profileService.time = newTime;
   }
 }

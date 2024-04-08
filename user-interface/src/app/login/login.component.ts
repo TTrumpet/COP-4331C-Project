@@ -22,10 +22,10 @@ export class LoginComponent {
 
   //must inject userService APIs
   constructor(public dialogRef: MatDialogRef<LoginComponent>,public dialog: MatDialog,private userService: UserService, private router : Router) {
+  
   }
 
-  openNewUser()
-  {
+  openNewUser() {
     this.dialog.open(NewUserComponent, {
       width: '310px',
       height: '350px',

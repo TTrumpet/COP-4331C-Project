@@ -13,17 +13,19 @@ import { ProfileService } from '../profile.service';
 export class TextComponent {
     textColor = "FFFFFF";
 
-    constructor(private profileService : ProfileService){}
+    constructor(private profileService : ProfileService){
 
-    ngOnInit(){
+    }
+
+    ngOnInit() {
       this.getColor();
     }
-    getColor()
-    {
+
+    getColor() {
       this.textColor = this.profileService.textcolor;
     }
-    onTextChange(newCol : string)
-    {
+
+    onTextChange(newCol : string) {
       this.profileService.textcolor = newCol;
     }
 }

@@ -17,15 +17,16 @@ import { FormsModule } from '@angular/forms';
 export class LanguageComponent {
   language : string = '';
   constructor(private route : ActivatedRoute, private router : Router,private profileService: ProfileService) {}
-  ngOnInit(){
+  
+  ngOnInit() {
     this.getLang();
   }
-  getLang()
-  {
+  
+  getLang() {
     this.language = this.profileService.language;
   }
-  onLangChange(newLang: string)
-  {
+  
+  onLangChange(newLang: string) {
     this.profileService.language = newLang;
   }
 }

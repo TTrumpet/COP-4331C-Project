@@ -31,16 +31,18 @@ export class LoadingComponent {
   ngOnInit() {
     // the game hasn't started yet, so load code snippets and navigate to game page
     console.log("in loading component");
-    if(this.userService.getLog() == false)
+    if (this.userService.getLog() == false)
       this.router.navigate([''], {});
     else {
       this.language = this.profileService.language;
       console.log(this.language);
 
+      // get the code from the code gen
       this.httpClient.post(`${this.baseUrl}/get_code`, {language : this.language}).subscribe(data => {
         console.log(data);
       });
       
+      // wait for the code gen to load into the txt file
       setTimeout( () => {
         console.log("Done");
         this.httpClient.get('../assets/codesnippets.txt', {responseType: 'text'}).subscribe(data => {
