@@ -27,7 +27,7 @@ export class ProfileComponent {
   
   }
 
-  ngOnInit(){
+  ngOnInit() {
     if(this.userService.getLog() == false)
       this.router.navigate([''], {});
     this.profileService.initProfile();
@@ -41,11 +41,12 @@ export class ProfileComponent {
       })
     );
   }
-  ngOnDestroy(){
+
+  ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
-  setLink(){
+  setLink() {
       this.link = "../../assets/images/SimpleGreenCarTopView.svg";
         if(this.profileService.carcolor == "00FF00") //green
           this.link = "../../assets/images/SimpleGreenCarTopView.svg";
@@ -61,9 +62,9 @@ export class ProfileComponent {
           this.link ="../../assets/images/SimplePurpleCarTopView.svg";
         else if(this.profileService.carcolor == "FFC0CB")//Pink
           this.link ="../../assets/images/SimplePinkCarTopView.svg";
-
   }
-  openProfile(){
+
+  openProfile() {
     let profile = document.getElementById("profile");
     let custom = document.getElementById("customization");
     let stats = document.getElementById("stats");
@@ -305,7 +306,7 @@ export class ProfileComponent {
     profiletext?.classList.add("hidden");
   }
 
-  openLeaderboard(){
+  openLeaderboard() {
     const dialogRef = this.dialog.open(LeaderboardComponent, {
       width: '1010px',
       height: '1080px',

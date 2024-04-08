@@ -16,15 +16,18 @@ interface Player {
   templateUrl: './leaderboard.component.html',
   styleUrl: './leaderboard.component.css'
 })
-export class LeaderboardComponent implements OnInit{
+
+export class LeaderboardComponent implements OnInit {
   topPlayers: Player[] = [];
   constructor(
     public dialogRef: MatDialogRef<LeaderboardComponent>,
     private leaderboardService: LeaderboardService
   ) {}
+
   ngOnInit(): void {
     this.loadTopTen();
   }
+
   loadTopTen() {
     this.leaderboardService.getTopTen().subscribe((players) => {
       this.topPlayers = players;

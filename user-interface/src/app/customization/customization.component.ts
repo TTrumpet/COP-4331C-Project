@@ -13,11 +13,16 @@ export class CustomizationComponent {
   carCol  : string = "";
   carType : string = "";
   carTrail : string = "";
-  constructor(private profileService : ProfileService){}
-  ngOnInit(){
+  
+  constructor(private profileService : ProfileService) {
+
+  }
+  
+  ngOnInit() {
     this.getSets();
   }
-  getSets(){
+
+  getSets() {
     this.carCol = this.profileService.carcolor;
     this.carType = this.profileService.cartype;
     this.carTrail = this.profileService.cartrail;
@@ -27,9 +32,11 @@ export class CustomizationComponent {
     this.profileService.carcolor = newColor;
     this.profileService.updateCol(newColor);
   }
+
   onCarTypeChange(newType: string) {
     this.profileService.cartype = newType;
   }
+  
   onCarTrailChange(newTrail: string) {
     this.profileService.cartrail = newTrail;
   }

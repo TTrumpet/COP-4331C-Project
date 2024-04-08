@@ -16,9 +16,10 @@ export class NewUserComponent {
   message =  '';
   isSuccessMessage: boolean = false;
 
-
   constructor (private userService: UserService) {
+
   }
+
   createUser(): void {
     this.userService.createUser(this.username,this.password)
     .subscribe({
@@ -34,5 +35,4 @@ export class NewUserComponent {
       }
     });
   }
-
 }
