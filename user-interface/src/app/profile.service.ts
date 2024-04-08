@@ -14,12 +14,12 @@ export class ProfileService {
   cartrail: string = '';
   carcolor: string = '';
   language: string = '';
-  time = 0;
+  time:number = 0;
   textcolor: string = '';
   textsize = 0;
   username :string = '';
   chartyped = 0;
-  totaltime = 0;
+  totaltime: number = 0 ;
   charsincorrect = 0;
   totalscore = 0;
 
@@ -57,8 +57,10 @@ export class ProfileService {
   }
 
   updateProfile() {
-    // console.log(this.carcolor);
-    // console.log(this.cartrail);
+    console.log("UPDATING PROFILE");
+    console.log(this.totalscore);
+    console.log(this.totaltime);  
+    console.log(this.username);
     return this.http.post<any>(`${this.baseUrl}/update_profile`, 
       {name : this.username,
       language:this.language,

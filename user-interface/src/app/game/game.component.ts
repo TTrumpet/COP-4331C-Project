@@ -128,7 +128,8 @@ export class GameComponent {
         this._parent.finalCountWrong = this.finalcountWrong;
         
         setTimeout( () => {
-          this._parent.text = "loading...";
+          clearInterval(timer);
+          this._parent.text = "";
           this.router.navigate(['/loading']);
           this._parent.gameOver();
         }, 3000)

@@ -105,13 +105,6 @@ def login():
     user = UserSettings.query.filter_by(name=name, password=password).first()
     
     if user and password:
-        #session token stuff. To be implemented
-        # token = jwt.encode({
-        #     'user_id': user.id,
-        #     'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
-        # }, SECRET_KEY)
-
-        #will display on frontend
 
         response_data = {
             "message": "Login successful",
@@ -156,7 +149,7 @@ def populate_profile():
 def update_profile():
     data = request.get_json()
     name = data.get('name')
-
+    print(name)
     # Fetch user by name
     user = UserSettings.query.filter_by(name=name).first()
 
@@ -185,15 +178,12 @@ def update_profile():
 
 @app.route('/get_code', methods=['POST'])
 def get_code():
-    print("in code gen")
     data = request.get_json()
     language = data.get('language')
-    print(language)
 
     data = load_dataset("Fsoft-AIC/the-vault-function", split_set=["test"], trust_remote_code=True, cache_dir='./cache')
     data = data['test']
     data = data.shuffle()
-    print("data loaded")
     f = open('../user-interface/src/assets/codesnippets.txt', 'w')
     counter = 10
     for index, sample in enumerate(data):
@@ -209,7 +199,6 @@ def get_code():
                 f.write(code)
             except:
                 counter += 1
-            print("code snippet loaded")
             counter -= 1
 
     return jsonify({"message": "not an error error"}), 500
@@ -218,38 +207,3 @@ def get_code():
 
 if __name__ == '__main__':
     app.run()
-
-    
-
-
-#@app.route('/code_gen', methods=['GET'])
-#api.add_resource(CodeGeneration,'/start_game/<language>')
-
-# Base = declarative_base()
-
-# # Define your table structure
-# metadata = MetaData()
-# test = Table(
-#     'test',
-#     metadata,
-#     Column('id', Integer, primary_key=True, autoincrement=True),
-#     Column('name', String, unique=True, nullable=False),
-#     Column('password', String, nullable=False),
-#     Column('cartype', String, default='Sports'),
-#     Column('cartrail', String, default='None'),
-#     Column('language', String, default='Python'),
-#     Column('time', Integer, default=15),
-#     Column('textcolor', String, default='FFFFFF', nullable=False),
-#     Column('textsize', Integer, default=25),
-#     Column('carcolor', String, default='00FF00')
-# )
-
-# # Create an engine to connect to your MySQL database
-# engine = create_engine('mysql+pymysql://root:password@127.0.0.1:3306/mydb', echo=True)
-
-# # Check if the table already exists
-# if not engine.dialect.has_table(engine, 'test'):
-#     # Create the table in the database
-#     metadata.dialect.create_all(engine)
-# else:
-#     print("Table 'test' already exists.")
