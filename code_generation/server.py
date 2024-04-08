@@ -34,7 +34,7 @@ app = Flask(__name__)
 api = Api(app)
 
 #Set Uri to equal "mysql+pymysql://"User":"pass"@127.0.0.1:3306/"dbName"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:yellowcat222@127.0.0.1:3306/sys'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password@127.0.0.1:3306/sys'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #can be true if pref
 
 #for connection with ang
