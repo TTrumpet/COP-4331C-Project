@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class ProfileService {
   private baseUrl = 'http://localhost:5000';
   message: string = '';
@@ -30,7 +31,7 @@ export class ProfileService {
   }
   
 
-  constructor(private userService : UserService,private http: HttpClient){
+  constructor(private userService : UserService,private http: HttpClient) {
 
   }
   

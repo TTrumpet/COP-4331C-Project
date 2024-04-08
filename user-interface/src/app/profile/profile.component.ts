@@ -62,7 +62,6 @@ export class ProfileComponent {
           this.link ="../../assets/images/SimplePurpleCarTopView.svg";
         else if(this.profileService.carcolor == "FFC0CB")//Pink
           this.link ="../../assets/images/SimplePinkCarTopView.svg";
-
   }
 
   openProfile() {

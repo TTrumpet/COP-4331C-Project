@@ -20,7 +20,5 @@ export class LeaderboardService {
       {name: 'Player10',  score: 17},
     ];
     return of(fakeData);
-
-    
   }
 }

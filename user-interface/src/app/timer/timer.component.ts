@@ -14,7 +14,7 @@ import internal from 'stream';
 export class TimerComponent {
   time = 15;
 
-  constructor(private profileService : ProfileService){
+  constructor(private profileService : ProfileService) {
 
   }
 

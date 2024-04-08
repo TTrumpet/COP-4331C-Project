@@ -1,183 +1,176 @@
-@Test
-void testScoreOutput(){
-sequenceScorer = new SequenceScorer(testsig4, testsig4);
-SequenceHits sequenceHits = new SequenceHits();
-sequenceScorer.scoreOutput(BO, sequenceHits);
-}private AspectMetadata createAspectMetadata(Class<?> aspectClass, String aspectName) {
-AspectMetadata am = new AspectMetadata(aspectClass, aspectName);
-if (!am.getAjType().isAspect()) {
-throw new IllegalArgumentException("Class [" + aspectClass.getName() + "] is not a valid aspect type");
-}
-return am;
-}protected void validateValueIfApplicable(WebDataBinder binder, MethodParameter parameter,
-Class<?> targetType, String fieldName, @Nullable Object value) {
-for (Annotation ann : parameter.getParameterAnnotations()) {
-Object[] validationHints = determineValidationHints(ann);
-if (validationHints != null) {
-for (Validator validator : binder.getValidators()) {
-if (validator instanceof SmartValidator) {
-try {
-((SmartValidator) validator).validateValue(targetType, fieldName, value,
-binder.getBindingResult(), validationHints);
-}
-catch (IllegalArgumentException ex) {
-}
-}
-}
-break;
-}
-}
-}public void showTranslation(TranslationTask task) throws IOException,
-PreprocessorException, ParseException, SyntaxException {
-PrintStream out = task.getOut();
-boolean verbose = task.isVerbose();
-boolean pretty = task.doPrettyPrint();
-boolean tables = task.doShowTables();
-int nfiles = task.getFiles().length;
-Preprocessor preprocessor;
-AST[] asts = new AST[nfiles];
-Map<String, String> macroNames = task.getMacros();
-Map<String, Macro> implicitMacros;
-boolean showTime = task.doShowTime();
-Timer timer = showTime ? new Timer(out) : new Timer();
-boolean silent = task.doSilent();
-this.updateConfiguration(task);
-preprocessor = this.getPreprocessor();
-implicitMacros = preprocessor.getMacros(macroNames);
-for (int i = 0; i < nfiles; i++) {
-File file = task.getFiles()[i];
-String filename = file.getName();
-CTokenSource tokens;
-if (verbose) {
-out.println(bar + " File " + filename + " " + bar);
-ANTLRUtils.source(out, file);
-out.println();
-out.flush();
-timer.markTime("print source for " + filename);
-}
-tokens = preprocessor.outputTokenSource(task.getSystemIncludes(),
-task.getUserIncludes(), implicitMacros, file);
-timer.markTime("construct preprocess tree");
-if (task.isPreprocOnly()) {
-CommonToken token;
-int type;
-if (verbose)
-out.println(bar + " Preprocessor output for " + filename
-+ " " + bar);
-if (showTime) {
-do {
-token = (CommonToken) tokens.nextToken();
-type = token.getType();
-} while (type != PreprocessorParser.EOF);
-timer.markTime("preprocess " + filename);
+public static DoubleMatrix highestSince(DoubleMatrix expression, DoubleMatrix m, int index) {
+m = m.reshape(1, m.length);
+DoubleMatrix out = DoubleMatrix.zeros(1, m.columns);
+int[] indices = expression.findIndices(); 
+int endindex = indices[0];
+int terminateindex = indices[0];
+double hhv = 0;
+if (index > 0 && index <= indices.length + 1) {
+for (int i = 0; i < indices.length; i++) {
+endindex = indices[-1 + i + index];
+if (i + index < indices.length) {
+terminateindex = indices[i + index]; 
 } else {
-while (true) {
-token = (CommonToken) tokens.nextToken();
-type = token.getType();
-if (type == PreprocessorParser.EOF)
-break;
-if (type == PreprocessorParser.COMMENT)
-out.print(" ");
-else {
-out.print(token.getText());
+terminateindex = m.length - 1;
 }
-}
-out.println();
-out.flush();
-timer.markTime("preprocess and write " + filename);
-}
-} else { 
-ParseTree parseTree;
-parseTree = parser.parse(tokens);
-timer.markTime("preprocess, parse, and build ANTLR tree");
-if (verbose) {
-out.println(bar + " ANTLR Tree for " + filename + " " + bar);
-ANTLRUtils.printTree(out, parseTree.getRoot());
-out.println();
-out.flush();
-timer.markTime("print ANTLR tree");
-}
-asts[i] = builder.getTranslationUnit(configuration, parseTree);
-timer.markTime("build AST for " + filename);
-if (verbose) {
-out.println(bar + " Raw Translation Unit for " + filename
-+ " " + bar);
-if (pretty)
-asts[i].prettyPrint(out, false);
-else
-asts[i].print(out);
-out.println();
-out.flush();
-timer.markTime("print AST for " + filename);
+for (int j = endindex; j <= terminateindex; j++) { 
+if (j >= endindex) {
+hhv = m.get(0, new IntervalRange(endindex, j + 1)).max();
+out.put(j, hhv);
 }
 }
 }
-if (!task.isPreprocOnly()) {
-Program program;
-program = link(asts, task.getLanguage());
-timer.markTime("link " + asts.length + " translation units");
-if (verbose) {
-out.println(bar + " Program " + bar);
-timer.markTime("print linked program");
 }
-for (String code : task.getTransformCodes()) {
-Transformer transformer = getTransformer(code);
-if (verbose) {
-printProgram(out, program, pretty, tables);
-out.println();
-out.println(bar + " Program after " + transformer + " "
-+ bar);
-out.flush();
+return out;
+}private long chunkEnd(long timestamp) {
+long end;
+if (timestamp > 0) {
+  end = ((timestamp / chunklen) * chunklen) + chunklen - 1;
+} else {
+  end = ((((timestamp + 1) / chunklen) - 1) * chunklen) + chunklen - 1;
 }
-program.apply(transformer);
-timer.markTime("apply transformer "
-+ transformer.getShortDescription());
+return end;
+  }@Test
+public void whenInEvenThenResultTrue() throws IOException {
+String input = "1234";
+try (InputStream result = new ByteArrayInputStream(input.getBytes())) {
+assertThat(chs.isNumber(result), is(true));
 }
-if (!showTime && !silent)
-printProgram(out, program, pretty, tables);
-if (task.doUnkownFunc()) {
-printUnknownFunctions(out, program);
+}public Buffer append(final Buffer buffer) {
+if (buffer.list.isEmpty()) {
+return buffer;
 }
+list.addAll(buffer.list);
+last = buffer.last;
+size += buffer.size;
+return this;
+}public String run(Source grammar) {
+Stacker stacker = new Stacker();
+Node root = stacker.run(grammar);
+if (root.op() == Error) return "Error: " + root.note();
+int net = root.left().get(NET);
+if (net != 1) {
+return "Error: first rule produces " + net + " items\n";
 }
-if (!showTime && !silent)
-preprocessor.printSourceFiles(out);
-out.flush();
-}public void addBooleanParameter(String key, boolean defaultValue) {
-if (parameterTable != null) {
-parameterTable.putBoolean(key, defaultValue);
+if (root.left().get(NEED) > 0) {
+return "Error: first rule can cause underflow\n";
 }
-defaultParameterValues.put(key, defaultValue);
-}public static boolean isAccountLocked(String userName, String tenantDomain, String userStoreDomain)
-throws AuthenticationFailedException {
-try {
-return TOTPDataHolder.getInstance().getAccountLockService()
-.isAccountLocked(userName, tenantDomain, userStoreDomain);
-} catch (AccountLockServiceException e) {
-throw new AuthenticationFailedException(
-String.format("Error while validating account lock status of user: %s.", userName), e);
+bytes = new ByteArrayOutputStream();
+text = new StringBuilder();
+gather(root);
+setSequence(root);
+if (! testing) printNames();
+changed = true;
+while (changed) {
+changed = false;
+pc = line = 0;
+bytes.reset();
+text.setLength(0);
+encode(root);
 }
-}static CallSite makeDynamicCallSite(MethodHandle bootstrapMethod,
-String name, MethodType type,
-Object info,
-MemberName callerMethod, int callerBCI) {
-return CallSite.makeSite(bootstrapMethod, name, type, info, callerMethod, callerBCI);
-}public void removeObject(String scopeId, String instanceName)
-{
-VMReference vmr = getVMNoWait();
-if (vmr != null) {
-vmr.removeObject(scopeId, instanceName);
-}
-}private boolean dispatchOperation(Supplier<Result> documentOperation) {
-Result result = documentOperation.get();
-if (result.type() == Result.ResultType.TRANSIENT_ERROR)
-return false;
-if (result.type() == Result.ResultType.FATAL_ERROR)
-throw new DispatchException(new Throwable(result.error().toString()));
-outstanding.incrementAndGet();
-return true;
+if (line > 0) text.append("\n");
+return text.toString();
 }@Override
-public void invoke(long window, double xOffset, double yOffset)
+public void handleEvent(TaskManagerEvent evt)
 {
-nx += (float) xOffset;
-ny += (float) yOffset;
+final String mucJid = evt.getMucJid();
+RecordingSession session = null;
+synchronized (recordingSessions)
+{
+for (RecordingSession s : recordingSessions)
+{
+if (0 == mucJid.compareTo(s.getMucJid()))
+{
+session = s;
+break;
+}
+}
+if (null == session)
+return;
+IQ notification = null;
+if (TaskManagerEvent.Type.TASK_ABORTED == evt.getType())
+{
+jirecon.stopJireconTask(evt.getMucJid(), false);
+recordingSessions.remove(session);
+notification =
+createIqSet(session,
+RecordingIqUtils.Status.ABORTED.toString(),
+session.getRid());
+}
+else if (TaskManagerEvent.Type.TASK_FINISED == evt.getType())
+{
+jirecon.stopJireconTask(evt.getMucJid(), true);
+recordingSessions.remove(session);
+notification =
+createIqSet(session,
+RecordingIqUtils.Status.STOPPED.toString(),
+session.getRid());
+}
+else if (TaskManagerEvent.Type.TASK_STARTED == evt.getType())
+{
+notification =
+createIqSet(session,
+RecordingIqUtils.Status.STARTED.toString(),
+session.getRid(), session.getOutputPath());
+}
+if (null != notification)
+{
+send(notification);
+}
+}
+}public List<Interest> importUserInterests(String urlFile) {
+BufferedReader br = null;
+String line = "";
+String cvsSplitBy = ";";
+List<Interest> interests = new LinkedList<>();
+Interest interest = null;
+try {
+br = new BufferedReader(new FileReader(urlFile));
+while ((line = br.readLine()) != null) {
+String[] addInterests = line.split(cvsSplitBy);
+for (int i = 1; i < addInterests.length; i++) {
+try {
+this.insertInterest(addInterests[0], addInterests[i], "");
+} catch (Exception e) {
+System.out.println(e);
+System.out.println("Invalid exception importing user interest- " + addInterests[i]);
+}
+}
+}
+} catch (FileNotFoundException e) {
+e.printStackTrace();
+} catch (IOException e) {
+e.printStackTrace();
+} finally {
+if (br != null) {
+try {
+br.close();
+} catch (IOException e) {
+e.printStackTrace();
+}
+}
+}
+return interests;
+}static boolean isSupported(int index) {
+if ((index <= 0) || (index >= NAMED_CURVE_OID_TABLE.length)) {
+return false;
+}
+if (fips == false) {
+return true;
+}
+return DEFAULT.contains(index);
+}public JdiThread find(ThreadReference thread)
+{
+for(Iterator<JdiThread> it=iterator(); it.hasNext(); ) {
+JdiThread currentThread = (JdiThread)it.next();
+if(currentThread.sameThread(thread)) {
+return currentThread;
+}
+}
+Debug.reportError("Encountered thread not in ThreadSet!");
+return null;
+}public void clearAll()
+{
+if(measurementItems!=null) measurementItems.clear();
+itemsQuantity=(measurementItems!=null)?measurementItems.size():0;
 }
