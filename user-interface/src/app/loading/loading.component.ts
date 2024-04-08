@@ -4,11 +4,14 @@ import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from '../profile.service';
 import { UserService } from '../user.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { EndgamestatsComponent } from '../endgamestats/endgamestats.component';
+import { EndgameService } from '../endgamestats/endgame.service';
 
 @Component({
   selector: 'app-loading',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, RouterModule],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, RouterModule, MatDialogModule],
   templateUrl: './loading.component.html',
   styleUrl: './loading.component.css'
 })
@@ -36,7 +39,19 @@ export class LoadingComponent {
   player4correct = 0;
   player4wrong = 0;
 
-  constructor(http: HttpClient, private route : ActivatedRoute, private router : Router,  private userService : UserService, private profileService : ProfileService) {
+  // multiplayer variables
+  numOfPlayers = 0;
+  onPlayer = 0;
+  player1correct = 0;
+  player1wrong = 0;
+  player2correct = 0;
+  player2wrong = 0;
+  player3correct = 0;
+  player3wrong = 0;
+  player4correct = 0;
+  player4wrong = 0;
+
+  constructor(http: HttpClient, private route : ActivatedRoute, private router : Router,  private userService : UserService, private profileService : ProfileService,public dialog: MatDialog,private endGame : EndgameService) {
     this.httpClient = http;
   }
 
@@ -107,6 +122,12 @@ export class LoadingComponent {
       this.player4correct = this.finalCountCorrect;
       this.player4wrong = this.finalCountWrong;
     }
+      this.endGame.setResults(this.finalCountWrong,this.finalCountCorrect, this.profileService.time);
+      this.router.navigate(['/loading/results']);
+      // this.dialog.open(EndgamestatsComponent, {
+      //   width: '1010px',
+      //   height: '800px',
+      // });
   }
 }
 

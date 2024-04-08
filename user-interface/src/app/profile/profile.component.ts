@@ -21,13 +21,10 @@ export class ProfileComponent {
   username : string = '';
   color:string = '';
   link:string = '../../assets/images/SimpleGreenCarTopView.svg';
-
   private subscription: Subscription = new Subscription();
-  httpClient: HttpClient;
-  private baseUrl = 'http://localhost:5000';
 
-  constructor(http: HttpClient, public dialog : MatDialog, private route : ActivatedRoute, private router : Router, private userService : UserService, private profileService : ProfileService) {
-    this.httpClient = http;
+  constructor(public dialog : MatDialog, private route : ActivatedRoute, private router : Router, private userService : UserService, private profileService : ProfileService) {
+  
   }
 
   ngOnInit() {
@@ -309,6 +306,7 @@ export class ProfileComponent {
     profiletext?.classList.add("hidden");
   }
 
+  openLeaderboard() {
   openLeaderboard() {
     const dialogRef = this.dialog.open(LeaderboardComponent, {
       width: '1010px',

@@ -14,18 +14,19 @@ export class ProfileService {
   cartrail: string = '';
   carcolor: string = '';
   language: string = '';
-  time = 0;
+  time:number = 0;
   textcolor: string = '';
   textsize = 0;
   username :string = '';
   chartyped = 0;
-  totaltime = 0;
+  totaltime: number = 0 ;
   charsincorrect = 0;
   totalscore = 0;
 
   private colorWatch = new BehaviorSubject<any>(this.carcolor);
   colorWatch$ = this.colorWatch.asObservable();
-  updateCol(newCol: String){
+  
+  updateCol(newCol: String) {
     this.colorWatch.next(newCol);
   }
   
