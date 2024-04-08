@@ -4,11 +4,14 @@ import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from '../profile.service';
 import { UserService } from '../user.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { EndgamestatsComponent } from '../endgamestats/endgamestats.component';
+import { EndgameService } from '../endgamestats/endgame.service';
 
 @Component({
   selector: 'app-loading',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, RouterModule],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, RouterModule, MatDialogModule],
   templateUrl: './loading.component.html',
   styleUrl: './loading.component.css'
 })
@@ -24,7 +27,7 @@ export class LoadingComponent {
   codeString: string = "";
   codeText: string[] = []; 
 
-  constructor(http: HttpClient, private route : ActivatedRoute, private router : Router,  private userService : UserService, private profileService : ProfileService) {
+  constructor(http: HttpClient, private route : ActivatedRoute, private router : Router,  private userService : UserService, private profileService : ProfileService,public dialog: MatDialog,private endGame : EndgameService) {
     this.httpClient = http;
   }
 
@@ -32,7 +35,8 @@ export class LoadingComponent {
     // the game hasn't started yet, so load code snippets and navigate to game page
     console.log("in loading component");
     if (this.userService.getLog() == false)
-      this.router.navigate([''], {});
+      console.log("delete");
+      //this.router.navigate([''], {});
     else {
       this.language = this.profileService.language;
       console.log(this.language);
@@ -61,6 +65,12 @@ export class LoadingComponent {
       console.log("back in loading!");
       console.log(this.finalCountCorrect);
       console.log(this.finalCountWrong);
+      this.endGame.setResults(this.finalCountWrong,this.finalCountCorrect, this.profileService.time);
+      this.router.navigate(['/loading/results']);
+      // this.dialog.open(EndgamestatsComponent, {
+      //   width: '1010px',
+      //   height: '800px',
+      // });
   }
 }
 

@@ -24,6 +24,7 @@ export class StatsComponent {
   }
   
   ngOnInit(){
+    console.log("setting stats again");
     this.setStats();
   }
 
@@ -34,7 +35,7 @@ export class StatsComponent {
     this.totalScore = this.profileService.totalscore;
 
     if(this.charsTotal != 0)
-      this.avgCPM = Math.floor(this.charsTotal/(this.totaltime/60));
+      this.avgCPM = Math.floor((this.charsTotal/this.totaltime)*60);
     if(this.charsTotal != 0)
       this.accuracy = Math.floor( (1- (this.charsIncorrect/this.charsTotal)) *100 );
   }
