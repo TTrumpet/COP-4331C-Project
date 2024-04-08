@@ -39,18 +39,6 @@ export class LoadingComponent {
   player4correct = 0;
   player4wrong = 0;
 
-  // multiplayer variables
-  numOfPlayers = 0;
-  onPlayer = 0;
-  player1correct = 0;
-  player1wrong = 0;
-  player2correct = 0;
-  player2wrong = 0;
-  player3correct = 0;
-  player3wrong = 0;
-  player4correct = 0;
-  player4wrong = 0;
-
   constructor(http: HttpClient, private route : ActivatedRoute, private router : Router,  private userService : UserService, private profileService : ProfileService,public dialog: MatDialog,private endGame : EndgameService) {
     this.httpClient = http;
   }
@@ -60,11 +48,10 @@ export class LoadingComponent {
     console.log("in loading component");
     if(this.userService.getLog() == false)
       this.router.navigate([''], {});
-    // get number of players
-    this.httpClient.get('../assets/numofplayers.txt', {responseType: 'text'}).subscribe(data => {
-      this.numOfPlayers = parseInt(data);
-      this.gameStart(this.numOfPlayers);
-    });
+    else {
+      // get number of players
+      this.gameStart(1);
+    }
   }
 
   gameStart(numOfPlayers : number) {
@@ -81,6 +68,7 @@ export class LoadingComponent {
       this.httpClient.get('../assets/codesnippets.txt', {responseType: 'text'}).subscribe(data => {
         this.codeString = data;
         this.codeText = this.codeString.split("\r\n");
+        console.log(this.codeText);
         this.router.navigate(['/loading/game']);
       });    
     }, 10000)
@@ -92,6 +80,12 @@ export class LoadingComponent {
       console.log("back in loading!");
       console.log(this.finalCountCorrect);
       console.log(this.finalCountWrong);
+      this.endGame.setResults(this.finalCountWrong,this.finalCountCorrect, this.profileService.time);
+      this.router.navigate(['/loading/results']);
+      // this.dialog.open(EndgamestatsComponent, {
+      //   width: '1010px',
+      //   height: '800px',
+      // });
     }
     else { // multiplayer
       if (this.onPlayer == this.numOfPlayers) {
@@ -122,12 +116,6 @@ export class LoadingComponent {
       this.player4correct = this.finalCountCorrect;
       this.player4wrong = this.finalCountWrong;
     }
-      this.endGame.setResults(this.finalCountWrong,this.finalCountCorrect, this.profileService.time);
-      this.router.navigate(['/loading/results']);
-      // this.dialog.open(EndgamestatsComponent, {
-      //   width: '1010px',
-      //   height: '800px',
-      // });
   }
 }
 

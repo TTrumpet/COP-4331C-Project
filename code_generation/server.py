@@ -34,7 +34,7 @@ app = Flask(__name__)
 api = Api(app)
 
 #Set Uri to equal "mysql+pymysql://"User":"pass"@127.0.0.1:3306/"dbName"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password@127.0.0.1:3306/sys'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:yellowcat222@127.0.0.1:3306/sys'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #can be true if pref
 
 #for connection with ang
@@ -176,17 +176,9 @@ def update_profile():
         db.session.rollback()
         return jsonify({"message": "An error occurred while updating the profile", "error": str(e)}), 500
 
-@app.route('/get_num_players', methods=['POST'])
-def get_num_players():
-    print("in getting number of players")
-    data = request.get_json()
-    players = data.get('players')
-    f = open('../user-interface/src/assets/numofplayers.txt', 'w')
-    f.write(players)
-    return jsonify({"message": "not an error error"}), 500
-
 @app.route('/get_code', methods=['POST'])
 def get_code():
+    print("in get code")
     data = request.get_json()
     language = data.get('language')
 

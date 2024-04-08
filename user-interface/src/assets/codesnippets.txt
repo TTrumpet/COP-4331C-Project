@@ -1,0 +1,149 @@
+public static void registerCommandStack(CommandStack stack) {
+if(!supportsAnimation()) {
+return;
+}
+stack.addCommandStackEventListener(new CommandStackEventListener() {
+public void stackChanged(CommandStackEvent event) {
+if(doAnimate()) {
+if(event.getDetail() == CommandStack.PRE_UNDO || event.getDetail() == CommandStack.PRE_REDO) {
+if(isAllowedCommand(event.getCommand())) {
+Animation.markBegin();
+}
+}
+else if(event.getDetail() == CommandStack.POST_UNDO || event.getDetail() == CommandStack.POST_REDO) {
+if(isAllowedCommand(event.getCommand())) {
+Animation.run(animationSpeed());
+}
+}
+}
+}
+private boolean isAllowedCommand(Command cmd) {
+if(cmd instanceof CompoundCommand) {
+for(Object command : ((CompoundCommand)cmd).getCommands()) {
+if(!(command instanceof IAnimatableCommand)) {
+return false;
+}
+}
+return true;
+}
+else {
+return cmd instanceof IAnimatableCommand;
+}
+}
+});
+}public void mouseReleased(MouseEvent e)
+{
+if (imageCanvas.isDisabled())
+{
+return;
+}
+if (e.getButton().equals(MouseButton.PRIMARY))
+{
+imageCanvas.setCursor(Cursor.HAND);
+}
+}public void OnEnter() {
+if (Board.player.hasItem) {
+Game.won();
+}
+}@Nullable
+public static AnnotationAttributes findMergedAnnotationAttributes(AnnotatedElement element,String annotationName, boolean classValuesAsString, boolean nestedAnnotationsAsMap) {
+AnnotationAttributes attributes = searchWithFindSemantics(element, null, annotationName,new MergedAnnotationAttributesProcessor(classValuesAsString, nestedAnnotationsAsMap));
+AnnotationUtils.postProcessAnnotationAttributes(element, attributes, classValuesAsString, nestedAnnotationsAsMap);
+return attributes;
+}@Test
+public void testRemoveInstanceViaShephard() {
+System.out.println("removeInstanceViaShephard");
+ Riffle cluster = new Riffle(trainingSet.instance(1));
+cluster.updateStrategyOption.setChosenIndex(1);
+cluster.outlierDefinitionStrategyOption.setChosenIndex(0);
+double[] c = cluster.getCenter();
+assertEquals(0.24, c[0], 0.0001);
+assertEquals(0.24, c[1], 0.0001);
+assertEquals(1.0,  c[2], 0.0001);
+assertEquals(1.0,  c[3], 0.0001);
+cluster.addInstance(trainingSet.instance(6));
+cluster.removeInstance(trainingSet.instance(6));
+c = cluster.getCenter();
+assertEquals(0.24, c[0], 0.0001);
+assertEquals(0.24, c[1], 0.0001);
+assertEquals(1.0,  c[2], 0.0001);
+assertEquals(1.0,  c[3], 0.0001);
+cluster.addInstance(trainingSet.instance(2));
+cluster.addInstance(trainingSet.instance(3));
+cluster.addInstance(trainingSet.instance(4));
+cluster.addInstance(trainingSet.instance(5));
+cluster.addInstance(trainingSet.instance(7));
+cluster.removeInstance(trainingSet.instance(7));
+c = cluster.getCenter();
+assertEquals(0.25, c[0], 0.0001);
+assertEquals(0.25, c[1], 0.0001);
+assertEquals(1.0,  c[2], 0.0001);
+assertEquals(1.0,  c[3], 0.0001);
+}public void widgetSelected(SelectionEvent seEvent)
+{
+TableItem tiItem = (TableItem) seEvent.item;
+Object oData = tiItem.getData();
+if ((oData != null) && (oData instanceof ILogEvent))
+{
+ILogEvent leTemp = (ILogEvent) oData;
+getEventServiceClient().setDetailedText(leTemp);
+}
+}static void putObjectIfNotNull(
+@NonNull JSONObject jsonObject,
+@NonNull @Size(min = 1) String fieldName,
+@Nullable JSONObject value
+) {
+if (value == null) {
+return;
+}
+try {
+jsonObject.put(fieldName, value);
+} catch (JSONException ignored) {
+}
+}protected List<Message> findMessagesForProcessing(MsgStateEnum msgState) {
+long saveTimeInSeconds = getSaveTimeInSeconds(msgState);
+if (saveTimeInSeconds < 0) {
+LOG.trace("Messages in state [{}] will be skipped, as configured to be kept indefinitely.", msgState);
+return Collections.emptyList();
+}
+final MessageFilter messageFilter = new MessageFilter();
+messageFilter.setState(msgState);
+messageFilter.setLastChangeTo(Instant.now().minusSeconds(saveTimeInSeconds));
+long limit = messagesTechnicalLimit.getValue();
+LOG.trace("Will search for messages with filter {}, and technical limit {}.", messageFilter, limit);
+final List<Message> messageList = messageService.findMessagesByFilter(messageFilter, limit);
+if (limit == messageList.size()) {
+LOG.info("Reached limit for one iteration of job {}, probably there are other messages eligible" +
+"to be processed. Will be processed in the next iteration.", limit);
+}
+return messageList;
+}private void handleConnectionFailure(int curRetries, int maxRetries, IOException ioe)
+  throws IOException {
+closeSocket();
+if (curRetries >= maxRetries || ExceptionUtil.isInterrupt(ioe)) {
+  throw ioe;
+}
+try {
+  Thread.sleep(this.rpcClient.failureSleep);
+} catch (InterruptedException ie) {
+  ExceptionUtil.rethrowIfInterrupt(ie);
+}
+if (LOG.isInfoEnabled()) {
+  LOG.info("Retrying connect to server: " + remoteId.getAddress() +
+" after sleeping " + this.rpcClient.failureSleep + "ms. Already tried " + curRetries +
+" time(s).");
+}
+  }public boolean hideEntity(Player observer, Entity entity) {
+validate(observer, entity);
+boolean visibleBefore = setVisibility(observer, entity.getEntityId(), false);
+if (visibleBefore) {
+PacketContainer destroyEntity = new PacketContainer(ENTITY_DESTROY);
+destroyEntity.getIntegerArrays().write(0, new int[] { entity.getEntityId() });
+try {
+manager.sendServerPacket(observer, destroyEntity);
+} catch (InvocationTargetException e) {
+throw new RuntimeException("Cannot send server packet.", e);
+}
+}
+return visibleBefore;
+}

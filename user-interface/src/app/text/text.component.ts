@@ -18,17 +18,12 @@ export class TextComponent {
     }
 
     ngOnInit() {
-    ngOnInit() {
       this.getColor();
     }
 
     getColor() {
-
-    getColor() {
       this.textColor = this.profileService.textcolor;
     }
-
-    onTextChange(newCol : string) {
 
     onTextChange(newCol : string) {
       this.profileService.textcolor = newCol;

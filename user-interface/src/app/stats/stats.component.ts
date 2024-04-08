@@ -30,7 +30,6 @@ export class StatsComponent {
   }
 
   setStats() {
-  setStats() {
     this.charsTotal = this.profileService.chartyped;
     this.charsIncorrect = this.profileService.charsincorrect;
     this.totaltime = this.profileService.totaltime;

@@ -7,7 +7,6 @@ import { UserService } from '../user.service';
 import { ProfileService } from '../profile.service';
 import { Subscription } from 'rxjs';
 import { __values } from 'tslib';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile',
@@ -307,7 +306,6 @@ export class ProfileComponent {
   }
 
   openLeaderboard() {
-  openLeaderboard() {
     const dialogRef = this.dialog.open(LeaderboardComponent, {
       width: '1010px',
       height: '1080px',
@@ -322,10 +320,6 @@ export class ProfileComponent {
     this.profileService.updateProfile().subscribe({});
     this.router.navigate(['/profile']);
     setTimeout(() => {
-      this.httpClient.post(`${this.baseUrl}/get_num_players`, {players : 1}).subscribe(data => {
-        console.log("get number of players = 1")
-      });  
-
       this.router.navigate(['/loading']); // Timer to wait for closeAll before routing to profile
     }, 100);
   }

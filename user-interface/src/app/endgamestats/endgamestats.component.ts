@@ -21,11 +21,12 @@ export class EndgamestatsComponent {
   score : number = 0;
   cpm : number = 0;
   accuracy : number = 0;
-  constructor(private endGameService : EndgameService, private router : Router, private profileService: ProfileService){
 
+  constructor(private _parent: LoadingComponent, private endGameService : EndgameService, private router : Router, private profileService: ProfileService){
+    this._parent.text = "";
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.wrong = this.endGameService.charsWrong;
     this.right = this.endGameService.charsCorrect;
     this.time = this.endGameService.time;
@@ -35,19 +36,20 @@ export class EndgamestatsComponent {
     this.accuracy = Math.floor((this.right/this.total) * 100);
     this.updateProfile();
   }
-  updateProfile(){
+
+  updateProfile() {
     this.profileService.chartyped += this.total;
     this.profileService.totaltime += this.time;
     this.profileService.charsincorrect += this.wrong;
     this.profileService.totalscore += this.score;
     this.profileService.updateProfile().subscribe({});;
   }
-  routeLogin()
-  {
+
+  routeLogin() {
       this.router.navigate(['/profile']); 
   }
-  logout()
-  {
+
+  logout() {
     this.router.navigate(['']); 
   }
 }
