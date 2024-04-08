@@ -324,4 +324,8 @@ export class ProfileComponent {
       this.router.navigate(['/loading']); // Timer to wait for closeAll before routing to profile
     }, 100);
   }
+
+  logout() {
+    this.router.navigate([''], {});
+  }
 }
