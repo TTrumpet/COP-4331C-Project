@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ProfileService } from '../profile.service';
+
 @Component({
   selector: 'app-stats',
   standalone: true,
@@ -7,6 +8,7 @@ import { ProfileService } from '../profile.service';
   templateUrl: './stats.component.html',
   styleUrl: './stats.component.css'
 })
+
 export class StatsComponent {
 
   charsTotal: number = 1;
@@ -19,11 +21,11 @@ export class StatsComponent {
   accuracy: number = 0;
 
 
-  constructor(private profileService: ProfileService){
+  constructor(private profileService: ProfileService) {
 
   }
-  
-  ngOnInit(){
+
+  ngOnInit() {
     this.setStats();
   }
 

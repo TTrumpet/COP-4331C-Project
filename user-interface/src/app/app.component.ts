@@ -13,6 +13,7 @@ import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/route
   styleUrls: ['./app.component.css'],
   host: { ngSkipHydration: 'true' }
 })
+
 export class AppComponent {
   title = 'Code Cruiser';
 

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ProfileService } from '../profile.service';
 
-
 @Component({
   selector: 'app-text',
   standalone: true,
@@ -10,10 +9,11 @@ import { ProfileService } from '../profile.service';
   templateUrl: './text.component.html',
   styleUrl: './text.component.css'
 })
+
 export class TextComponent {
     textColor = "FFFFFF";
 
-    constructor(private profileService : ProfileService){
+    constructor(private profileService : ProfileService) {
 
     }
 
