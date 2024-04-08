@@ -126,6 +126,7 @@ export class GameComponent {
         this.finalcountWrong = this.countWrong;
         this._parent.finalCountCorrect = this.finalcountCorrect;
         this._parent.finalCountWrong = this.finalcountWrong;
+        this._parent.onPlayer++;
         
         setTimeout( () => {
           this._parent.text = "loading...";

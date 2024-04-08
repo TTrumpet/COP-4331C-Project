@@ -3,11 +3,11 @@ import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { LanguageComponent } from '../language/language.component';
 import { UserService } from '../user.service';
 import { ProfileService } from '../profile.service';
 import { Subscription } from 'rxjs';
 import { __values } from 'tslib';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile',
@@ -23,8 +23,11 @@ export class ProfileComponent {
   link:string = '../../assets/images/SimpleGreenCarTopView.svg';
 
   private subscription: Subscription = new Subscription();
-  constructor(public dialog : MatDialog, private route : ActivatedRoute, private router : Router, private userService : UserService, private profileService : ProfileService) {
-  
+  httpClient: HttpClient;
+  private baseUrl = 'http://localhost:5000';
+
+  constructor(http: HttpClient, public dialog : MatDialog, private route : ActivatedRoute, private router : Router, private userService : UserService, private profileService : ProfileService) {
+    this.httpClient = http;
   }
 
   ngOnInit() {
@@ -316,13 +319,21 @@ export class ProfileComponent {
     })
   }
 
-  openGame() {
+  openSingleGame() {
     console.log("updating!"); 
     this.profileService.updateProfile().subscribe({});
     this.router.navigate(['/profile']);
     setTimeout(() => {
+      this.httpClient.post(`${this.baseUrl}/get_num_players`, {players : 1}).subscribe(data => {
+        console.log("get number of players = 1")
+      });  
+
       this.router.navigate(['/loading']); // Timer to wait for closeAll before routing to profile
     }, 100);
+  }
+
+  openMultiGame() {
+    
   }
 
   logout() {
