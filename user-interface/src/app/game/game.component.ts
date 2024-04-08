@@ -51,6 +51,7 @@ export class GameComponent {
     if (this.userService.getLog() == false)
       this.router.navigate([''], {}); 
     else {
+      this.display = this.profileService.time + ` Seconds`;
       document.getElementById("current-line-green")!.style.color = '#' + this.profileService.textcolor;
       this.getCarColor();
       setTimeout( () => {
@@ -118,14 +119,15 @@ export class GameComponent {
       this.display = `${textSec} Seconds`;
 
       if (seconds == 0) {
+        clearInterval(timer);
         this._parent.text = "FINISH!"
         this.isGameEnd = true;
         this.finalcountCorrect = this.countCorrect;
         this.finalcountWrong = this.countWrong;
         this._parent.finalCountCorrect = this.finalcountCorrect;
         this._parent.finalCountWrong = this.finalcountWrong;
+        
         setTimeout( () => {
-          clearInterval(timer);
           this._parent.text = "loading...";
           this.router.navigate(['/loading']);
           this._parent.gameOver();

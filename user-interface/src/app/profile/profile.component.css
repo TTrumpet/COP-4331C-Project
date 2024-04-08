@@ -96,12 +96,14 @@ img {
 }
 
 .start {
+    width: 100px;
     background: #55eb53;
     color: black;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
-    padding: 10px 20px;
+    padding: 10px 10px;
     border-radius: 10px;
-    font-size: 25px;
+    font-size: 12px;
+    text-align: center;
 }
 
 .disclaimer {
