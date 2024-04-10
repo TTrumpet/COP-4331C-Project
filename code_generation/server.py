@@ -176,6 +176,21 @@ def update_profile():
         db.session.rollback()
         return jsonify({"message": "An error occurred while updating the profile", "error": str(e)}), 500
 
+@app.route('/top_scores', methods=['GET'])
+def top_scores():
+    try:
+        # Query the top ten users by score
+        top_users = UserSettings.query.order_by(UserSettings.totalscore.desc()).limit(10).all()
+        
+        # Create a list of dicts to hold the user name and score for each of the top ten users
+        top_scores_list = [{"name": user.name, "score": user.totalscore} for user in top_users]
+        
+        return jsonify(top_scores_list), 200
+    except Exception as e:
+        # In case of any exception, return an error message
+        return jsonify({"message": "An error occurred while retrieving the top scores.", "error": str(e)}), 500
+
+
 @app.route('/get_code', methods=['POST'])
 def get_code():
     data = request.get_json()

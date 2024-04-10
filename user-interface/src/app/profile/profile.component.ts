@@ -8,6 +8,7 @@ import { UserService } from '../user.service';
 import { ProfileService } from '../profile.service';
 import { Subscription } from 'rxjs';
 import { __values } from 'tslib';
+import { MultiService } from '../multistats/multi.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +24,7 @@ export class ProfileComponent {
   link:string = '../../assets/images/SimpleGreenCarTopView.svg';
   private subscription: Subscription = new Subscription();
 
-  constructor(public dialog : MatDialog, private route : ActivatedRoute, private router : Router, private userService : UserService, private profileService : ProfileService) {
+  constructor(public multi : MultiService,public dialog : MatDialog, private route : ActivatedRoute, private router : Router, private userService : UserService, private profileService : ProfileService) {
   
   }
 
@@ -318,6 +319,16 @@ export class ProfileComponent {
 
   openGame() {
     console.log("updating!"); 
+    this.profileService.updateProfile().subscribe({});
+    this.router.navigate(['/profile']);
+    setTimeout(() => {
+      this.router.navigate(['/loading']); // Timer to wait for closeAll before routing to profile
+    }, 100);
+  }
+  openGameMulti() {
+    console.log("updating!"); 
+    this.multi.isMulti = true;
+    this.multi.turn = 2;
     this.profileService.updateProfile().subscribe({});
     this.router.navigate(['/profile']);
     setTimeout(() => {

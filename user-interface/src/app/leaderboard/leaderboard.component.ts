@@ -29,8 +29,8 @@ export class LeaderboardComponent implements OnInit {
   }
 
   loadTopTen() {
-    this.leaderboardService.getTopTen().subscribe((players) => {
-      this.topPlayers = players;
+    this.leaderboardService.updateLB().subscribe(data => {
+      this.topPlayers = data;
     });
   }
 }

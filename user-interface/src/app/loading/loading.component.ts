@@ -7,6 +7,7 @@ import { UserService } from '../user.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EndgamestatsComponent } from '../endgamestats/endgamestats.component';
 import { EndgameService } from '../endgamestats/endgame.service';
+import { MultiService } from '../multistats/multi.service';
 
 @Component({
   selector: 'app-loading',
@@ -27,16 +28,20 @@ export class LoadingComponent {
   codeString: string = "";
   codeText: string[] = []; 
 
-  constructor(http: HttpClient, private route : ActivatedRoute, private router : Router,  private userService : UserService, private profileService : ProfileService,public dialog: MatDialog,private endGame : EndgameService) {
+  constructor(private multi : MultiService,http: HttpClient, private route : ActivatedRoute, private router : Router,  private userService : UserService, private profileService : ProfileService,public dialog: MatDialog,private endGame : EndgameService) {
     this.httpClient = http;
   }
 
   ngOnInit() {
+    if(this.multi.turn == 2){
+      this.text = "Player 1 get ready!"
+    }else if(this.multi.turn == 1){
+      this.text = "Player 2 get ready!"
+    }
     // the game hasn't started yet, so load code snippets and navigate to game page
     console.log("in loading component");
     if (this.userService.getLog() == false)
-      console.log("delete");
-      //this.router.navigate([''], {});
+      this.router.navigate([''], {});
     else {
       this.language = this.profileService.language;
       console.log(this.language);
@@ -65,12 +70,23 @@ export class LoadingComponent {
       console.log("back in loading!");
       console.log(this.finalCountCorrect);
       console.log(this.finalCountWrong);
-      this.endGame.setResults(this.finalCountWrong,this.finalCountCorrect, this.profileService.time);
-      this.router.navigate(['/loading/results']);
-      // this.dialog.open(EndgamestatsComponent, {
-      //   width: '1010px',
-      //   height: '800px',
-      // });
+      if(this.multi.isMulti == true){
+        
+        if(this.multi.turn ==  1){
+          this.multi.setResultsP1(this.finalCountWrong,this.finalCountCorrect, this.profileService.time);
+          this.router.navigate(['/profile']);
+          setTimeout(() => {
+            this.router.navigate(['/loading']); // Timer to wait for closeAll before routing to profile
+          }, 300);
+        }else{
+          this.multi.setResultsP2(this.finalCountWrong,this.finalCountCorrect);
+          this.router.navigate(['/loading/multi-results']);
+        }
+
+      }else{
+        this.endGame.setResults(this.finalCountWrong,this.finalCountCorrect, this.profileService.time);
+        this.router.navigate(['/loading/results']);
+      }
   }
 }
 
