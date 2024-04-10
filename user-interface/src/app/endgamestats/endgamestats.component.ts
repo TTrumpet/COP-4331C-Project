@@ -39,7 +39,11 @@ export class EndgamestatsComponent {
 
   updateProfile() {
     this.profileService.chartyped += this.total;
-    this.profileService.totaltime += this.time;
+    if (typeof this.time === 'number') {
+      this.profileService.totaltime += this.time;
+  } else {
+      this.profileService.totaltime += parseInt(this.time, 10);
+  }
     this.profileService.charsincorrect += this.wrong;
     this.profileService.totalscore += this.score;
     this.profileService.updateProfile().subscribe({});;
@@ -48,8 +52,8 @@ export class EndgamestatsComponent {
   routeLogin() {
       this.router.navigate(['/profile']); 
   }
-
-  logout() {
-    this.router.navigate(['']); 
+  logout()
+  {
+    this.router.navigate(['/']); 
   }
 }

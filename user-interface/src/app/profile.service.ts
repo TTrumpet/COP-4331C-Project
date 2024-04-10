@@ -14,7 +14,7 @@ export class ProfileService {
   cartrail: string = '';
   carcolor: string = '';
   language: string = '';
-  time:number = 0;
+  time : number = 0;
   textcolor: string = '';
   textsize = 0;
   username :string = '';

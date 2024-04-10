@@ -16,6 +16,7 @@ import { GameComponent } from './game/game.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { LoadingComponent } from './loading/loading.component';
 import { EndgamestatsComponent } from './endgamestats/endgamestats.component';
+import { MultistatsComponent } from './multistats/multistats.component';
 
 export const routes: Routes = [
 
@@ -32,7 +33,8 @@ export const routes: Routes = [
     ]},
     {path: 'loading', component: LoadingComponent, children: [
       {path: 'game', component: GameComponent},
-      {path: 'results', component:EndgamestatsComponent}
+      {path: 'results', component:EndgamestatsComponent},
+      {path: 'multi-results', component:MultistatsComponent}
     ]},
 
     // Wild Card Route for 404 request
