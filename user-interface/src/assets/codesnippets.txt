@@ -1,176 +1,149 @@
-public static DoubleMatrix highestSince(DoubleMatrix expression, DoubleMatrix m, int index) {
-m = m.reshape(1, m.length);
-DoubleMatrix out = DoubleMatrix.zeros(1, m.columns);
-int[] indices = expression.findIndices(); 
-int endindex = indices[0];
-int terminateindex = indices[0];
-double hhv = 0;
-if (index > 0 && index <= indices.length + 1) {
-for (int i = 0; i < indices.length; i++) {
-endindex = indices[-1 + i + index];
-if (i + index < indices.length) {
-terminateindex = indices[i + index]; 
-} else {
-terminateindex = m.length - 1;
-}
-for (int j = endindex; j <= terminateindex; j++) { 
-if (j >= endindex) {
-hhv = m.get(0, new IntervalRange(endindex, j + 1)).max();
-out.put(j, hhv);
-}
-}
-}
-}
-return out;
-}private long chunkEnd(long timestamp) {
-long end;
-if (timestamp > 0) {
-  end = ((timestamp / chunklen) * chunklen) + chunklen - 1;
-} else {
-  end = ((((timestamp + 1) / chunklen) - 1) * chunklen) + chunklen - 1;
-}
-return end;
-  }@Test
-public void whenInEvenThenResultTrue() throws IOException {
-String input = "1234";
-try (InputStream result = new ByteArrayInputStream(input.getBytes())) {
-assertThat(chs.isNumber(result), is(true));
-}
-}public Buffer append(final Buffer buffer) {
-if (buffer.list.isEmpty()) {
-return buffer;
-}
-list.addAll(buffer.list);
-last = buffer.last;
-size += buffer.size;
-return this;
-}public String run(Source grammar) {
-Stacker stacker = new Stacker();
-Node root = stacker.run(grammar);
-if (root.op() == Error) return "Error: " + root.note();
-int net = root.left().get(NET);
-if (net != 1) {
-return "Error: first rule produces " + net + " items\n";
-}
-if (root.left().get(NEED) > 0) {
-return "Error: first rule can cause underflow\n";
-}
-bytes = new ByteArrayOutputStream();
-text = new StringBuilder();
-gather(root);
-setSequence(root);
-if (! testing) printNames();
-changed = true;
-while (changed) {
-changed = false;
-pc = line = 0;
-bytes.reset();
-text.setLength(0);
-encode(root);
-}
-if (line > 0) text.append("\n");
-return text.toString();
-}@Override
-public void handleEvent(TaskManagerEvent evt)
-{
-final String mucJid = evt.getMucJid();
-RecordingSession session = null;
-synchronized (recordingSessions)
-{
-for (RecordingSession s : recordingSessions)
-{
-if (0 == mucJid.compareTo(s.getMucJid()))
-{
-session = s;
-break;
-}
-}
-if (null == session)
+public static void registerCommandStack(CommandStack stack) {
+if(!supportsAnimation()) {
 return;
-IQ notification = null;
-if (TaskManagerEvent.Type.TASK_ABORTED == evt.getType())
-{
-jirecon.stopJireconTask(evt.getMucJid(), false);
-recordingSessions.remove(session);
-notification =
-createIqSet(session,
-RecordingIqUtils.Status.ABORTED.toString(),
-session.getRid());
 }
-else if (TaskManagerEvent.Type.TASK_FINISED == evt.getType())
-{
-jirecon.stopJireconTask(evt.getMucJid(), true);
-recordingSessions.remove(session);
-notification =
-createIqSet(session,
-RecordingIqUtils.Status.STOPPED.toString(),
-session.getRid());
-}
-else if (TaskManagerEvent.Type.TASK_STARTED == evt.getType())
-{
-notification =
-createIqSet(session,
-RecordingIqUtils.Status.STARTED.toString(),
-session.getRid(), session.getOutputPath());
-}
-if (null != notification)
-{
-send(notification);
+stack.addCommandStackEventListener(new CommandStackEventListener() {
+public void stackChanged(CommandStackEvent event) {
+if(doAnimate()) {
+if(event.getDetail() == CommandStack.PRE_UNDO || event.getDetail() == CommandStack.PRE_REDO) {
+if(isAllowedCommand(event.getCommand())) {
+Animation.markBegin();
 }
 }
-}public List<Interest> importUserInterests(String urlFile) {
-BufferedReader br = null;
-String line = "";
-String cvsSplitBy = ";";
-List<Interest> interests = new LinkedList<>();
-Interest interest = null;
-try {
-br = new BufferedReader(new FileReader(urlFile));
-while ((line = br.readLine()) != null) {
-String[] addInterests = line.split(cvsSplitBy);
-for (int i = 1; i < addInterests.length; i++) {
-try {
-this.insertInterest(addInterests[0], addInterests[i], "");
-} catch (Exception e) {
-System.out.println(e);
-System.out.println("Invalid exception importing user interest- " + addInterests[i]);
+else if(event.getDetail() == CommandStack.POST_UNDO || event.getDetail() == CommandStack.POST_REDO) {
+if(isAllowedCommand(event.getCommand())) {
+Animation.run(animationSpeed());
 }
 }
 }
-} catch (FileNotFoundException e) {
-e.printStackTrace();
-} catch (IOException e) {
-e.printStackTrace();
-} finally {
-if (br != null) {
-try {
-br.close();
-} catch (IOException e) {
-e.printStackTrace();
 }
-}
-}
-return interests;
-}static boolean isSupported(int index) {
-if ((index <= 0) || (index >= NAMED_CURVE_OID_TABLE.length)) {
+private boolean isAllowedCommand(Command cmd) {
+if(cmd instanceof CompoundCommand) {
+for(Object command : ((CompoundCommand)cmd).getCommands()) {
+if(!(command instanceof IAnimatableCommand)) {
 return false;
 }
-if (fips == false) {
+}
 return true;
 }
-return DEFAULT.contains(index);
-}public JdiThread find(ThreadReference thread)
-{
-for(Iterator<JdiThread> it=iterator(); it.hasNext(); ) {
-JdiThread currentThread = (JdiThread)it.next();
-if(currentThread.sameThread(thread)) {
-return currentThread;
+else {
+return cmd instanceof IAnimatableCommand;
 }
 }
-Debug.reportError("Encountered thread not in ThreadSet!");
-return null;
-}public void clearAll()
+});
+}public void mouseReleased(MouseEvent e)
 {
-if(measurementItems!=null) measurementItems.clear();
-itemsQuantity=(measurementItems!=null)?measurementItems.size():0;
+if (imageCanvas.isDisabled())
+{
+return;
+}
+if (e.getButton().equals(MouseButton.PRIMARY))
+{
+imageCanvas.setCursor(Cursor.HAND);
+}
+}public void OnEnter() {
+if (Board.player.hasItem) {
+Game.won();
+}
+}@Nullable
+public static AnnotationAttributes findMergedAnnotationAttributes(AnnotatedElement element,String annotationName, boolean classValuesAsString, boolean nestedAnnotationsAsMap) {
+AnnotationAttributes attributes = searchWithFindSemantics(element, null, annotationName,new MergedAnnotationAttributesProcessor(classValuesAsString, nestedAnnotationsAsMap));
+AnnotationUtils.postProcessAnnotationAttributes(element, attributes, classValuesAsString, nestedAnnotationsAsMap);
+return attributes;
+}@Test
+public void testRemoveInstanceViaShephard() {
+System.out.println("removeInstanceViaShephard");
+ Riffle cluster = new Riffle(trainingSet.instance(1));
+cluster.updateStrategyOption.setChosenIndex(1);
+cluster.outlierDefinitionStrategyOption.setChosenIndex(0);
+double[] c = cluster.getCenter();
+assertEquals(0.24, c[0], 0.0001);
+assertEquals(0.24, c[1], 0.0001);
+assertEquals(1.0,  c[2], 0.0001);
+assertEquals(1.0,  c[3], 0.0001);
+cluster.addInstance(trainingSet.instance(6));
+cluster.removeInstance(trainingSet.instance(6));
+c = cluster.getCenter();
+assertEquals(0.24, c[0], 0.0001);
+assertEquals(0.24, c[1], 0.0001);
+assertEquals(1.0,  c[2], 0.0001);
+assertEquals(1.0,  c[3], 0.0001);
+cluster.addInstance(trainingSet.instance(2));
+cluster.addInstance(trainingSet.instance(3));
+cluster.addInstance(trainingSet.instance(4));
+cluster.addInstance(trainingSet.instance(5));
+cluster.addInstance(trainingSet.instance(7));
+cluster.removeInstance(trainingSet.instance(7));
+c = cluster.getCenter();
+assertEquals(0.25, c[0], 0.0001);
+assertEquals(0.25, c[1], 0.0001);
+assertEquals(1.0,  c[2], 0.0001);
+assertEquals(1.0,  c[3], 0.0001);
+}public void widgetSelected(SelectionEvent seEvent)
+{
+TableItem tiItem = (TableItem) seEvent.item;
+Object oData = tiItem.getData();
+if ((oData != null) && (oData instanceof ILogEvent))
+{
+ILogEvent leTemp = (ILogEvent) oData;
+getEventServiceClient().setDetailedText(leTemp);
+}
+}static void putObjectIfNotNull(
+@NonNull JSONObject jsonObject,
+@NonNull @Size(min = 1) String fieldName,
+@Nullable JSONObject value
+) {
+if (value == null) {
+return;
+}
+try {
+jsonObject.put(fieldName, value);
+} catch (JSONException ignored) {
+}
+}protected List<Message> findMessagesForProcessing(MsgStateEnum msgState) {
+long saveTimeInSeconds = getSaveTimeInSeconds(msgState);
+if (saveTimeInSeconds < 0) {
+LOG.trace("Messages in state [{}] will be skipped, as configured to be kept indefinitely.", msgState);
+return Collections.emptyList();
+}
+final MessageFilter messageFilter = new MessageFilter();
+messageFilter.setState(msgState);
+messageFilter.setLastChangeTo(Instant.now().minusSeconds(saveTimeInSeconds));
+long limit = messagesTechnicalLimit.getValue();
+LOG.trace("Will search for messages with filter {}, and technical limit {}.", messageFilter, limit);
+final List<Message> messageList = messageService.findMessagesByFilter(messageFilter, limit);
+if (limit == messageList.size()) {
+LOG.info("Reached limit for one iteration of job {}, probably there are other messages eligible" +
+"to be processed. Will be processed in the next iteration.", limit);
+}
+return messageList;
+}private void handleConnectionFailure(int curRetries, int maxRetries, IOException ioe)
+  throws IOException {
+closeSocket();
+if (curRetries >= maxRetries || ExceptionUtil.isInterrupt(ioe)) {
+  throw ioe;
+}
+try {
+  Thread.sleep(this.rpcClient.failureSleep);
+} catch (InterruptedException ie) {
+  ExceptionUtil.rethrowIfInterrupt(ie);
+}
+if (LOG.isInfoEnabled()) {
+  LOG.info("Retrying connect to server: " + remoteId.getAddress() +
+" after sleeping " + this.rpcClient.failureSleep + "ms. Already tried " + curRetries +
+" time(s).");
+}
+  }public boolean hideEntity(Player observer, Entity entity) {
+validate(observer, entity);
+boolean visibleBefore = setVisibility(observer, entity.getEntityId(), false);
+if (visibleBefore) {
+PacketContainer destroyEntity = new PacketContainer(ENTITY_DESTROY);
+destroyEntity.getIntegerArrays().write(0, new int[] { entity.getEntityId() });
+try {
+manager.sendServerPacket(observer, destroyEntity);
+} catch (InvocationTargetException e) {
+throw new RuntimeException("Cannot send server packet.", e);
+}
+}
+return visibleBefore;
 }

@@ -28,6 +28,7 @@ export class LoadingComponent {
   codeString: string = "";
   codeText: string[] = []; 
 
+
   constructor(private multi : MultiService,http: HttpClient, private route : ActivatedRoute, private router : Router,  private userService : UserService, private profileService : ProfileService,public dialog: MatDialog,private endGame : EndgameService) {
     this.httpClient = http;
   }
@@ -43,30 +44,34 @@ export class LoadingComponent {
     if (this.userService.getLog() == false)
       this.router.navigate([''], {});
     else {
-      this.language = this.profileService.language;
-      console.log(this.language);
-
-      // get the code from the code gen
-      this.httpClient.post(`${this.baseUrl}/get_code`, {language : this.language}).subscribe(data => {
-        console.log(data);
-      });
-      
-      // wait for the code gen to load into the txt file
-      setTimeout( () => {
-        console.log("Done");
-        this.httpClient.get('../assets/codesnippets.txt', {responseType: 'text'}).subscribe(data => {
-            this.codeString = data;
-            this.codeText = this.codeString.split("\r\n");
-            this.router.navigate(['/loading/game']);
-        });    
-      }, 10000)
+      // get number of players
+      this.gameStart(1);
     }
-}
+  }
 
+  gameStart(numOfPlayers : number) {
+    this.numOfPlayers = numOfPlayers;
+    this.language = this.profileService.language;
+    console.log(this.language);
 
+    // get the code gen
+    this.httpClient.post(`${this.baseUrl}/get_code`, {language : this.language}).subscribe(data => {
+      
+    });
+
+    setTimeout( () => {
+      this.httpClient.get('../assets/codesnippets.txt', {responseType: 'text'}).subscribe(data => {
+        this.codeString = data;
+        this.codeText = this.codeString.split("\r\n");
+        console.log(this.codeText);
+        this.router.navigate(['/loading/game']);
+      });    
+    }, 10000)
+  }
 
   gameOver() {
     // if the game is over, wait till the game is saved into database and show stats
+    if (this.numOfPlayers == 1) { // single player stats
       console.log("back in loading!");
       console.log(this.finalCountCorrect);
       console.log(this.finalCountWrong);

@@ -193,6 +193,7 @@ def top_scores():
 
 @app.route('/get_code', methods=['POST'])
 def get_code():
+    print("in get code")
     data = request.get_json()
     language = data.get('language')
 

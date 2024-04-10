@@ -19,7 +19,6 @@ body {
     
 }
 
-
 button {
     padding: 2vh 5vh;
     margin-bottom: 1vh;
@@ -32,6 +31,12 @@ button {
     color: black;
     
 }
+
+#logout {
+    background: black;
+    color: red;
+}
+
 nav {
     width: 50vw;
     height: 10vh;

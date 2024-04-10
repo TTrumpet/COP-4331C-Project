@@ -57,10 +57,8 @@ export class ProfileService {
   }
 
   updateProfile() {
-    console.log("UPDATING PROFILE");
-    console.log(this.totalscore);
-    console.log(this.totaltime);  
-    console.log(this.username);
+    // console.log(this.carcolor);
+    // console.log(this.cartrail);
     return this.http.post<any>(`${this.baseUrl}/update_profile`, 
       {name : this.username,
       language:this.language,
