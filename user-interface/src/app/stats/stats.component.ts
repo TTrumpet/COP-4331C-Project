@@ -24,8 +24,8 @@ export class StatsComponent {
   constructor(private profileService: ProfileService) {
 
   }
-  
-  ngOnInit(){
+
+  ngOnInit() {
     this.setStats();
   }
 
