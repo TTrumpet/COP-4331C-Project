@@ -13,6 +13,7 @@ import { ProfileService } from '../profile.service';
   templateUrl: './endgamestats.component.html',
   styleUrl: './endgamestats.component.css'
 })
+
 export class EndgamestatsComponent {
   wrong : number = 0;
   right : number = 0;
@@ -22,7 +23,7 @@ export class EndgamestatsComponent {
   cpm : number = 0;
   accuracy : number = 0;
 
-  constructor(private _parent: LoadingComponent, private endGameService : EndgameService, private router : Router, private profileService: ProfileService){
+  constructor(private _parent: LoadingComponent, private endGameService : EndgameService, private router : Router, private profileService: ProfileService) {
     this._parent.text = "";
   }
 

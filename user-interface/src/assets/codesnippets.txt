@@ -1,149 +1,212 @@
-public static void registerCommandStack(CommandStack stack) {
-if(!supportsAnimation()) {
-return;
+protected boolean compareAndSet(Commit<CompareAndSet> commit) {
+if (Arrays.equals(value, commit.value().expect())) {
+  updateAndNotify(commit.value().update());
+  return true;
 }
-stack.addCommandStackEventListener(new CommandStackEventListener() {
-public void stackChanged(CommandStackEvent event) {
-if(doAnimate()) {
-if(event.getDetail() == CommandStack.PRE_UNDO || event.getDetail() == CommandStack.PRE_REDO) {
-if(isAllowedCommand(event.getCommand())) {
-Animation.markBegin();
-}
-}
-else if(event.getDetail() == CommandStack.POST_UNDO || event.getDetail() == CommandStack.POST_REDO) {
-if(isAllowedCommand(event.getCommand())) {
-Animation.run(animationSpeed());
-}
-}
-}
-}
-private boolean isAllowedCommand(Command cmd) {
-if(cmd instanceof CompoundCommand) {
-for(Object command : ((CompoundCommand)cmd).getCommands()) {
-if(!(command instanceof IAnimatableCommand)) {
 return false;
+  }private boolean fieldsEmpty(){
+boolean nullFlag = false;
+if(resultLabel.getText().equals(""))
+nullFlag = true;
+if(eValueBox.getText().equals(""))
+nullFlag = true;
+if (sig1Box.getText().equals(""))
+nullFlag = true;
+if (sig2Box.getText().equals(""))
+nullFlag = true;
+if (fastaSequenceBox.getText().equals(""))
+nullFlag = true;
+if (taxonomyBox.getText().equals(""))
+nullFlag = true;
+return nullFlag;
+}final void forceApply(FrozenBufferedUpdates updates) throws IOException {
+updates.lock();
+try {
+  if (updates.isApplied()) {
+return;
+  }
+  long startNS = System.nanoTime();
+  assert updates.any();
+  Set<SegmentCommitInfo> seenSegments = new HashSet<>();
+  int iter = 0;
+  int totalSegmentCount = 0;
+  long totalDelCount = 0;
+  boolean finished = false;
+  while (true) {
+String messagePrefix;
+if (iter == 0) {
+  messagePrefix = "";
+} else {
+  messagePrefix = "iter " + iter;
+}
+long iterStartNS = System.nanoTime();
+long mergeGenStart = mergeFinishedGen.get();
+Set<String> delFiles = new HashSet<>();
+BufferedUpdatesStream.SegmentState[] segStates;
+synchronized (this) {
+  List<SegmentCommitInfo> infos = getInfosToApply(updates);
+  if (infos == null) {
+break;
+  }
+  for (SegmentCommitInfo info : infos) {
+delFiles.addAll(info.files());
+  }
+  segStates = openSegmentStates(infos, seenSegments, updates.delGen());
+  if (segStates.length == 0) {
+if (infoStream.isEnabled("BD")) {
+  infoStream.message("BD", "packet matches no segments");
+}
+break;
+  }
+  if (infoStream.isEnabled("BD")) {
+infoStream.message(
+"BD",
+String.format(
+Locale.ROOT,
+messagePrefix + "now apply del packet (%s) to %d segments, mergeGen %d",
+this,
+segStates.length,
+mergeGenStart));
+  }
+  totalSegmentCount += segStates.length;
+  deleter.incRef(delFiles);
+}
+AtomicBoolean success = new AtomicBoolean();
+long delCount;
+try (Closeable finalizer = () -> finishApply(segStates, success.get(), delFiles)) {
+  assert finalizer != null; 
+  delCount = updates.apply(segStates);
+  success.set(true);
+}
+writeSomeDocValuesUpdates();
+totalDelCount += delCount;
+if (infoStream.isEnabled("BD")) {
+  infoStream.message(
+  "BD",
+  String.format(
+  Locale.ROOT,
+  messagePrefix
+  + "done inner apply del packet (%s) to %d segments; %d new deletes/updates; took %.3f sec",
+  this,
+  segStates.length,
+  delCount,
+  (System.nanoTime() - iterStartNS) / 1000000000.));
+}
+if (updates.privateSegment != null) {
+  break;
+}
+synchronized (this) {
+  long mergeGenCur = mergeFinishedGen.get();
+  if (mergeGenCur == mergeGenStart) {
+bufferedUpdatesStream.finished(updates);
+finished = true;
+break;
+  }
+}
+if (infoStream.isEnabled("BD")) {
+  infoStream.message("BD", messagePrefix + "concurrent merges finished; move to next iter");
+}
+iter++;
+  }
+  if (finished == false) {
+bufferedUpdatesStream.finished(updates);
+  }
+  if (infoStream.isEnabled("BD")) {
+String message =
+String.format(
+Locale.ROOT,
+"done apply del packet (%s) to %d segments; %d new deletes/updates; took %.3f sec",
+this,
+totalSegmentCount,
+totalDelCount,
+(System.nanoTime() - startNS) / 1000000000.);
+if (iter > 0) {
+  message += "; " + (iter + 1) + " iters due to concurrent merges";
+}
+message += "; " + bufferedUpdatesStream.getPendingUpdatesCount() + " packets remain";
+infoStream.message("BD", message);
+  }
+} finally {
+  updates.unlock();
+}
+  }private void removeInvalidServices(Map<ServiceKey,Service> map) {
+for (Iterator t = map.entrySet().iterator(); t.hasNext(); ) {
+Map.Entry entry = (Map.Entry)t.next();
+Service s = (Service)entry.getValue();
+if (s.isValid() == false) {
+t.remove();
 }
 }
-return true;
+}public static ArchivesDto convertFromArchives(Archives archives) {
+ArchivesDto archivesDto = new ArchivesDto();
+archivesDto.setId(archives.getId());
+archivesDto.setArticle_id(archives.getArticlesByArticleId().getId());
+archivesDto.setTitle(archives.getTitle());
+archivesDto.setBody(archives.getBody());
+archivesDto.setUpdated_at(archives.getUpdatedAt());
+archivesDto.setUser_id(archives.getUsersByUserId().getId());
+archivesDto.setWhat_changed(archives.getWhatChanged());
+archivesDto.setArticle(ArticlesDto.convertFromArticles(archives.getArticlesByArticleId()));
+archivesDto.setUser(UsersDto.convertFromUsers(archives.getUsersByUserId()));
+return archivesDto;
+}@Deprecated
+@Nullable
+public static Object invokeJdbcMethod(Method method, @Nullable Object target, @Nullable Object... args) throws SQLException {
+try {
+return method.invoke(target, args);
+}catch (IllegalAccessException ex) {
+handleReflectionException(ex);
+}catch (InvocationTargetException ex) {
+if (ex.getTargetException() instanceof SQLException) {
+throw (SQLException) ex.getTargetException();
+}
+handleInvocationTargetException(ex);
+}
+throw new IllegalStateException("Should never get here");
+}static void lockMouse(Vector2f pos)
+{
+mouseLocked = true;
+lockedPos = pos;
+lx = pos.x;
+ly = pos.y;
+}public void request (HttpTransaction msg) {
+URI uri = msg.getRequestURI();
+Request req = (Request) requests.get (uri);
+if (req == null) {
+req = new Request (uri);
+requests.put (uri, req);
+}
+request (msg, req.count++);
+}private boolean promptForBackup() {
+Object[] options = {"Yes, please",
+"No, thanks"};
+int option = JOptionPane.showOptionDialog(
+XOS.getShared().getMainWindow(),
+"May we suggest a backup?", 
+"Backup Suggestion", 
+JOptionPane.YES_NO_OPTION, 
+JOptionPane.QUESTION_MESSAGE, 
+Home.getShared().getIcon(), 
+options, 
+options[0]);
+if (option == 0) {
+  return appToBackup.promptForBackup();
+} else {
+  return false;
+}
+  }public void updateMatrix() {
+int lineNumber = line.getLineNumber();
+Marble nextExternalMarble;
+if (lineNumber < rows) {
+nextExternalMarble = marbleMatrix[lineNumber][0];
+System.arraycopy(marbleMatrix[lineNumber], 1, marbleMatrix[lineNumber], 0, columns - 1);
+marbleMatrix[lineNumber][columns-1] = slideMarble;
 }
 else {
-return cmd instanceof IAnimatableCommand;
+nextExternalMarble = marbleMatrix[0][lineNumber - 3];
+for(int i=1; i<rows; i++)
+marbleMatrix[i-1][lineNumber-3] = marbleMatrix[i][lineNumber-3];
+marbleMatrix[rows-1][lineNumber-3] = slideMarble;
 }
-}
-});
-}public void mouseReleased(MouseEvent e)
-{
-if (imageCanvas.isDisabled())
-{
-return;
-}
-if (e.getButton().equals(MouseButton.PRIMARY))
-{
-imageCanvas.setCursor(Cursor.HAND);
-}
-}public void OnEnter() {
-if (Board.player.hasItem) {
-Game.won();
-}
-}@Nullable
-public static AnnotationAttributes findMergedAnnotationAttributes(AnnotatedElement element,String annotationName, boolean classValuesAsString, boolean nestedAnnotationsAsMap) {
-AnnotationAttributes attributes = searchWithFindSemantics(element, null, annotationName,new MergedAnnotationAttributesProcessor(classValuesAsString, nestedAnnotationsAsMap));
-AnnotationUtils.postProcessAnnotationAttributes(element, attributes, classValuesAsString, nestedAnnotationsAsMap);
-return attributes;
-}@Test
-public void testRemoveInstanceViaShephard() {
-System.out.println("removeInstanceViaShephard");
- Riffle cluster = new Riffle(trainingSet.instance(1));
-cluster.updateStrategyOption.setChosenIndex(1);
-cluster.outlierDefinitionStrategyOption.setChosenIndex(0);
-double[] c = cluster.getCenter();
-assertEquals(0.24, c[0], 0.0001);
-assertEquals(0.24, c[1], 0.0001);
-assertEquals(1.0,  c[2], 0.0001);
-assertEquals(1.0,  c[3], 0.0001);
-cluster.addInstance(trainingSet.instance(6));
-cluster.removeInstance(trainingSet.instance(6));
-c = cluster.getCenter();
-assertEquals(0.24, c[0], 0.0001);
-assertEquals(0.24, c[1], 0.0001);
-assertEquals(1.0,  c[2], 0.0001);
-assertEquals(1.0,  c[3], 0.0001);
-cluster.addInstance(trainingSet.instance(2));
-cluster.addInstance(trainingSet.instance(3));
-cluster.addInstance(trainingSet.instance(4));
-cluster.addInstance(trainingSet.instance(5));
-cluster.addInstance(trainingSet.instance(7));
-cluster.removeInstance(trainingSet.instance(7));
-c = cluster.getCenter();
-assertEquals(0.25, c[0], 0.0001);
-assertEquals(0.25, c[1], 0.0001);
-assertEquals(1.0,  c[2], 0.0001);
-assertEquals(1.0,  c[3], 0.0001);
-}public void widgetSelected(SelectionEvent seEvent)
-{
-TableItem tiItem = (TableItem) seEvent.item;
-Object oData = tiItem.getData();
-if ((oData != null) && (oData instanceof ILogEvent))
-{
-ILogEvent leTemp = (ILogEvent) oData;
-getEventServiceClient().setDetailedText(leTemp);
-}
-}static void putObjectIfNotNull(
-@NonNull JSONObject jsonObject,
-@NonNull @Size(min = 1) String fieldName,
-@Nullable JSONObject value
-) {
-if (value == null) {
-return;
-}
-try {
-jsonObject.put(fieldName, value);
-} catch (JSONException ignored) {
-}
-}protected List<Message> findMessagesForProcessing(MsgStateEnum msgState) {
-long saveTimeInSeconds = getSaveTimeInSeconds(msgState);
-if (saveTimeInSeconds < 0) {
-LOG.trace("Messages in state [{}] will be skipped, as configured to be kept indefinitely.", msgState);
-return Collections.emptyList();
-}
-final MessageFilter messageFilter = new MessageFilter();
-messageFilter.setState(msgState);
-messageFilter.setLastChangeTo(Instant.now().minusSeconds(saveTimeInSeconds));
-long limit = messagesTechnicalLimit.getValue();
-LOG.trace("Will search for messages with filter {}, and technical limit {}.", messageFilter, limit);
-final List<Message> messageList = messageService.findMessagesByFilter(messageFilter, limit);
-if (limit == messageList.size()) {
-LOG.info("Reached limit for one iteration of job {}, probably there are other messages eligible" +
-"to be processed. Will be processed in the next iteration.", limit);
-}
-return messageList;
-}private void handleConnectionFailure(int curRetries, int maxRetries, IOException ioe)
-  throws IOException {
-closeSocket();
-if (curRetries >= maxRetries || ExceptionUtil.isInterrupt(ioe)) {
-  throw ioe;
-}
-try {
-  Thread.sleep(this.rpcClient.failureSleep);
-} catch (InterruptedException ie) {
-  ExceptionUtil.rethrowIfInterrupt(ie);
-}
-if (LOG.isInfoEnabled()) {
-  LOG.info("Retrying connect to server: " + remoteId.getAddress() +
-" after sleeping " + this.rpcClient.failureSleep + "ms. Already tried " + curRetries +
-" time(s).");
-}
-  }public boolean hideEntity(Player observer, Entity entity) {
-validate(observer, entity);
-boolean visibleBefore = setVisibility(observer, entity.getEntityId(), false);
-if (visibleBefore) {
-PacketContainer destroyEntity = new PacketContainer(ENTITY_DESTROY);
-destroyEntity.getIntegerArrays().write(0, new int[] { entity.getEntityId() });
-try {
-manager.sendServerPacket(observer, destroyEntity);
-} catch (InvocationTargetException e) {
-throw new RuntimeException("Cannot send server packet.", e);
-}
-}
-return visibleBefore;
+slideMarble = nextExternalMarble;
 }

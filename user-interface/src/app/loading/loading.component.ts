@@ -27,17 +27,8 @@ export class LoadingComponent {
   codeString: string = "";
   codeText: string[] = []; 
 
-  // multiplayer variables
   numOfPlayers = 0;
   onPlayer = 0;
-  player1correct = 0;
-  player1wrong = 0;
-  player2correct = 0;
-  player2wrong = 0;
-  player3correct = 0;
-  player3wrong = 0;
-  player4correct = 0;
-  player4wrong = 0;
 
   constructor(http: HttpClient, private route : ActivatedRoute, private router : Router,  private userService : UserService, private profileService : ProfileService,public dialog: MatDialog,private endGame : EndgameService) {
     this.httpClient = http;
@@ -82,17 +73,19 @@ export class LoadingComponent {
       console.log(this.finalCountWrong);
       this.endGame.setResults(this.finalCountWrong,this.finalCountCorrect, this.profileService.time);
       this.router.navigate(['/loading/results']);
-      // this.dialog.open(EndgamestatsComponent, {
-      //   width: '1010px',
-      //   height: '800px',
-      // });
     }
     else { // multiplayer
-      if (this.onPlayer == this.numOfPlayers) {
+      if (this.onPlayer - 1 == this.numOfPlayers) {
         // multi game over
       }
       // record results and continue
+       
       else {
+        if(this.onPlayer == 1) {
+          
+        } else if (this.onPlayer == 2) {
+          
+        }
         this.recordMultiplayerResults();
         this.gameStart(this.numOfPlayers);
       }
@@ -101,20 +94,10 @@ export class LoadingComponent {
 
   recordMultiplayerResults() {
     if (this.onPlayer == 1) {
-      this.player1correct = this.finalCountCorrect;
-      this.player1wrong = this.finalCountWrong;
+      
     }
     if (this.onPlayer == 2) {
-      this.player2correct = this.finalCountCorrect;
-      this.player2wrong = this.finalCountWrong;
-    }
-    if (this.onPlayer == 3) {
-      this.player3correct = this.finalCountCorrect;
-      this.player3wrong = this.finalCountWrong;
-    }
-    if (this.onPlayer == 4) {
-      this.player4correct = this.finalCountCorrect;
-      this.player4wrong = this.finalCountWrong;
+      
     }
   }
 }
