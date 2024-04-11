@@ -1,212 +1,143 @@
-protected boolean compareAndSet(Commit<CompareAndSet> commit) {
-if (Arrays.equals(value, commit.value().expect())) {
-  updateAndNotify(commit.value().update());
-  return true;
-}
-return false;
-  }private boolean fieldsEmpty(){
-boolean nullFlag = false;
-if(resultLabel.getText().equals(""))
-nullFlag = true;
-if(eValueBox.getText().equals(""))
-nullFlag = true;
-if (sig1Box.getText().equals(""))
-nullFlag = true;
-if (sig2Box.getText().equals(""))
-nullFlag = true;
-if (fastaSequenceBox.getText().equals(""))
-nullFlag = true;
-if (taxonomyBox.getText().equals(""))
-nullFlag = true;
-return nullFlag;
-}final void forceApply(FrozenBufferedUpdates updates) throws IOException {
-updates.lock();
-try {
-  if (updates.isApplied()) {
-return;
-  }
-  long startNS = System.nanoTime();
-  assert updates.any();
-  Set<SegmentCommitInfo> seenSegments = new HashSet<>();
-  int iter = 0;
-  int totalSegmentCount = 0;
-  long totalDelCount = 0;
-  boolean finished = false;
-  while (true) {
-String messagePrefix;
-if (iter == 0) {
-  messagePrefix = "";
-} else {
-  messagePrefix = "iter " + iter;
-}
-long iterStartNS = System.nanoTime();
-long mergeGenStart = mergeFinishedGen.get();
-Set<String> delFiles = new HashSet<>();
-BufferedUpdatesStream.SegmentState[] segStates;
-synchronized (this) {
-  List<SegmentCommitInfo> infos = getInfosToApply(updates);
-  if (infos == null) {
-break;
-  }
-  for (SegmentCommitInfo info : infos) {
-delFiles.addAll(info.files());
-  }
-  segStates = openSegmentStates(infos, seenSegments, updates.delGen());
-  if (segStates.length == 0) {
-if (infoStream.isEnabled("BD")) {
-  infoStream.message("BD", "packet matches no segments");
-}
-break;
-  }
-  if (infoStream.isEnabled("BD")) {
-infoStream.message(
-"BD",
-String.format(
-Locale.ROOT,
-messagePrefix + "now apply del packet (%s) to %d segments, mergeGen %d",
-this,
-segStates.length,
-mergeGenStart));
-  }
-  totalSegmentCount += segStates.length;
-  deleter.incRef(delFiles);
-}
-AtomicBoolean success = new AtomicBoolean();
-long delCount;
-try (Closeable finalizer = () -> finishApply(segStates, success.get(), delFiles)) {
-  assert finalizer != null; 
-  delCount = updates.apply(segStates);
-  success.set(true);
-}
-writeSomeDocValuesUpdates();
-totalDelCount += delCount;
-if (infoStream.isEnabled("BD")) {
-  infoStream.message(
-  "BD",
-  String.format(
-  Locale.ROOT,
-  messagePrefix
-  + "done inner apply del packet (%s) to %d segments; %d new deletes/updates; took %.3f sec",
-  this,
-  segStates.length,
-  delCount,
-  (System.nanoTime() - iterStartNS) / 1000000000.));
-}
-if (updates.privateSegment != null) {
-  break;
-}
-synchronized (this) {
-  long mergeGenCur = mergeFinishedGen.get();
-  if (mergeGenCur == mergeGenStart) {
-bufferedUpdatesStream.finished(updates);
-finished = true;
-break;
-  }
-}
-if (infoStream.isEnabled("BD")) {
-  infoStream.message("BD", messagePrefix + "concurrent merges finished; move to next iter");
-}
-iter++;
-  }
-  if (finished == false) {
-bufferedUpdatesStream.finished(updates);
-  }
-  if (infoStream.isEnabled("BD")) {
-String message =
-String.format(
-Locale.ROOT,
-"done apply del packet (%s) to %d segments; %d new deletes/updates; took %.3f sec",
-this,
-totalSegmentCount,
-totalDelCount,
-(System.nanoTime() - startNS) / 1000000000.);
-if (iter > 0) {
-  message += "; " + (iter + 1) + " iters due to concurrent merges";
-}
-message += "; " + bufferedUpdatesStream.getPendingUpdatesCount() + " packets remain";
-infoStream.message("BD", message);
-  }
-} finally {
-  updates.unlock();
-}
-  }private void removeInvalidServices(Map<ServiceKey,Service> map) {
-for (Iterator t = map.entrySet().iterator(); t.hasNext(); ) {
-Map.Entry entry = (Map.Entry)t.next();
-Service s = (Service)entry.getValue();
-if (s.isValid() == false) {
-t.remove();
-}
-}
-}public static ArchivesDto convertFromArchives(Archives archives) {
-ArchivesDto archivesDto = new ArchivesDto();
-archivesDto.setId(archives.getId());
-archivesDto.setArticle_id(archives.getArticlesByArticleId().getId());
-archivesDto.setTitle(archives.getTitle());
-archivesDto.setBody(archives.getBody());
-archivesDto.setUpdated_at(archives.getUpdatedAt());
-archivesDto.setUser_id(archives.getUsersByUserId().getId());
-archivesDto.setWhat_changed(archives.getWhatChanged());
-archivesDto.setArticle(ArticlesDto.convertFromArticles(archives.getArticlesByArticleId()));
-archivesDto.setUser(UsersDto.convertFromUsers(archives.getUsersByUserId()));
-return archivesDto;
-}@Deprecated
-@Nullable
-public static Object invokeJdbcMethod(Method method, @Nullable Object target, @Nullable Object... args) throws SQLException {
-try {
-return method.invoke(target, args);
-}catch (IllegalAccessException ex) {
-handleReflectionException(ex);
-}catch (InvocationTargetException ex) {
-if (ex.getTargetException() instanceof SQLException) {
-throw (SQLException) ex.getTargetException();
-}
-handleInvocationTargetException(ex);
-}
-throw new IllegalStateException("Should never get here");
-}static void lockMouse(Vector2f pos)
+static void ensureReadable(final ChannelBuffer buf, final int nbytes) {
+buf.markReaderIndex();
+buf.skipBytes(nbytes); 
+buf.resetReaderIndex();
+  }@Test
+void testCreatePDFA() throws Exception
 {
-mouseLocked = true;
-lockedPos = pos;
-lx = pos.x;
-ly = pos.y;
-}public void request (HttpTransaction msg) {
-URI uri = msg.getRequestURI();
-Request req = (Request) requests.get (uri);
-if (req == null) {
-req = new Request (uri);
-requests.put (uri, req);
+System.out.println("testCreatePDFA");
+String pdfaFilename = outDir + "/PDFA.pdf";
+String signedPdfaFilename = outDir + "/PDFA_signed.pdf";
+String keystorePath = "src/test/resources/org/apache/pdfbox/examples/signature/keystore.p12";
+String message = "The quick brown fox jumps over the lazy dog ‰ˆ¸ƒ÷‹ﬂ @∞^≤≥ {[]}";
+String dir = "../pdfbox/src/main/resources/org/apache/pdfbox/resources/ttf/";
+String fontfile = dir + "LiberationSans-Regular.ttf";
+CreatePDFA.main(new String[] { pdfaFilename, message, fontfile });
+KeyStore keystore = KeyStore.getInstance("PKCS12");
+keystore.load(new FileInputStream(keystorePath), "123456".toCharArray());
+CreateSignature signing = new CreateSignature(keystore, "123456".toCharArray());
+signing.signDetached(new File(pdfaFilename), new File(signedPdfaFilename));
+ValidationResult result = PreflightParser.validate(new File(signedPdfaFilename));
+for (ValidationError ve : result.getErrorsList())
+{
+System.err.println(ve.getErrorCode() + ": " + ve.getDetails());
 }
-request (msg, req.count++);
-}private boolean promptForBackup() {
-Object[] options = {"Yes, please",
-"No, thanks"};
-int option = JOptionPane.showOptionDialog(
-XOS.getShared().getMainWindow(),
-"May we suggest a backup?", 
-"Backup Suggestion", 
-JOptionPane.YES_NO_OPTION, 
-JOptionPane.QUESTION_MESSAGE, 
-Home.getShared().getIcon(), 
-options, 
-options[0]);
-if (option == 0) {
-  return appToBackup.promptForBackup();
-} else {
-  return false;
+assertTrue(result.isValid(), "PDF file created with CreatePDFA is not valid PDF/A-1b");
+try (PDDocument document = Loader.loadPDF(new File(pdfaFilename)))
+{
+PDDocumentCatalog catalog = document.getDocumentCatalog();
+PDMetadata meta = catalog.getMetadata();
+DomXmpParser xmpParser = new DomXmpParser();
+XMPMetadata metadata = xmpParser.parse(meta.toByteArray());
+DublinCoreSchema dc = metadata.getDublinCoreSchema();
+assertEquals(pdfaFilename, dc.getTitle());
 }
-  }public void updateMatrix() {
-int lineNumber = line.getLineNumber();
-Marble nextExternalMarble;
-if (lineNumber < rows) {
-nextExternalMarble = marbleMatrix[lineNumber][0];
-System.arraycopy(marbleMatrix[lineNumber], 1, marbleMatrix[lineNumber], 0, columns - 1);
-marbleMatrix[lineNumber][columns-1] = slideMarble;
+File signedFile = new File(signedPdfaFilename);
+BufferedReader br = new BufferedReader(
+new InputStreamReader(new FileInputStream(signedFile)));
+String line;
+boolean isIncrementalArea = false;
+Set<String> set = new HashSet<>();
+int linePos = 0;
+while ((line = br.readLine()) != null)
+{
+++linePos;
+if (line.equals("%%EOF"))
+{
+isIncrementalArea = true;
+set.clear(); 
 }
-else {
-nextExternalMarble = marbleMatrix[0][lineNumber - 3];
-for(int i=1; i<rows; i++)
-marbleMatrix[i-1][lineNumber-3] = marbleMatrix[i][lineNumber-3];
-marbleMatrix[rows-1][lineNumber-3] = slideMarble;
+if (!isIncrementalArea)
+{
+continue;
 }
-slideMarble = nextExternalMarble;
+if (line.matches("^\\d+ 0 obj$"))
+{
+int pos = line.indexOf(" 0 obj");
+line = line.substring(0, pos);
+assertFalse(set.contains(line), "object '" + line
++ " 0 obj' twice in incremental part of PDF at line " + linePos);
+set.add(line);
+}
+}
+br.close();
+}@Override
+public void delete(Long id) {
+log.debug("Request to delete Patient : {}", id);
+patientRepository.delete(id);
+}@Deprecated
+public JsonFactory enable(JsonFactory.Feature f) {
+_factoryFeatures |= f.getMask();
+return this;
+}public static <T> SingleColumnRowMapper<T> newInstance(Class<T> requiredType, @Nullable ConversionService conversionService) {
+SingleColumnRowMapper<T> rowMapper = newInstance(requiredType);
+rowMapper.setConversionService(conversionService);
+return rowMapper;
+}private void _writeSegment(int end) throws IOException
+{
+final int[] escCodes = _outputEscapes;
+final int escLen = escCodes.length;
+int ptr = 0;
+int start = ptr;
+output_loop:
+while (ptr < end) {
+char c;
+while (true) {
+c = _outputBuffer[ptr];
+if (c < escLen && escCodes[c] != 0) {
+break;
+}
+if (++ptr >= end) {
+break;
+}
+}
+/* First things first: need to flush the buffer.
+ * Inlined, as we don't want to lose tail pointer
+ */
+int flushLen = (ptr - start);
+if (flushLen > 0) {
+_writer.write(_outputBuffer, start, flushLen);
+if (ptr >= end) {
+break output_loop;
+}
+}
+++ptr;
+start = _prependOrWriteCharacterEscape(_outputBuffer, ptr, end, c, escCodes[c]);
+}
+}@SafeVarargs
+public static <E> Matcher<Iterable<? extends E>> contains(Matcher<? super E>... itemMatchers) {
+final List<Matcher<? super E>> nullSafeWithExplicitTypeMatchers = NullSafety.<E>nullSafe(itemMatchers);
+return contains(nullSafeWithExplicitTypeMatchers);
+}public void createServiceInstance(ServiceInstance serviceInstance) {
+JpaServiceInstance jpaServiceInstance = JpaServiceInstance.builder()
+.serviceInstanceId(serviceInstance.getServiceInstanceId())
+.serviceId(serviceInstance.getServiceDefinitionId())
+.planId(serviceInstance.getPlanId())
+.organizationGuid(serviceInstance.getOrganizationGuid())
+.spaceGuid(serviceInstance.getSpaceGuid())
+.dashboardUrl(serviceInstance.getDashboardUrl())
+.build();
+jpaServiceInstanceRepository.save(jpaServiceInstance);
+}private void handleGenericException(Throwable t) {
+println(
+String.format(
+"SEVERE ERROR: an expected exception occurred: %s with message'%s'",
+t.getClass().getName(),
+t.getMessage()
+)
+);
+if(debug) {
+t.printStackTrace();
+}
+if(t.getCause() != null) {
+println("with cause: '" + t.getCause().getMessage() + "'");
+if(debug) {
+t.getCause().printStackTrace();
+}
+ }
+}public Instance toInstance() {
+DenseInstance ret = new DenseInstance(0.0, centroid);
+ret.setWeight(0.0);
+ret.setDataset(this.instances);
+return ret;
 }

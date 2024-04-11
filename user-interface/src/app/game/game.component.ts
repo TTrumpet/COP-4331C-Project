@@ -6,6 +6,7 @@ import { HostListener } from '@angular/core';
 import { LoadingComponent } from '../loading/loading.component';
 import { UserService } from '../user.service';
 import { ProfileService } from '../profile.service';
+import { MultiService } from '../multistats/multi.service';
 
 @Component({
   selector: 'app-game',
@@ -38,7 +39,7 @@ export class GameComponent {
   isGameStart = false;
   isGameEnd = false;
 
-  constructor(private _parent: LoadingComponent, public dialog : MatDialog, private route : ActivatedRoute, private router : Router,  private userService : UserService, private profileService : ProfileService) {
+  constructor(private multi : MultiService,private _parent: LoadingComponent, public dialog : MatDialog, private route : ActivatedRoute, private router : Router,  private userService : UserService, private profileService : ProfileService) {
     
   }
 
@@ -126,12 +127,27 @@ export class GameComponent {
         this.finalcountWrong = this.countWrong;
         this._parent.finalCountCorrect = this.finalcountCorrect;
         this._parent.finalCountWrong = this.finalcountWrong;
-        this._parent.onPlayer++;
         
         setTimeout( () => {
-          this._parent.text = "loading...";
-          this.router.navigate(['/loading']);
-          this._parent.gameOver();
+          clearInterval(timer);
+          this._parent.text = "";
+          if(this.multi.isMulti == true){
+            if(this.multi.turn == 2){
+              //set player 1 stats
+              this.multi.turn = 1;
+
+            }else if(this.multi.turn == 1){
+
+              this.multi.turn = 0;
+              //set player 2 stats
+              this.router.navigate(['/loading']);
+              this._parent.gameOver();
+            }
+            this._parent.gameOver();
+          }else{
+            this.router.navigate(['/loading']);
+            this._parent.gameOver();
+          }
         }, 3000)
       }
     }, 1000);

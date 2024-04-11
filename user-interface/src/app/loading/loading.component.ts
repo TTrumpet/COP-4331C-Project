@@ -7,6 +7,7 @@ import { UserService } from '../user.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EndgamestatsComponent } from '../endgamestats/endgamestats.component';
 import { EndgameService } from '../endgamestats/endgame.service';
+import { MultiService } from '../multistats/multi.service';
 
 @Component({
   selector: 'app-loading',
@@ -26,18 +27,21 @@ export class LoadingComponent {
   finalCountWrong = 0;
   codeString: string = "";
   codeText: string[] = []; 
-
   numOfPlayers = 0;
-  onPlayer = 0;
 
-  constructor(http: HttpClient, private route : ActivatedRoute, private router : Router,  private userService : UserService, private profileService : ProfileService,public dialog: MatDialog,private endGame : EndgameService) {
+  constructor(private multi : MultiService,http: HttpClient, private route : ActivatedRoute, private router : Router,  private userService : UserService, private profileService : ProfileService, public dialog: MatDialog, private endGame : EndgameService) {
     this.httpClient = http;
   }
 
   ngOnInit() {
+    if(this.multi.turn == 2){
+      this.text = "Player 1 get ready!"
+    }else if(this.multi.turn == 1){
+      this.text = "Player 2 get ready!"
+    }
     // the game hasn't started yet, so load code snippets and navigate to game page
     console.log("in loading component");
-    if(this.userService.getLog() == false)
+    if (this.userService.getLog() == false)
       this.router.navigate([''], {});
     else {
       // get number of players
@@ -71,36 +75,23 @@ export class LoadingComponent {
       console.log("back in loading!");
       console.log(this.finalCountCorrect);
       console.log(this.finalCountWrong);
-      this.endGame.setResults(this.finalCountWrong,this.finalCountCorrect, this.profileService.time);
-      this.router.navigate(['/loading/results']);
-    }
-    else { // multiplayer
-      if (this.onPlayer - 1 == this.numOfPlayers) {
-        // multi game over
-      }
-      // record results and continue
-       
-      else {
-        if(this.onPlayer == 1) {
-          
-        } else if (this.onPlayer == 2) {
-          
+      if(this.multi.isMulti == true){
+        
+        if(this.multi.turn ==  1) {
+          this.multi.setResultsP1(this.finalCountWrong,this.finalCountCorrect, this.profileService.time);
+          this.router.navigate(['/profile']);
+          setTimeout(() => {
+            this.router.navigate(['/loading']); // Timer to wait for closeAll before routing to profile
+          }, 300);
+        } else {
+          this.multi.setResultsP2(this.finalCountWrong,this.finalCountCorrect);
+          this.router.navigate(['/loading/multi-results']);
         }
-        this.recordMultiplayerResults();
-        this.gameStart(this.numOfPlayers);
-      }
-    } 
-  }
 
-  recordMultiplayerResults() {
-    if (this.onPlayer == 1) {
-      
-    }
-    if (this.onPlayer == 2) {
-      
+      } else {
+        this.endGame.setResults(this.finalCountWrong,this.finalCountCorrect, this.profileService.time);
+        this.router.navigate(['/loading/results']);
+      }
     }
   }
 }
-
-
-
